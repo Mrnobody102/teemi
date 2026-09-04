@@ -2,6 +2,13 @@
 
 _Viết 03/09/2026. Dựa hoàn toàn vào `/home/huypq/teemi/docs/plan/01-dinh-nghia-san-pham-v2.md`. Mọi con số ở đây phải nhất quán với §4.5, §9, §11, §12 của tài liệu đó. Bất đồng ghi ở cuối, không tự đi hướng khác._
 
+> ### ⚖️ ĐÃ ĐỐI CHIẾU BẢNG PHÁN QUYẾT TRỌNG TÀI — 2026-09-03
+> Toàn bộ tài liệu này **đã được đối chiếu với bảng phán quyết trọng tài ngày 03/09/2026** và sửa theo. **Mọi hằng số trong file này lấy từ `/home/huypq/teemi/docs/plan/_rulings.md`** (mục A — Từ điển giá trị chuẩn). Khi file này và `_rulings.md` nói khác nhau, **`_rulings.md` thắng**.
+>
+> Các hằng số bị áp vào file này, theo số hiệu: **A08** `group_alive` = A ≥ 3 người nộp ≥1 tấm / 7 ngày · **A09** `duo_alive` chỉ tham khảo · **A23–A25** `sổ-D28` là OMTM, cohort tuần 1–4 (02/12→29/12/2026), **n ≥ 24, KTC ±17 điểm** · **A26** mẫu số `B` = 5 sổ nhánh A, bước nhảy 20 điểm · **A30** khoá sổ là `book_id` (mọi `*_group_id` đọc lại thành `*_book_id`) · **A62–A64** doanh thu **0đ tuyệt đối** 6 tháng đầu, kill gate 31/03/2027 **bỏ vế "doanh thu = 0"** · **A70** A = **4,0 người/sổ** · **A72** 25 lượt/người/tháng · **A54** đèn pháp lý = **hai counter** (`monthly_visits` vàng 6.000/đỏ 8.500 · `monthly_active_persons` vàng 600/đỏ 850), **con số 700 đã bị bác** · **A88–A93** beta 02/12/2026 · 12 sổ đợt 1 · ≤30 đợt 2 từ tuần 15 · trần vận hành **35 sổ** ≠ trần hành chính **60 sổ** · **A99** caption card · **A101** đa sổ bị bác ở MVP-0 (`G ≡ 0` có ý thức) · **A103** một file ADR duy nhất `docs/adr/ADR-000-bat-bien.md` + `docs/adr/pw-ledger.md` · **A118–A122** 26/01/2027 (cổng `sổ-D28`) · 06/02/2027 (mùng 1 Tết) · 03/02 04:00 → 13/02 03:59 ICT (freeze, **10 ngày**) · 31/03/2027 (kill gate founder).
+>
+> **File này THẮNG ở một mâu thuẫn (C06):** ngày mùng 1 Tết Đinh Mùi = **06/02/2027**, không phải 17/02/2027. Bốn tài liệu khác phải sửa theo file này.
+
 > **Đơn vị của toàn bộ tài liệu này là SỔ, không phải người, không phải lượt cài** (P10). Không có lượt cài nào để đếm — sản phẩm là web. Mọi chỗ tài liệu cũ viết "install", ở đây đọc là **"người mở sổ"**.
 
 ---
@@ -90,16 +97,22 @@ Ba câu. Câu 1 là **sàng lọc** (nhóm chết thì dừng ở đây, không 
 **(b) Câu founder KHÔNG được nói,** vì nó làm hỏng phép đo ở §10(f):
 `"ủng hộ tao với"` · `"giúp tao một tay"` · `"làm ơn"` · `"tao sắp ra mắt"`. Sổ nào được tuyển bằng những chữ này phải bị **đánh dấu `nhờ_vả = true` trong sheet và loại khỏi phép tính `q_c` của cửa sổ im lặng.** Nếu không làm việc này thì Bước 0 đo vốn xã hội của founder, đúng như §10(f) cảnh báo.
 
-**(c) Caption soạn sẵn trên card** (đã chốt ở §4.6, giữ nguyên):
+**(c) Caption soạn sẵn trên card** — bản chuẩn duy nhất [A99]:
 _"**Sổ tối nay đây. Mỗi đứa một tấm, không cần cài app.**"_ + link
 
-> ### ✏️ [CHỐT 2026-08-28 — QĐ-31] Caption đã ĐỔI. Bản cũ (`Bấm vô nộp đi`) bị bác, và mục này từng ghi "đã chốt ở §4.6, giữ nguyên".
+> ### ✏️ [CHỐT 2026-08-28 — QĐ-31 · xác nhận lại 03/09/2026 — A99] Caption đã ĐỔI. Bản cũ (`Bấm vô nộp đi`) bị bác. Câu "đã chốt ở §4.6, giữ nguyên" **đã bị xoá khỏi mục (c)** — nó là dấu vết của bản caption cũ và đọc nhầm sẽ khôi phục lại bản đã chết.
 > `08-ux-flow-va-tone.md` §2.2 lập luận: **`Bấm vô nộp đi` là một mệnh lệnh chỉ có nghĩa với người CHƯA nộp** — tức **cùng hình dạng ngữ nghĩa** với chữ cấm vĩnh viễn `đứa nào chưa`, thứ mà v2 §1 gọi là _"chữ nguy hiểm nhất trong toàn bộ hồ sơ"_. Bản mới vẫn đủ **ba chữ bắt buộc** (`chốt sổ`/`sổ` · `một tấm` · `không cài app`), mất mệnh lệnh, **0 pw**.
 > Đây là **bề mặt phát ngôn quan trọng nhất của sản phẩm**: chuỗi chữ do app sinh ra, đi vào nhóm Zalo mỗi tối, **112 lần chỉ riêng trong Bước 0**. `08` là tài liệu sở hữu tone of voice và lập luận của nó bám thẳng vào danh sách chữ cấm của v2 §1 ⇒ nó thắng. Đã sửa đồng thời ở `01-v2` §4.6 và ở script S5 của `02` §5.9.
 
 ### 1.5. Sổ số 0 — nhóm bạn của chính founder
 
 Bắt buộc có, và bắt buộc **không** được tính vào phép đo H1/H2/H3. Lý do: `nhờ_vả` là giá trị mặc định trong nhóm của chính founder. Vai trò của nó là **kiểm thử vận hành**: founder là người đầu tiên phát hiện card render lỗi trên Xiaomi, link bị Zalo cảnh báo, hay ảnh bị crop ở 4:5 (§10(h)). Coi nó là môi trường staging có người thật, không phải một điểm dữ liệu.
+
+> ### ⚠️ HỆ QUẢ SỐ HỌC CỦA VIỆC LOẠI SỔ SỐ 0 — phải in kèm mỗi lần trích `B` [A26, A95]
+> Sổ số 0 **không nằm trong mẫu số của bất kỳ phép đo nào**, kể cả `B`. Bước 0 chạy **8 sổ = 5 nhánh A + 3 nhánh B** [A94], và sổ số 0 nằm trong 5 sổ nhánh A đó ⇒ **mẫu số của `B` = 5 sổ nhánh A, không kể sổ số 0**.
+> `B` = % sổ nhánh A còn `group_alive` ở ngày 14, `group_alive` tính trên **roster đóng băng** [A08, A14].
+> **Với n = 5, `B` chỉ nhận đúng 6 giá trị: {0 · 20 · 40 · 60 · 80 · 100}%** — **bước nhảy 20 điểm phần trăm**. Nghĩa là một sổ đổi ý làm `B` nhảy 20 điểm, và không có ngưỡng nào đặt ở giữa hai bậc mà có nghĩa. Câu này **bắt buộc in kèm** mỗi lần con số `B` xuất hiện trong bất kỳ văn bản quyết định nào.
+> Nếu Bước 0 rơi xuống **sàn tuyệt đối 6 sổ (4A + 2B)** thì mẫu số `B` = 4 ⇒ bước nhảy **25 điểm**, và mọi ngưỡng phải phát biểu lại theo **tỉ lệ %**, tuyệt đối không phát biểu theo "3/5" [A94].
 
 ---
 
@@ -113,7 +126,7 @@ Bắt buộc có, và bắt buộc **không** được tính vào phép đo H1/H
 | Nhánh B: card tối giản (ảnh + đếm ngày) | 10 | 3 | 3,5 |
 | **Tổng** | | **8** | **15,2** |
 
-Khớp đúng con số `~15 giờ/tuần` ở §9 của v2. Ở trần 15 giờ/tuần, **sổ thứ 9 không tồn tại** — nó chỉ tồn tại bằng cách rút ngắn thời gian cho 8 sổ kia, tức làm hỏng chính phép đo. Nếu đến 07/09 chỉ tuyển được 6 sổ, **chạy 6 sổ (4A + 2B)** và ghi rõ cỡ mẫu, đừng ép cho đủ 8 bằng nhóm không đạt chuẩn — cảnh báo cỡ mẫu ở §11 đã nói n = 3–5 không cho ý nghĩa thống kê, thêm một sổ rác không sửa được điều đó nhưng làm bẩn mẫu số.
+Khớp đúng con số `~15 giờ/tuần` ở §9 của v2. Ở trần 15 giờ/tuần, **sổ thứ 9 không tồn tại** — nó chỉ tồn tại bằng cách rút ngắn thời gian cho 8 sổ kia, tức làm hỏng chính phép đo. **Mục tiêu là 8 sổ (5A + 3B) [A94] — đây là con số bắt buộc, không phải con số mong muốn.** Chỉ khi đến **07/09** (hạn chốt danh sách, ngày trước khi Bước 0 bắt đầu 08/09 [A106–A107]) mà không đủ thì mới rơi xuống **sàn tuyệt đối 6 sổ (4A + 2B)**, ghi rõ cỡ mẫu, và **phát biểu lại mọi ngưỡng theo tỉ lệ %, không theo "3/5"** [A94]. Đừng ép cho đủ 8 bằng nhóm không đạt chuẩn — cảnh báo cỡ mẫu ở §11 đã nói n = 3–5 không cho ý nghĩa thống kê, thêm một sổ rác không sửa được điều đó nhưng làm bẩn mẫu số.
 
 ### 2.2. Trần sau khi có MVP là **~35 sổ**
 
@@ -124,12 +137,21 @@ Khi card tự sinh, chi phí/sổ/tuần sụp:
 | Liếc dashboard + mở sổ xem có gì bất thường | 2,0 |
 | 1 tin nhắn cho chủ xị (chỉ sổ đang tụt) | 3,0 |
 | Xử lý câu hỏi/sự cố (30% số sổ × 8 phút) | 2,4 |
-| Xử lý báo cáo nội dung (dự phòng, SLA 48h) | 1,0 |
+| Xử lý báo cáo nội dung (dự phòng — **SLA kép [A59]: 48h cho khiếu nại người dùng · 24h cho yêu cầu cơ quan nhà nước, khẩn cấp 6h**) | 1,0 |
 | **Tổng** | **8,4 phút/sổ/tuần** |
 
-Ngân sách 10 giờ/tuần (trần cứng §9) trừ đi 3 giờ tuyển vòng 2 và 1 giờ làm nội dung ⇒ **6 giờ = 360 phút ⇒ 42 sổ lý thuyết ⇒ đặt trần vận hành ở 35 sổ** (đệm 17%).
+Ngân sách 10 giờ/tuần (trần cứng §9) trừ đi 3 giờ tuyển vòng 2 và 1 giờ làm nội dung ⇒ **6 giờ = 360 phút ⇒ 42 sổ lý thuyết ⇒ đặt trần vận hành ở 35 sổ** (đệm 17%). `[ước lượng — 8,4 phút/sổ/tuần chưa đo]`
 
-> **Luật viết trước, khi founder còn khách quan:** _"Sổ thứ 36 bị TỪ CHỐI, đưa vào danh sách chờ, không phải được nhận rồi bỏ bê."_ Sổ bị bỏ bê tệ hơn sổ không tồn tại: nó tạo một điểm dữ liệu `group_alive = false` mà nguyên nhân là founder, và nó làm group-D28 — con số mở khoá widget ở §6 mục 2 — sai theo hướng bi quan.
+> ### 🚧 HAI TRẦN KHÁC NHAU, TUYỆT ĐỐI KHÔNG ĐƯỢC TRỘN [A92, A93 — S22]
+> | Trần | Con số | Bản chất | Cái gì bị chạm khi vượt |
+> |---|---|---|---|
+> | **Trần VẬN HÀNH** | **35 sổ sống cùng lúc** | Số học giờ founder: 8,4 phút/sổ/tuần × 35 ≈ 4,9 giờ/tuần trên ngân sách 10 giờ/tuần | Chất lượng chăm sóc, và qua đó là chính phép đo `sổ-D28` |
+> | **Trần HÀNH CHÍNH (pháp lý)** | **60 sổ** | Quy đổi đèn vàng: 6.000 lượt/tháng ÷ 25 lượt/người/tháng ÷ 4,0 người/sổ = 60 sổ [A70, A72, A73] | Nghĩa vụ **Giấy phép MXH** — 3–6 tháng thủ tục, cần pháp nhân VN [A57] |
+>
+> **60 sổ KHÔNG phải mục tiêu và KHÔNG phải phần thưởng cho việc chạy tốt — nó là trần không được chạm** [A93]. Việc "nới trần vận hành từ 35 lên 60 vì thấy vẫn kham được" đã bị **CẮT** (S22): 60 sổ ở 8,4 phút/sổ/tuần đã ăn đúng 8,4 giờ/tuần, tức **hết sạch đệm** — vượt trần vận hành ở đó nghĩa là vừa hỏng chăm sóc vừa bật đèn vàng pháp lý cùng lúc.
+> Khi chạm **đèn vàng** (`monthly_visits` ≥ 6.000 **HOẶC** `monthly_active_persons` ≥ 600 — hai counter, quan hệ **HOẶC** [A54]): **bắt đầu soạn hồ sơ Giấy phép MXH** [A57]. Khi chạm **đèn đỏ** (8.500 lượt / 850 người): **dừng nhận sổ mới ngay trong ngày** [A58].
+
+> **Luật viết trước, khi founder còn khách quan:** _"Sổ thứ 36 bị TỪ CHỐI, đưa vào danh sách chờ, không phải được nhận rồi bỏ bê."_ Sổ bị bỏ bê tệ hơn sổ không tồn tại: nó tạo một điểm dữ liệu `group_alive = false` mà nguyên nhân là founder, và nó làm sổ-D28 — con số mở khoá widget ở §6 mục 2 — sai theo hướng bi quan.
 
 ### 2.3. Làm tay kéo dài bao lâu — điều kiện thoát, không phải ngày
 
@@ -137,7 +159,7 @@ Không đặt "3 tháng". Đặt **hai cổng, thoát khi cổng nào đến tr�
 
 | Cổng | Điều kiện | Ý nghĩa |
 |---|---|---|
-| **Cổng thoát tốt** | ≥50% sổ mới trong **4 tuần liên tiếp** có `parent_group_id ≠ null` (do sổ cũ đẻ ra), founder không nhắn ai | Vòng lan truyền đã chạy → chuyển giờ từ tuyển sang sản phẩm |
+| **Cổng thoát tốt** | ≥50% sổ mới trong **4 tuần liên tiếp** có `parent_book_id ≠ null` (do sổ cũ đẻ ra), founder không nhắn ai | Vòng lan truyền đã chạy → chuyển giờ từ tuyển sang sản phẩm |
 | **Cổng thoát xấu** | Đến **31/03/2027** mà `sổ_sống_không_cần_founder < 8` | Trùng kill gate founder ở §9 mục 12 → dừng |
 
 Giữa hai cổng đó, **làm tay là công việc chính, không phải việc tạm**. Paul Graham gọi là "do things that don't scale"; ở đây nó có một lý do cụ thể hơn: với 8→35 sổ, founder là **kênh phân phối duy nhất có tỉ lệ chuyển đổi >10%**. Mọi kênh khác ở §4 đều dưới 5%.
@@ -155,15 +177,15 @@ Giữa hai cổng đó, **làm tay là công việc chính, không phải việc
 
 ## 3. BÀI TOÁN "CẦN 3 NGƯỜI MỚI CÓ GIÁ TRỊ" — XẾP HẠNG CÁC CÁCH GIẢI
 
-Trước khi xếp hạng: **v2 đã trả tiền cho một nửa bài toán này rồi mà không gọi tên nó.** `k = 1 khi A ≤ 2` (§4.4) nghĩa là **sổ 2 người vẫn tính ngày bình thường**, và "ngày thứ N" + "số tấm" không bao giờ đi xuống (§4.5 Bảng 5) nghĩa là **sổ 1 người vẫn có hai con số tăng**. Poparazzi chết vì solo value = 0; Chốt Sổ không ở tình trạng đó.
+Trước khi xếp hạng: **v2 đã trả tiền cho một nửa bài toán này rồi mà không gọi tên nó.** `k = 1 khi A_eff ≤ 2` (`k = 2` khi `A_eff ≥ 3`; `A_eff = min(A(D), A(D−1))` — [A06, A07]) nghĩa là **sổ 2 người vẫn tính ngày bình thường**, và "ngày thứ N" + "số tấm" không bao giờ đi xuống (§4.5 Bảng 5) nghĩa là **sổ 1 người vẫn có hai con số tăng**. Poparazzi chết vì solo value = 0; Chốt Sổ không ở tình trạng đó.
 
 | Hạng | Cách giải | pw thêm | ROI | Độ khó | Phán quyết |
 |---|---|---|---|---|---|
 | **1** | **Chiếm nhóm chat đã có** — form tuyển bắt nhập tên 3 bạn + link group chat, chỉ mở sổ khi đủ 3 | **0** (đã có, §12) | **Rất cao** | Thấp (kỷ luật tuyển) | Đây là cách giải chính. Nó không "giải" bài toán 3 người — nó **bỏ qua** bài toán bằng cách chỉ nhận nhóm đã có 3 người |
-| **2** | **k=1 khi A≤2 + hai con số không bao giờ giảm** (giá trị solo/duo tạm) | **0** (đã có) | Cao | 0 | Giữ nguyên. Đây là lý do sổ không "trống" khi mới 1–2 người |
+| **2** | **`k=1` khi `A_eff≤2` + hai con số không bao giờ giảm** (giá trị solo/duo tạm) | **0** (đã có) | Cao | 0 | Giữ nguyên. Đây là lý do sổ không "trống" khi mới 1–2 người. Ngưỡng tính trên **`A_eff = min(A(D), A(D−1))`**, không phải `A` cùng ngày [A06] |
 | **3** | **Seeding người thật** — founder + 2–3 người tin cậy làm chủ xị thay | 0 (giờ, không pw) | Cao ở n<35 | Trung bình (tốn 34 giờ cho 20 sổ, §1.2) | Làm ngay. Đây là §1 và §2 |
-| **4** | **Ghost/spectator** — người xem sổ, thả tim ẩn danh, không nộp, không bị đếm | **0** (trang public + nút thả tim đã có, §4.10 mục 2) | Trung bình-cao | 0 | **Đã có sẵn mà v2 không nhận ra mình đã có.** Trang public của link mời CHÍNH LÀ spectator mode. Chỉ cần đừng che nó sau tường đăng nhập |
-| **5** | **Duo trước rồi lớn lên** | 0 | Trung bình | Thấp | Ẩn trong `k=1 khi A≤2`. Không cần cơ chế riêng — §2 của v2 đã bác hướng C bằng 3 lý do, trong đó `duo_alive` D30 = 6,5–19,1% **không** hơn `group_alive` D30 = 12,5–19,1% |
+| **4** | **Ghost/spectator CHỈ-ĐỌC** — người xem trang public của sổ, không nộp, không bị đếm, **không có hành động nào** | **0** (trang public đã có, §4.10 mục 2) | Trung bình | 0 | ⚠️ **Không được coi là "đã giải xong"** [S23]: **nút thả tim đã bị CẮT khỏi MVP-0** (QĐ-05b/S01), nên ở MVP-0 cái còn lại chỉ là **xem được trang public**, không có bất kỳ hành động nào cho người xem. Trang public **GIỮ** (cắt nó thì M2 không đo được). Chỉ cần đừng che nó sau tường đăng nhập |
+| **5** | **Duo trước rồi lớn lên** | 0 | Trung bình | Thấp | Ẩn trong `k=1 khi A_eff≤2`. Không cần cơ chế riêng — §2 của v2 đã bác hướng C bằng 3 lý do, trong đó `duo_alive` D30 = 6,5–19,1% **không** hơn `group_alive` D30 = 12,5–19,1%. ⚠️ `duo_alive` (A ≥ 2) **chỉ đo song song để tham khảo, KHÔNG được thay thế `group_alive` (A ≥ 3) trong bất kỳ quyết định nào** [A08, A09] |
 | **6** | **Nhóm dựng sẵn theo chủ đề, ghép người lạ** | ≥1,5 | **Âm** | Cao | **LOẠI.** Vi phạm §6 mục 7; mở toàn bộ bề mặt an toàn cho founder một mình; kéo thẳng vào định nghĩa MXH của NĐ 147/2024 ở tốc độ nhanh nhất |
 | **7** | **NPC/bot cà khịa 48h đầu** (r04 §2.3c gợi ý) | ≥0,8 | Âm | Cao | **LOẠI.** Vi phạm P12 (không tự làm thứ Zalo làm tốt hơn) và §6 mục 4. Chưa có app nào công bố kết quả cơ chế này [GUESS, r04 tự ghi] |
 
@@ -187,7 +209,7 @@ Funnel cho lưu lượng **ẩn danh** (khác funnel 1-1 ở §1.1):
 | 6 | **Trường đại học — qua CLB/ban cán sự** | 0đ + đi lại | 10 | 1 CLB = 1–3 sổ, nhưng đây thực chất là **vòng 2 có địa chỉ**, không phải kênh đại chúng | **~8** | Có | Làm trong tháng 9 và cuối tháng 8/2027 (đầu năm học). Không phát tờ rơi — **tìm 1 người, không tìm 100 người** |
 | 7 | **Nhóm ôn thi (cùng lớp, tự lập 4–6 đứa)** | 0đ | 8 | Hình dạng nhóm hạng A ở §1.3 | **~9** | Có | **Cửa sổ Q1–Q2/2027** (thi tốt nghiệp 6/2027; lứa sinh 2009 đã 18 tuổi, qua age gate ≥16). Kênh thời vụ tốt nhất sau vòng 1–2 |
 | 8 | **TikTok organic (account 0 follower)** | 0đ | 25 (10 video × 2,5h) | Kỳ vọng: 9 video <1k view, 1 video ~20k → 80 click → 1,0 hình thành → 0,2 sống | **~125** | Có (0đ nhưng đắt bằng GIỜ) | **KHÔNG làm trước tuần 12.** Đắt hơn nhắn tin tay **13–46 lần** tính bằng giờ founder. Locket viral nhờ TikTok [FACT] nhưng Locket có widget + 0 giây setup, và trả tiền cho hàng trăm nano-KOC |
-| 9 | **Micro-KOC TikTok trả phí** | **612k–3,06tr VND/video** [FACT, r02 §4.2]; cần ≥10 video mới tạo cảm giác trend ⇒ **6–30 triệu** | 6 | 1 video 3tr ≈ 30k view → 120 click → 1,5 hình thành → 0,3 sống | **~10 triệu VND/sổ sống** | **Không** | **KHOÁ** cho tới khi group-D28 ≥25% trên ≥30 sổ. r02 §4.3 đã kết luận: không chạy paid trước khi D7 >20%. Ở đây thay bằng đơn vị đúng: **trước khi group-D28 >25%** |
+| 9 | **Micro-KOC TikTok trả phí** | **612k–3,06tr VND/video** [FACT, r02 §4.2]; cần ≥10 video mới tạo cảm giác trend ⇒ **6–30 triệu** | 6 | 1 video 3tr ≈ 30k view → 120 click → 1,5 hình thành → 0,3 sống | **~10 triệu VND/sổ sống** | **Không** | **KHOÁ** cho tới khi sổ-D28 ≥25% trên ≥30 sổ. r02 §4.3 đã kết luận: không chạy paid trước khi D7 >20%. Ở đây thay bằng đơn vị đúng: **trước khi sổ-D28 >25%** |
 | 10 | **Phòng gym** | 0đ | 8 | Nhóm gym ≠ nhóm chat thân; kèo tập đã có app riêng | **cần kiểm chứng, ước >40** | Có | **Bỏ**, trừ khi qua một PT làm chủ xị nhóm học viên — và nhóm học viên là quan hệ quen-lỏng, `q_c` dự kiến thấp |
 | 11 | **Discord / cộng đồng học tập** | 0đ | 8 | Server là tập hợp **người lạ** | — | Có | **Bỏ.** Vi phạm tinh thần §6 mục 7. Quy mô Discord ở Gen Z VN: **cần kiểm chứng** |
 | 12 | **TikTok/Meta Ads trả phí** | CPM 25–50k VND, CPI ước 10–30k VND [r02 §4.3] | 4 | Mua click, không mua sổ | **≥600k VND/sổ sống** ở CPC 4k VND × 400 click ÷ ... thực tế cao hơn vì click quảng cáo lạnh hơn click bạn bè | **Không** | **KHÔNG BAO GIỜ trong 12 tháng đầu.** Doanh thu 0đ; và mọi click mua về đều tạo "sổ một mình" làm bẩn mẫu số `q_c` |
@@ -276,7 +298,7 @@ Neo theo lịch ở §4.10 của v2: Bước 0 08–21/09/2026 · code từ 23/0
 
 | Cửa sổ | Ngày | Đánh giá | Việc |
 |---|---|---|---|
-| **Beta kín** | 02/12/2026 → 31/12/2026 | Đúng. Chưa công khai, chỉ vòng 0–2 | Chạy 20–30 sổ, đo group-D28 của cohort tuần 1–4 |
+| **Beta kín** | 02/12/2026 → 31/12/2026 | Đúng. Chưa công khai, chỉ vòng 0–2 | Chạy 20–30 sổ, đo sổ-D28 của cohort tuần 1–4 |
 | **Tết dương / đầu năm 2027** | **01/01/2027** | **Cửa sổ ra mắt công khai tốt nhất.** Cao điểm "kèo đầu năm" toàn cầu [r02 §5] | Bật asset 2, post Threads, mở form tuyển công khai |
 | Trước Tết Âm | 06/01 → 30/01/2027 | Chi phí quảng cáo tăng (không liên quan — ta không chạy ads). Nhịp sinh hoạt vẫn bình thường | Đẩy vòng 2 mạnh nhất ở đây, vì sau đó là 2 tuần chết |
 | **TẾT ĐINH MÙI** | **mùng 1 = 06/02/2027 (thứ Bảy)**; nghỉ ~03/02 → 12/02 [FACT] | **NGUY HIỂM NHẤT.** Cả nước đảo lộn nhịp 1–2 tuần | **Tết Mode bắt buộc bật từ 03/02** |
@@ -291,7 +313,7 @@ Tết rơi vào **tuần 10–11 của 12 tuần beta**. Hai hệ quả:
 1. **Rủi ro sản phẩm:** 11 ngày nhịp sinh hoạt vỡ hoàn toàn. Không có Tết Mode ⇒ mọi sổ đứt chuỗi cùng lúc ⇒ churn hàng loạt đúng lúc founder không ngồi máy.
 2. **Rủi ro ĐO LƯỜNG, nghiêm trọng hơn:** cohort mở sổ từ tuần 5 trở đi sẽ đo D28 **xuyên qua Tết**, và con số đó vô nghĩa theo cả hai chiều. Nó có thể làm founder dừng một sản phẩm đang chạy được, hoặc mở khoá widget (§6 mục 2) trên một phép đo bẩn.
 
-> **Luật đo lường, viết trước Tết:** _"Cohort dùng để ra quyết định group-D28 là cohort mở sổ trong tuần 1–4 của beta (02/12 → 29/12/2026), hoàn tất D28 trước 26/01/2027. Cohort tuần 5–9 chỉ dùng để quan sát, không dùng để mở khoá bất cứ thứ gì."_
+> **Luật đo lường, viết trước Tết:** _"Cohort dùng để ra quyết định sổ-D28 là cohort mở sổ trong tuần 1–4 của beta (02/12 → 29/12/2026), hoàn tất D28 trước 26/01/2027. Cohort tuần 5–9 chỉ dùng để quan sát, không dùng để mở khoá bất cứ thứ gì."_
 
 ### 6.2. "Tết Mode" cần đúng những gì — spec, nằm trong 0,4 pw đã ngân sách
 
@@ -339,7 +361,7 @@ Tết rơi vào **tuần 10–11 của 12 tuần beta**. Hai hệ quả:
 
 Đường cong sống dùng để tính (giả định, phải thay bằng số thật): xấu D28=12% · cơ sở D28=30% · tốt D28=45%.
 
-### 8.1. Kịch bản CƠ SỞ (group-D28 = 30%)
+### 8.1. Kịch bản CƠ SỞ (sổ-D28 = 30%)
 
 | Tuần | Ngày | Sổ mới | Sổ sống | User active | Nguồn chính | Việc phải làm |
 |---|---|---|---|---|---|---|
@@ -348,7 +370,7 @@ Tết rơi vào **tuần 10–11 của 12 tuần beta**. Hai hệ quả:
 | 3 | 16/12 | 5 | 13 | 48 | Vòng 1 + vòng 2 đầu tiên | Đo H1 (mở card 24h) lần 1 trên ≥10 sổ |
 | 4 | 23/12 | 5 | 15 | 53 | Vòng 2 | **Chốt cohort quyết định (tuần 1–4).** Ship asset 2 |
 | 5 | 30/12 | 6 | 17 | 61 | Vòng 2 + "kèo đầu năm" | **01/01 mở công khai**, post Threads đầu tiên |
-| 6 | 06/01 | 6 | 19 | 67 | Vòng 2 + Threads | **Cổng kiểm tra: ≥10% sổ mới có `parent_group_id`?** Nếu không → xem §9 |
+| 6 | 06/01 | 6 | 19 | 67 | Vòng 2 + Threads | **Cổng kiểm tra: ≥10% sổ mới có `parent_book_id`?** Nếu không → xem §9 |
 | 7 | 13/01 | 4 | 18 | 66 | Vòng 2 | 8 post Facebook Group (thử nghiệm, 2 tuần) |
 | 8 | **26/01** [CHỐT 2026-08-28, QĐ-13 — ngày DUY NHẤT của cổng này, thay cho 20/01 ở bản này, 31/01 ở `10` G2, 22/02 ở `06` tuần 24] | 4 | 18 | 66 | FB group + vòng 2 | **Đọc `sổ-D28` của cohort tuần 1–4 (02/12→29/12), n ≥ 24.** Quyết định widget/dừng. Điều kiện "≥30 sổ" của v2 §6 mục 2 **đã hạ xuống ≥24**: chính bảng này chỉ sinh 8+6+5+5 = **24 sổ** ở cohort quyết định, và trần vận hành là 35 sổ sống — giữ ≥30 nghĩa là cổng **không bao giờ mở được ở kịch bản cơ sở**. Với n=24, KTC 95% ≈ **±17 điểm**, phải in kèm |
 | 9 | 27/01 | 2 | 17 | 60 | — | **Đẩy vòng 2 hết sức trước khi cả nước nghỉ.** Ship Tết Mode, test bằng cách đổi ngày hệ thống |
@@ -358,7 +380,7 @@ Tết rơi vào **tuần 10–11 của 12 tuần beta**. Hai hệ quả:
 
 **Cộng dồn cơ sở: 55 sổ hình thành, 18 sổ sống cuối tuần 12, ~65 user active.**
 
-### 8.2. Kịch bản XẤU (group-D28 = 12%, khớp cận dưới digest)
+### 8.2. Kịch bản XẤU (sổ-D28 = 12%, khớp cận dưới digest)
 
 | Tuần | Sổ mới | Sổ sống | User active | Ghi chú |
 |---|---|---|---|---|
@@ -367,9 +389,9 @@ Tết rơi vào **tuần 10–11 của 12 tuần beta**. Hai hệ quả:
 | 3 | 3 | 7 | 21 | |
 | 4 | 2 | 6 | 18 | **Sổ sống bắt đầu giảm ở tuần 4** — dấu hiệu đầu tiên |
 | 5 | 2 | 6 | 17 | |
-| 6 | 2 | 5 | 16 | Vòng 2 không sinh ra sổ nào (0 `parent_group_id`) |
+| 6 | 2 | 5 | 16 | Vòng 2 không sinh ra sổ nào (0 `parent_book_id`) |
 | 7 | 1 | 4 | 13 | |
-| 8 | 1 | 4 | 12 | **group-D28 cohort tuần 1–4 ≈ 12% ⇒ vào vùng quyết định** |
+| 8 | 1 | 4 | 12 | **sổ-D28 cohort tuần 1–4 ≈ 12% ⇒ vào vùng quyết định** |
 | 9 | 0 | 3 | 8 | |
 | 10 | 0 | 2 | 6 | Tết |
 | 11 | 1 | 2 | 8 | |
@@ -377,7 +399,7 @@ Tết rơi vào **tuần 10–11 của 12 tuần beta**. Hai hệ quả:
 
 **Hành động ở kịch bản xấu:** không patch. Đây là hình dạng mà §11 gọi tên — nếu `sổ_sống_không_cần_founder` ở tuần 12 là 0 hoặc 1, kết luận là **hướng nộp-ảnh-mỗi-ngày không có nhịp thật**, và kill gate 31/03/2027 chỉ là thủ tục xác nhận.
 
-### 8.3. Kịch bản TỐT (group-D28 = 45%)
+### 8.3. Kịch bản TỐT (sổ-D28 = 45%)
 
 | Tuần | Sổ mới | Sổ sống | User active | Ghi chú |
 |---|---|---|---|---|
@@ -398,8 +420,8 @@ Tết rơi vào **tuần 10–11 của 12 tuần beta**. Hai hệ quả:
 
 | Lựa chọn | Được | Mất |
 |---|---|---|
-| **(a) Dừng tuyển ở 35 sổ sống**, danh sách chờ | Giữ chất lượng chăm sóc, giữ group-D28 sạch | Bỏ lỡ đà; danh sách chờ nguội |
-| **(b) Giữ tuyển, bỏ chăm tay** (chỉ dashboard, không nhắn) | Đo được sản phẩm không có founder — chính là chỉ số ở §0 | group-D28 tụt, có thể tụt dưới ngưỡng widget một cách giả tạo |
+| **(a) Dừng tuyển ở 35 sổ sống**, danh sách chờ | Giữ chất lượng chăm sóc, giữ sổ-D28 sạch | Bỏ lỡ đà; danh sách chờ nguội |
+| **(b) Giữ tuyển, bỏ chăm tay** (chỉ dashboard, không nhắn) | Đo được sản phẩm không có founder — chính là chỉ số ở §0 | sổ-D28 tụt, có thể tụt dưới ngưỡng widget một cách giả tạo |
 | **(c) Tăng trần bằng người thứ hai** | — | **§6 mục 19 đã khoá; và bus factor 1 là ràng buộc, không phải lựa chọn** |
 
 **Khuyến nghị viết trước:** chọn **(b)**, nhưng đánh dấu cohort. Sổ tuyển sau khi vỡ trần được gắn `nurtured = false` và báo cáo D28 **tách riêng**. So sánh D28(nurtured=true) với D28(nurtured=false) là **phép đo giá trị nhất trong cả 12 tuần** — nó trả lời trực tiếp câu hỏi ở §0, và nó chỉ xuất hiện trong kịch bản tốt.
@@ -419,7 +441,7 @@ Không dùng K-factor (đơn vị người — sai theo P10). Dùng:
 
 `G = A × P(một người active mở sổ thứ hai với nhóm khác trong 90 ngày)`
 
-Với **A = 4,0** [CHỐT 2026-08-28, QĐ-10 — hệ số quy đổi DUY NHẤT của hồ sơ, thay cho 3,6 ở bản này, 5 ở `05`, 2,65 DAU/sổ ở `03`], G ≥ 1 đòi **P ≥ 25,0%**. Ước lượng thực tế cho P: **8–15%** [ước lượng — không tìm được benchmark cho hành vi "mở nhóm thứ hai"; **cần kiểm chứng** bằng chính cột `parent_group_id`].
+Với **A = 4,0** [CHỐT 2026-08-28, QĐ-10 — hệ số quy đổi DUY NHẤT của hồ sơ, thay cho 3,6 ở bản này, 5 ở `05`, 2,65 DAU/sổ ở `03`], G ≥ 1 đòi **P ≥ 25,0%**. Ước lượng thực tế cho P: **8–15%** [ước lượng — không tìm được benchmark cho hành vi "mở nhóm thứ hai"; **cần kiểm chứng** bằng chính cột `parent_book_id`].
 
 ⇒ **G ≈ 0,29 – 0,54.** Cùng kết luận với K < 1 của r04, nhưng lần này đo đúng đơn vị và **chỉ ra chính xác biến số phải nâng**: không phải "số lời mời", mà **xác suất một thành viên hài lòng mở sổ thứ hai**.
 
@@ -428,7 +450,7 @@ Với **A = 4,0** [CHỐT 2026-08-28, QĐ-10 — hệ số quy đổi DUY NHẤT
 | # | Phải đúng | Trạng thái hôm nay | Nếu sai |
 |---|---|---|---|
 | 1 | **Người dùng có thể mở sổ thứ hai mà không mất sổ thứ nhất** | ❌ **Bị khoá** — §6 mục 14 hoãn đa sổ UI sang v1.1 | G ≡ ~0 về mặt cấu trúc. Không phải "thấp" — là **bằng 0** |
-| 2 | **Đo được sổ nào đẻ ra sổ nào** | ❌ `parent_group_id` không có trong §4.10 mục 1 hay mục 8 | Không bao giờ biết G. Thêm cột sau khi có dữ liệu = mất toàn bộ lịch sử (lỗi mà §8 #22 đã cảnh báo cho event an toàn) |
+| 2 | **Đo được sổ nào đẻ ra sổ nào** | ❌ `parent_book_id` không có trong §4.10 mục 1 hay mục 8 | Không bao giờ biết G. Thêm cột sau khi có dữ liệu = mất toàn bộ lịch sử (lỗi mà §8 #22 đã cảnh báo cho event an toàn) |
 | 3 | **Sổ sống đủ lâu để có câu chuyện đáng kể** — mốc 30 ngày / 100 tấm | ✅ Mốc sổ đã có (§4.5 Bảng 4) | Không có gì để share |
 | 4 | **Tồn tại một asset đi ra ngoài nhóm gốc** | ❌ Không có ở v2 → Asset 2 ở §5 | Card chỉ luẩn quẩn trong nhóm đã biết nhau |
 
@@ -438,7 +460,7 @@ Với **A = 4,0** [CHỐT 2026-08-28, QĐ-10 — hệ số quy đổi DUY NHẤT
 
 | Mốc | Dấu hiệu | Diễn giải | Hành động |
 |---|---|---|---|
-| **Tuần 6** | <10% sổ mới có `parent_group_id ≠ null` | G < 0,15. Ở tốc độ đó G không bao giờ chạm 1 | Ngừng đầu tư vào kênh; chuyển 100% giờ sang giữ sổ đang sống |
+| **Tuần 6** | <10% sổ mới có `parent_book_id ≠ null` | G < 0,15. Ở tốc độ đó G không bao giờ chạm 1 | Ngừng đầu tư vào kênh; chuyển 100% giờ sang giữ sổ đang sống |
 | **Tuần 8** | Tỉ lệ sổ hình thành **không có tin nhắn nào của founder** < 20% | Sản phẩm chưa tự bán được | Không mở kênh công khai. Kênh công khai chỉ nhân lên một thứ đã hoạt động |
 | **Tuần 10** | Sổ sống giảm 2 tuần liên tiếp **trong khi** sổ mới không giảm | Thùng thủng | Dừng tuyển 2 tuần, không thêm feature (P8) |
 | **Tuần 12** | Giờ/1 sổ sống **không giảm** so với tuần 4 | Không có learning curve — mỗi sổ vẫn đắt như sổ đầu tiên | Đây là dấu hiệu cấu trúc: sản phẩm không có đòn bẩy nào |
@@ -468,7 +490,7 @@ Chính §6 mục 14 tự viết: _"đây là vòng lan truyền quan trọng nh�
 > - Khoá CSDL dùng **`UNIQUE(book_id, person_id, book_date)`** của `04` §1.4, **KHÔNG** dùng `UNIQUE(person_id, logical_date)` của bản schema cũ ở `03` §3.2 — khoá đó chặn **cứng** đa sổ ở tầng CSDL và biến một quyết định 12 tháng thành một quyết định vĩnh viễn. Schema `03` đã được gỡ (QĐ-02b).
 > - `09` §3 hạng 4 không được coi spectator mode là "đã giải xong": ở MVP-0 nó chỉ còn là **xem được trang public**, không có hành động nào (nút thả tim đã cắt — QĐ-05b).
 
-**2. `parent_group_id` và `source_channel` không có trong §4.10.**
+**2. `parent_book_id` và `source_channel` không có trong §4.10.**
 §8 (#22) lập luận rất đúng rằng thêm event sau khi có dữ liệu là mất toàn bộ lịch sử — rồi áp dụng nguyên tắc đó cho 4 event an toàn mà **không** áp dụng cho hai cột đo tăng trưởng. Chi phí: 2 cột, ~0 pw. Không có chúng thì G không bao giờ đo được, và mọi cổng ở §9.3 đều không chạy.
 
 **3. §12 xếp việc "tuyển 8 sổ" vào một ngày (05/09).**
@@ -478,7 +500,7 @@ Theo funnel §1.1, 8 sổ (2 vòng 0 + 6 vòng 1) cần ~28 cuộc trò chuyện
 Câu ở §1 bán hoàn hảo cho **người thứ 2–5** (họ đúng là không phải cài gì). Nó **không** bán được cho **người thứ 1** — người đó phải đặt tên sổ, chọn kèo, nộp tấm, dán card. Với người thứ 1, câu bán vẫn là câu ở §1, nhưng phải kèm một **ask có thời hạn** (§1.4a câu 3). Đây không phải câu định vị thứ hai — nó là lời đề nghị. Nếu founder đọc §1 theo nghĩa "không được nói gì khác ngoài 13 từ đó", việc tuyển sổ sẽ không hoạt động.
 
 **5. Tết rơi đúng tuần 10–11 của beta, và v2 chưa xử lý hệ quả ĐO LƯỜNG.**
-"Tết freeze" đã nằm trong 0,4 pw (§4.10 mục 7) nhưng chưa có spec (§6.2 ở trên là đề xuất spec, chi phí 0 thêm). Vấn đề lớn hơn là group-D28 của cohort tuần 5–9 sẽ bị Tết bóp méo, và đó chính là con số mở khoá widget ở §6 mục 2. **Đề nghị ghi vào ADR-000 hôm nay:** cohort quyết định = tuần 1–4 (02/12→29/12/2026).
+"Tết freeze" đã nằm trong 0,4 pw (§4.10 mục 7) nhưng chưa có spec (§6.2 ở trên là đề xuất spec, chi phí 0 thêm). Vấn đề lớn hơn là sổ-D28 của cohort tuần 5–9 sẽ bị Tết bóp méo, và đó chính là con số mở khoá widget ở §6 mục 2. **Đề nghị ghi vào ADR-000 hôm nay:** cohort quyết định = tuần 1–4 (02/12→29/12/2026).
 
 **6. Một điểm không phải bất đồng mà là ghi nhận:** trang public của link mời + nút thả tim ẩn danh (§4.10 mục 2) **đã là spectator mode**. v2 xây nó vì lý do khác (hạ ma sát) và không nhận ra mình đã giải xong hạng 4 ở §3. Đừng xây thêm gì cho việc này.
 

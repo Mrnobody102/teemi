@@ -1,22 +1,39 @@
 # ROADMAP 12 TUẦN — CHỐT SỔ
 
-_Viết 03/09/2026. Bám `01-dinh-nghia-san-pham-v2.md`. Cửa sổ: **T0 = 03/09–06/09** (việc của §12, coi như tiền đề) rồi **T1 = 07/09/2026 → T12 = 29/11/2026**._
+> ## 📌 ĐÃ ĐỐI CHIẾU BẢNG PHÁN QUYẾT TRỌNG TÀI — 2026-09-03
+>
+> Toàn bộ tài liệu này **đã được rà soát và sửa theo** `/home/huypq/teemi/docs/plan/_rulings.md` (bảng phán quyết trọng tài ban hành **03/09/2026**: 53 mâu thuẫn + 25 mục scope creep + 123 dòng từ điển giá trị chuẩn).
+>
+> **Mọi hằng số trong tài liệu này lấy từ `_rulings.md` mục A (từ điển giá trị chuẩn).** Khi tài liệu này và `_rulings.md` khác nhau, `_rulings.md` thắng. Không được sửa một con số ở đây mà không sửa dòng A tương ứng trước.
+>
+> Ba thay đổi lớn nhất so với bản trước của chính file này:
+> 1. **Beta chạy 02/12/2026, không phải 16/11** (A88). Hai tuần chênh (16/11→29/11) là **đệm rủi ro, KHÔNG phải scope** — dùng nó để thêm tính năng là vi phạm P7.
+> 2. **Con số "700 người dùng" bị bác hoàn toàn**, thay bằng **hai counter** báo động sớm hơn ~2,5 lần: `monthly_visits` vàng 6.000/đỏ 8.500 · `monthly_active_persons` vàng 600/đỏ 850 (A54).
+> 3. **Mùng 1 Tết Đinh Mùi là 06/02/2027**, không phải 17/02 (đó là Tết Bính Ngọ 2026) — A119. Kết luận cắt Tết freeze khỏi MVP-0 vẫn đứng, nhưng lý do đã viết lại.
+>
+> Sổ cái pw duy nhất: **`docs/adr/pw-ledger.md`** (A87). File ADR duy nhất: **`docs/adr/ADR-000-bat-bien.md`** (A103) — không còn ADR-001/ADR-002.
+
+_Viết 03/09/2026, sửa theo phán quyết trọng tài 03/09/2026. Bám `01-dinh-nghia-san-pham-v2.md`. Cửa sổ build: **T0 = 03/09–06/09** (việc của §12, coi như tiền đề) rồi **T1 = 07/09/2026 → T12 = 29/11/2026**. **Beta nằm NGOÀI cửa sổ 12 tuần: T13–T14 = 02/12 → 15/12/2026**, đọc `group-D14` ngày **16/12/2026** (A114–A116)._
 
 ---
 
 ## 0. CON SỐ QUYẾT ĐỊNH TOÀN BỘ TÀI LIỆU NÀY
 
-Brief nói founder làm **~20 giờ/tuần**. v2 §4.10 nói MVP là **6,5 pw** và lịch của nó là _"10 tuần lịch cho một người"_, beta 02/12/2026.
+Brief nói founder làm **~20 giờ/tuần**. v2 §4.10 nói MVP là **6,5 pw** (A83 — đây cũng là **trần backlog cứng**, vượt là kích hoạt kill gate 05/10) và lịch của nó là _"10 tuần lịch cho một người"_, beta 02/12/2026.
 
-Ba phép chia, cùng một định nghĩa `1 pw = 40 giờ tập trung`:
+Ba phép chia, cùng một định nghĩa **`1 pw = 40 giờ tập trung`** (A80):
 
 | Giả định | Số tuần để hết 6,5 pw |
 |---|---|
-| 40 h/tuần, hệ số hiệu suất 0,65 (đúng công thức v2) | **10,0 tuần** ← lịch trong v2 |
+| 40 h/tuần, hệ số hiệu suất **0,65** `[không có nguồn — A81]` (đúng công thức v2) | **10,0 tuần** ← lịch trong v2 |
 | 20 h/tuần, **không** trừ hao gì cả | **13,0 tuần** |
-| 20 h/tuần, cùng hệ số 0,65 của v2 | **20,0 tuần** |
+| 20 h/tuần, cùng hệ số 0,65 của v2 → **13 giờ code/tuần** (A82) | **20,0 tuần** |
+
+**Con số chuẩn (A82): 20 h/tuần × 0,65 = 13 giờ code/tuần ⇒ 1 pw ≈ 3,1 tuần lịch ⇒ 6,5 pw ≈ 20 tuần lịch, KHÔNG phải 10.**
 
 **Kết luận không tránh được: lịch trong v2 §4.10 được tính cho một founder toàn thời gian. Ở 20 giờ/tuần, MVP 6,5 pw kết thúc khoảng tuần 20 (giữa tháng 1/2027), không phải 02/12/2026.**
+
+> ⚠️ **Bảng §4.10 của v2 KHÔNG còn là ngân sách pw** (A87). Sổ cái pw duy nhất là **`docs/adr/pw-ledger.md`**, và luật của nó là: **một khoản cắt chỉ được chi MỘT LẦN**. Mọi bảng pw trong tài liệu này là bối cảnh, không phải quyền chi.
 
 Giờ thực sự còn lại để code trong cửa sổ 12 tuần, sau khi trừ vận hành:
 
@@ -27,13 +44,24 @@ Giờ thực sự còn lại để code trong cửa sổ 12 tuần, sau khi tr�
 | T3: chốt số liệu, quyết định văn bản, kiểm chứng nền tảng lần 2, ADR | −10 |
 | T4–T9: vận hành nền (2 h/tuần) | −12 |
 | T10: tuyển 12 sổ beta | −4 |
-| T11–T12: trực beta (5 h/tuần) + báo cáo | −15 |
-| **Còn lại để build** | **159 h ≈ 4,0 pw danh nghĩa** |
+| T11–T12: đệm rủi ro + chuẩn bị beta (kịch bản trực, checklist, tuyển nốt) + báo cáo, 5 h/tuần | −15 |
+| **Còn lại để build trong 12 tuần** | **159 h ≈ 4,0 pw danh nghĩa** |
+| _(nằm NGOÀI 240 h trên)_ T13–T14: trực beta 02/12 → 15/12, 5 h/tuần | _−10_ |
+
+> ### ⚠️ BA CON SỐ PHẢI ĐỌC CÙNG NHAU — chúng không bằng nhau và không được làm tròn cho bằng
+>
+> | | Giờ | pw | Nguồn |
+> |---|---|---|---|
+> | **Giờ build THẬT có trong 12 tuần** | **159 h** | 4,0 | bảng trừ hao ngay trên |
+> | **Trần scope MVP-0 (QĐ-25)** | **140 h** | **3,5 pw** | A84 |
+> | **Ước lượng TRUNG THỰC MVP-0 (bảng US chi tiết)** | **183 h** | **4,58 pw** | A85 |
+>
+> ⇒ **Thiếu 24 giờ (0,6 pw) so với giờ thật có · thiếu 43 giờ (1,08 pw) so với trần.** Cắt đủ 1,08 pw thì lọt cả hai (140 h < 159 h, đệm 19 h ≈ 12%). Đây là **D-01**, hạn quyết **22/09/2026** — khối cảnh báo ở §10.
 
 Nên chỉ có hai lựa chọn, và tài liệu này chọn cái thứ hai:
 
 - **(a) Giữ scope 6,5 pw, dời ngày** → không có người ngoài dùng sản phẩm cho tới ~tuần 20, tức 12 tuần này kết thúc mà chưa học được gì mới sau Bước 0.
-- **(b) Giữ ngày, cắt scope** → định nghĩa **MVP-0 = 3,5 pw (140 h, đệm 19 h ≈ 12%)**, người ngoài vào từ **16/11**, và 12 tuần kết thúc bằng **group-D14 đo trên sổ ngoài**.
+- **(b) Giữ ngày, cắt scope** → định nghĩa **MVP-0 = 3,5 pw (140 h, đệm 19 h ≈ 12%)**, người ngoài vào từ **02/12/2026** (A88 — **không phải 16/11**, xem QĐ-25 ngay dưới), 12 tuần kết thúc bằng **cổng sẵn sàng beta 30/11**, và `group-D14` đo trên sổ ngoài đọc được ngày **16/12/2026** (A116).
 
 Đây là bất đồng #1 với v2 và được ghi ở cuối tài liệu.
 

@@ -2,9 +2,19 @@
 
 _Sản phẩm: **Chốt Sổ** (`chotso.vn`) — web app, sổ kín ≤8 người, nộp 1 tấm ảnh/người/ngày, phân phối qua nhóm Zalo. Viết 03/09/2026. Căn cứ: `01-dinh-nghia-san-pham-v2.md` + `research/r06-legal-compliance.md`, đã kiểm chứng lại bằng WebSearch ngày 03/09/2026._
 
-> **Đây không phải phụ lục.** Ba trong bốn quyết định lớn nhất của v2 — không lên store, không SMS OTP, không boss — đều là quyết định pháp lý đội lốt quyết định sản phẩm. Nếu một trong ba cái đó sai về luật, `6,5 pw` và 10 tuần lịch đi theo nó.
+> ## ⚖️ ĐÃ ĐỐI CHIẾU BẢNG PHÁN QUYẾT TRỌNG TÀI (2026-09-03)
 >
-> **Miễn trừ trách nhiệm:** tài liệu này là chuẩn bị đầu vào cho luật sư, **không** phải tư vấn pháp lý. Ba câu hỏi ở §11 bắt buộc có ý kiến luật sư VN **bằng văn bản** trước khi (a) nhận sổ thứ 31, (b) thu một đồng nào, (c) mở lại bất kỳ mục nào trong §6 của v2.
+> Toàn bộ tài liệu này **đã được đối chiếu với bảng phán quyết trọng tài ngày 2026-09-03**. **Mọi hằng số** (ngưỡng, hệ số quy đổi, ngày tháng, số pw, SLA, TTL) trong file này lấy từ **`/home/huypq/teemi/docs/plan/_rulings.md`** — đó là nguồn chân lý duy nhất khi có bất đồng giữa 10 tài liệu.
+>
+> Các hằng số then chốt đã áp dụng ở file này: **A = 4,0 người/sổ** (A70) · **25 lượt/người/tháng** `[ước lượng]` (A72) · **hai counter cảnh báo pháp lý** thay con số 700 (A54–A56) · **SLA kép 48h / 24h–6h** (A59) · **auto-hide toàn cục ở report đầu tiên** (A60) · **`is_16_plus` + `age_gate_at`, không lưu năm sinh** (A47) · **thumbnail vĩnh viễn, không xoá** (A38) · **7 câu luật sư, 5–15 triệu** (A65–A66) · **doanh thu 0đ tuyệt đối 6 tháng đầu** (A62) · **trần vận hành 35 sổ ≠ trần hành chính 60 sổ** (A92–A93) · **một file ADR: `docs/adr/ADR-000-bat-bien.md`** (A103).
+>
+> `05` là **file chủ quyền về PHÁP LÝ** (nguyên tắc 2 của bảng phán quyết). Nó thắng ở C01, C04, C18, C23, C24, C40, C62 — nhưng **thua ở C03 (nút thả tim bị cắt), C28 (A = 4,0 thay vì 5), C16/C38 (TTL thumbnail), S22 (trần 60 sổ không được nới)**, và phần này đã sửa theo.
+>
+> **Sổ cái pw:** mọi khoản pw nêu trong file này (`audit_log` +0,15 · hai counter +0,05 · export tay 0,00) **chỉ có hiệu lực khi đã ghi vào `docs/adr/pw-ledger.md`** — nơi DUY NHẤT, một khoản cắt chỉ được chi MỘT LẦN (A87).
+
+> **Đây không phải phụ lục.** Ba trong bốn quyết định lớn nhất của v2 — không lên store, không SMS OTP, không boss — đều là quyết định pháp lý đội lốt quyết định sản phẩm. Nếu một trong ba cái đó sai về luật, `6,5 pw` và **20 tuần lịch** đi theo nó (6,5 pw × 3,1 tuần/pw ở tốc độ 13 giờ code/tuần — A80/A82/A83; con số "10 tuần" của v2 chỉ đúng nếu founder làm 40 giờ/tuần).
+>
+> **Miễn trừ trách nhiệm:** tài liệu này là chuẩn bị đầu vào cho luật sư, **không** phải tư vấn pháp lý. **Bảy** câu hỏi ở §11 (A65 — một email, một lần trả phí) bắt buộc có ý kiến luật sư VN **bằng văn bản** trước khi (a) nhận sổ thứ 31, (b) thu một đồng nào, (c) mở lại bất kỳ mục nào trong §6 của v2.
 
 ---
 
@@ -13,7 +23,7 @@ _Sản phẩm: **Chốt Sổ** (`chotso.vn`) — web app, sổ kín ≤8 ngườ
 | # | Kết luận | Hệ quả trực tiếp |
 |---|---|---|
 | 1 | **Chốt Sổ gần như chắc chắn là "mạng xã hội"** theo Điều 3 NĐ 147/2024. 4/5 dấu hiệu của định nghĩa đều có. "Nhóm kín ≤8 người" không phải ngoại lệ trong luật — luật không có chữ nào về quy mô nhóm | Câu hỏi là **khi nào**, không phải **có hay không** |
-| 2 | **Ngưỡng bind sớm hơn v2 tưởng ~2,5 lần.** v2 §9 đặt đèn cảnh báo ở 700 *người dùng thường xuyên/tháng* (≈140 sổ). Nhưng ngưỡng là **OR**: `10.000 lượt truy cập/tháng` **hoặc** `1.000 người dùng thường xuyên/tháng`. Core loop mở app hằng ngày ⇒ mỗi người sinh 16–30 lượt/tháng ⇒ **ngưỡng lượt truy cập chạm ở ~60–80 sổ, không phải 200 sổ** | **Trần thật của beta: 60 sổ / 300 người active.** Beta 30 sổ của v2 nằm ở đúng 50% trần — vừa đủ, không dư |
+| 2 | **Ngưỡng bind sớm hơn v2 tưởng ~2,5 lần.** v2 §9 đặt đèn cảnh báo ở 700 *người dùng thường xuyên/tháng* — ở hệ số chuẩn **A = 4,0** (A70) thì 700 người ≈ **175 sổ**. Nhưng ngưỡng là **OR**: `10.000 lượt truy cập/tháng` **hoặc** `1.000 người dùng thường xuyên/tháng`. Core loop mở app hằng ngày ⇒ mỗi người sinh 16–30 lượt/tháng, mốc thận trọng **25** `[ước lượng]` ⇒ **ngưỡng luật 10.000 lượt chạm ở ~100 sổ; đèn vàng 6.000 lượt rơi ở 60 sổ; đèn đỏ 8.500 lượt ở 85 sổ**. Con số 700 báo động **muộn ~2,5 lần** | 🔴 **Con số 700 bị BÁC hoàn toàn (C04/A54).** Thay bằng **HAI counter**: `monthly_visits` vàng **6.000** / đỏ **8.500** · `monthly_active_persons` vàng **600** / đỏ **850**. **Trần hành chính của beta: 60 sổ = 240 người active** — kế hoạch beta duy nhất (12 sổ đợt 1 từ 02/12, ≤30 sổ đợt 2 từ tuần 15) nằm ở **20–50% trần**, còn đệm thật |
 | 3 | 🔴 **Nếu là MXH mà chỉ có Giấy xác nhận thông báo thì KHÔNG được thu tiền.** NĐ 147/2024 dành livestream và **hoạt động phát sinh doanh thu** cho MXH đã được cấp **Giấy phép** [FACT, xác nhận qua VietnamNet + tổng hợp NĐ 147; cần luật sư đối chiếu điều khoản gốc] | Toàn bộ §5 của kế hoạch monetization (kể cả quảng cáo kiểu Locket) bị khoá sau một thủ tục 3–6 tháng cần pháp nhân VN. **Đây là phát hiện nặng nhất của tài liệu này** |
 | 4 | **Rủi ro G1 của v2 đã về mức thấp, và đó là thành quả của thiết kế chứ không phải may mắn.** G1 (Điều 37 khoản 1 NĐ 147/2024) = "tương tác **đồng thời** giữa nhiều người chơi qua hệ thống **máy chủ trò chơi**". Chốt Sổ v2 hụt 2/4 dấu hiệu: không phải trò chơi (không thắng/thua, không điểm cá nhân, không vật phẩm) và rollover batch 04:00 phá vế "đồng thời" | Giới hạn phải giữ vĩnh viễn: không boss/HP/damage/vật phẩm/gacha/leaderboard. **Mục 1 §6 của v2 (boss opt-in v1.2) phải bị khoá thêm bằng một điều kiện pháp lý, không chỉ `group-D28`** |
 | 5 | 🟠 **Miễn trừ startup 5 năm (Điều 38.2 Luật 91/2025) mong manh hơn v2 tuyên bố.** v2 §8 ghi "Giữ được". Nhưng Điều 4 NĐ 356/2025 liệt kê **"thông tin về đời sống riêng tư, bí mật cá nhân"** trong danh mục nhạy cảm — mục này rộng hơn "sức khoẻ" rất nhiều, và một ô `goal_text` tự viết + ảnh đời thường hằng ngày rơi thẳng vào vùng tranh cãi | Đừng cược vào miễn trừ. Tin tốt: mất miễn trừ = phải làm **DPIA + TIA + chỉ định người phụ trách**, tức ~2–3 ngày công giấy tờ/năm, **không phải một dự án**. Hạ nó từ "sống còn" xuống "chi phí đã biết" |
@@ -40,30 +50,39 @@ _Sản phẩm: **Chốt Sổ** (`chotso.vn`) — web app, sổ kín ≤8 ngườ
 
 ## 2. BẢNG CỘT MỐC TUÂN THỦ
 
-Đơn vị quy đổi dùng suốt bảng: **1 sổ = 4,0 người active** [CHỐT 2026-08-28, QĐ-10 — hệ số quy đổi DUY NHẤT của toàn bộ hồ sơ]; **1 người active sinh 16–30 lượt truy cập/tháng** [suy luận từ `q_c=0,53` × 30 ngày = 16 lượt tối thiểu, cộng lượt xem không nộp]. Lấy mốc thận trọng **25 lượt/người/tháng**.
+Đơn vị quy đổi dùng suốt bảng: **1 sổ = 4,0 người active** [CHỐT 2026-08-28, QĐ-10 / A70 — hệ số quy đổi DUY NHẤT của toàn bộ hồ sơ, nhãn **[ước lượng]** cho tới khi Bước 0 đo được `book_day.active_count` trung bình]; **1 người active sinh 16–30 lượt truy cập/tháng** [suy luận từ `q_c = 0,53` `[suy luận, chưa đo — A17]` × 30 ngày = 16 lượt tối thiểu, cộng lượt xem không nộp]. Lấy mốc thận trọng **25 lượt/người/tháng** `[ước lượng, ảnh hưởng 🔴 Rất cao — A72]`.
 
 > **[CHỐT 2026-08-28 — QĐ-10] Vì sao 4,0 và không phải 5.** Bốn tài liệu dùng bốn hệ số (`03` §4b: 2,65 DAU/sổ ở A=5 · `10` §2.4: 4,0 · `09` §9.1: 3,6 · `05` bản trước: 5). Mọi bảng chi phí, mọi ngưỡng pháp lý, mọi bảng doanh thu đều nhân qua hệ số này, nên nó phải là **một số duy nhất**. Chốt **A = 4,0** vì nó khớp `10`, khớp khuyến nghị 4–6 của r01, và nằm giữa dải quan sát. Nhãn: **[ước lượng]**, thay bằng số đo thật sau Bước 0 (`book_day.active_count` trung bình). **Cảnh báo hướng lệch:** ở A = 5, cùng một số sổ sinh nhiều lượt hơn ⇒ đèn vàng rơi ở **48 sổ** thay vì 60. Vì vậy **trần beta hành chính chốt ở 60 sổ và không được nới bằng cách hỏi lại** — 60 sổ an toàn dưới đèn đỏ ở cả A=4 lẫn A=5.
 
 | Số sổ | Người active (A=4,0) | Lượt truy cập/tháng (ở 25 lượt/người) | Vị trí so với ngưỡng luật |
 |---|---|---|---|
-| 8 (Bước 0) | 32 | 800 | 8% ngưỡng |
-| 12 (beta đợt 1) | 48 | 1.200 | 12% ngưỡng |
-| 30 (beta đầy đủ) | 120 | 3.000 | **30% ngưỡng** |
-| **60 — TRẦN BETA** | **240** | **6.000** | 🟠 **60% — đèn vàng, dừng nhận sổ mới nếu chưa nộp thông báo** |
+| 8 (Bước 0, 08/09→21/09) | 32 | 800 | 8% ngưỡng |
+| 12 (beta đợt 1, 02/12→29/12) | 48 | 1.200 | 12% ngưỡng |
+| 30 (beta đợt 2, mở dần từ tuần 15) | 120 | 3.000 | **30% ngưỡng** |
+| **35 — TRẦN VẬN HÀNH** (8,4 phút/sổ/tuần ⇒ 10 giờ/tuần, A92) | 140 | 3.500 | 35% ngưỡng — **trần thời gian của founder, chạm trước trần pháp lý** |
+| **60 — TRẦN HÀNH CHÍNH (PHÁP LÝ)** | **240** | **6.000** | 🟠 **60% — đèn vàng, dừng nhận sổ mới nếu chưa nộp thông báo.** A93: đây là **trần không được chạm**, không phải mục tiêu |
 | 85 | 340 | 8.500 | 🔴 **đèn đỏ — dừng nhận sổ mới ngay trong ngày** |
 | 100 | 400 | 10.000 | 🔴 **CHẠM ngưỡng giấy phép** |
 | 250 | 1.000 | 25.000 | Vượt cả hai ngưỡng |
 
-### GIAI ĐOẠN 0 — Bước 0, 8 sổ, không code, không máy chủ (08/09 → 21/09/2026)
+> **HAI TRẦN KHÁC NHAU, KHÔNG ĐƯỢC TRỘN** [S22 / A92–A93]:
+> · **Trần vận hành = 35 sổ sống cùng lúc** — dẫn xuất từ 8,4 phút/sổ/tuần trên trần 10 giờ/tuần (`09` §2.2, `[ước lượng]`). Vượt 3 tuần liên tiếp ⇒ **giảm số sổ, không giảm giấc ngủ**.
+> · **Trần hành chính/pháp lý = 60 sổ** — điểm đèn vàng. Đây là **trần, không phải mục tiêu**, và **không được nới bằng cách hỏi lại**. Ở 60 sổ, giờ vận hành đã là 10 h/tuần ⇒ **không còn đệm nào cả**.
+> · Con số điều khiển thật **không phải số sổ** mà là **hai counter đo trực tiếp** (A54–A56). Bảng quy đổi sổ↔lượt ở trên chỉ để lập kế hoạch, không để ra quyết định dừng.
+
+### GIAI ĐOẠN 0 — Bước 0, 8 sổ (5 nhánh A + 3 nhánh B), không code, không máy chủ (08/09 → 21/09/2026)
 
 | Nghĩa vụ | Căn cứ | Hành động cụ thể | Thời gian | Chi phí | Rủi ro nếu bỏ qua |
 |---|---|---|---|---|---|
 | **Không có nghĩa vụ MXH** — chưa cung cấp dịch vụ, chỉ dán ảnh Canva vào nhóm bạn | NĐ 147/2024 Đ.3 (không có "hệ thống thông tin" nào của mình) | Giữ nguyên: Canva + Zalo + Google Sheet | 0 | **0đ** | — |
-| **Bảo vệ DLCN với chính Google Sheet của founder** | Luật 91/2025 Đ.9–11 | Sheet chỉ lưu **mã sổ + số thứ tự thành viên** (`S03-M2`), **không tên thật, không SĐT, không ảnh**. Xoá sheet sau ngày 22/09 | 20 phút | **0đ** | Founder tự tạo ra một cơ sở dữ liệu cá nhân không có cơ sở pháp lý — vô lý vì nó **miễn phí để tránh** |
-| **Đăng ký `chotso.vn`** (điều kiện giấy phép MXH sau này: .vn còn hiệu lực ≥6 tháng lúc nộp) | Điều kiện cấp GP MXH, NĐ 147 | Đăng ký **đứng tên đúng người sẽ là chủ TNHH sau này** — tránh phải chuyển nhượng | 1 giờ | **~750.000đ/năm** [ước lượng, cần báo giá nhà đăng ký] | Nộp hồ sơ giấy phép mà tên miền mới đăng ký 2 tháng ⇒ trượt điều kiện, chờ thêm 4 tháng |
-| **Gửi luật sư 3 câu hỏi** (§11) | — | Một email, một lần trả phí | 1 giờ soạn | **5–15 triệu** [ước lượng thị trường VN cho ý kiến bằng văn bản, cần chào giá] | Xây 10 tuần trên một giả định chưa ai xác nhận |
+| **Bảo vệ DLCN với chính Google Sheet của founder** | Luật 91/2025 Đ.9–11 | Sheet **8 cột** (A96: `q_c_roster · q_x_roster · q_c_sliding · q_x_sliding · roster_size · số người nộp · số XONG · số TOANG`), định danh **pseudonymised** dạng `S03-M2`, **không tên thật, không SĐT, không ảnh trong sheet**. **Xoá sheet sau 22/09** | 20 phút | **0đ** | Founder tự tạo ra một cơ sở dữ liệu cá nhân không có cơ sở pháp lý — vô lý vì nó **miễn phí để tránh** |
+| 🔴 **Kho ảnh Bước 0 trên Google Drive** — nghĩa vụ THẬT, không được coi là "chưa có hệ thống thông tin" | Luật 91/2025 Đ.9–11, Đ.13; NĐ 356/2025 | Bước 0 thu **ảnh thật của ~32–35 người** (8 sổ × 4,0 người) vào Drive của founder ⇒ founder **là bên kiểm soát dữ liệu**. Ba việc bắt buộc: (a) **văn bản thông báo + đồng ý** gửi trong nhóm trước ngày 08/09, nêu rõ ai giữ ảnh, giữ ở đâu, giữ bao lâu, dùng làm gì; (b) **thời hạn lưu công bố trước: tới 22/09/2026**; (c) **kế hoạch xoá**: xoá toàn bộ thư mục Drive + sheet **chậm nhất 22/09**, chụp màn hình làm bằng chứng. Thư mục để **chế độ riêng tư, không link chia sẻ công khai** | 45 phút | **0đ** | 🔴 Đây là lỗ hổng thật của lập luận "Bước 0 không có nghĩa vụ MXH": **nghĩa vụ MXH** thì không có, nhưng **nghĩa vụ DLCN thì có ngay từ tấm ảnh đầu tiên**. Thu ảnh 35 người không thông báo, không thời hạn, không kế hoạch xoá = vi phạm Luật 91/2025 trước cả khi có một dòng code |
+| **Đăng ký `chotso.vn`** (điều kiện giấy phép MXH sau này: .vn còn hiệu lực ≥6 tháng lúc nộp) | Điều kiện cấp GP MXH, NĐ 147 | **MỘT domain** (A68 — domain thứ hai đã CẮT; đường thoát hiểm là mã 6 ký tự trên card, 0đ). Đăng ký **đứng tên đúng người sẽ là chủ TNHH sau này** — tránh phải chuyển nhượng | 1 giờ | **~750.000đ/năm** `[cần báo giá thật 03/09 — A67]` | Nộp hồ sơ giấy phép mà tên miền mới đăng ký 2 tháng ⇒ trượt điều kiện, chờ thêm 4 tháng |
+| **Gửi luật sư BẢY câu hỏi** (§11) | A65 / QĐ-14 | **7 câu, MỘT email, MỘT lần trả phí** — danh sách hợp nhất thay mọi danh sách rời ở v2 §12, `03` §10, `04` §8, digest #20 | 1 giờ soạn | **5.000.000–15.000.000đ** [A66 — dải rộng vì là 7 câu; thay bằng số thật sau 3 báo giá, hạn 10/09] | Xây **20 tuần lịch** trên một giả định chưa ai xác nhận |
 
-### GIAI ĐOẠN 1 — Beta đóng, ≤30 sổ / ≤150 người (dự kiến 12/2026 → 03/2027)
+### GIAI ĐOẠN 1 — Beta đóng, 12 sổ đợt 1 → ≤30 sổ đợt 2 / ≤120 người (**02/12/2026** → 03/2027)
+
+_Kế hoạch beta duy nhất (QĐ-25 / A88–A91): chạy **02/12/2026**, trần cứng **15/12/2026** không gia hạn · **12 sổ** đợt 1 (02/12→29/12) = cohort quyết định `sổ-D28` · **≤30 sổ** đợt 2 mở dần từ tuần 15 · trần vận hành 35 sổ · trần hành chính 60 sổ. Quy đổi người: 30 sổ × 4,0 = **120 người**, không phải 150._
 
 | Nghĩa vụ | Căn cứ | Hành động cụ thể | Thời gian | Chi phí | Rủi ro nếu bỏ qua |
 |---|---|---|---|---|---|

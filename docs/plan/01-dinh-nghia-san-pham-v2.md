@@ -1,5 +1,18 @@
 # ĐỊNH NGHĨA SẢN PHẨM v2 — CHỐT SỔ
 
+> ## ✅ ĐÃ ĐỐI CHIẾU VỚI BẢNG PHÁN QUYẾT TRỌNG TÀI — 03/09/2026
+>
+> Toàn bộ file này đã được rà soát và sửa theo **`/home/huypq/teemi/docs/plan/_rulings.md`** (bảng phán quyết trọng tài ban hành ngày **2026-09-03**: 53 phán quyết mâu thuẫn, 25 phán quyết scope creep, 123 dòng từ điển giá trị chuẩn A01–A123, 10 mục cần founder quyết D-01…D-10).
+>
+> **Luật đọc file này từ nay:**
+> 1. **Mọi hằng số trong file này lấy từ `_rulings.md` mục A (từ điển giá trị chuẩn).** Nếu một con số ở đây khác `_rulings.md`, `_rulings.md` thắng và con số ở đây là lỗi phải sửa.
+> 2. File này giữ **chủ quyền về SẢN PHẨM** (câu định vị, core loop, danh sách màn, nguyên tắc thiết kế). Nó **không** còn là nguồn cho: schema (→ `04` §1), chi phí hạ tầng (→ `03`), định nghĩa metric (→ `06`), pháp lý (→ `05`), tone/UX (→ `08`).
+> 3. **Sổ cái pw duy nhất là `docs/adr/pw-ledger.md`.** Bảng §4.10 dưới đây là bối cảnh lịch sử, không phải ngân sách.
+> 4. **File ADR duy nhất là `docs/adr/ADR-000-bat-bien.md`** (A103). Mọi tham chiếu "ADR-001"/"ADR-002" trong file này đã được đổi thành "ADR-000 §2"/"ADR-000 §3".
+> 5. Chỗ nào phán quyết ghi **CẦN FOUNDER QUYẾT (D-xx)**, file này **không tự quyết** — nó in một khối cảnh báo nêu hai lựa chọn kèm khuyến nghị, và khuyến nghị chỉ có hiệu lực nếu founder không trả lời trước hạn.
+>
+> Danh sách những gì bị cắt khỏi file này trong vòng phán quyết 03/09 nằm ở **§13 "ĐÃ CẮT"** cuối tài liệu.
+
 _Thay thế toàn bộ DOC 1 (`docs/00-source/doc-01-product-strategy.md`) làm tài liệu nguồn. Viết 03/09/2026. Mọi tài liệu kế hoạch sau (kiến trúc, schema, backlog, go-to-market) dựa vào file này, không dựa vào DOC 1._
 
 > **Trạng thái DOC 1:** lưu trữ, chỉ đọc, không sửa nữa. Nó là tuyên ngôn định vị đầu tiên và đã hoàn thành vai trò đó. Sáu câu định vị trong nó bị thay bằng đúng một câu ở §1. Cơ chế boss trong §7 của nó bị xoá khỏi sản phẩm, lý do ở §2 và §8.
@@ -37,7 +50,7 @@ Kết quả judge panel: D-chat-native thắng 2/3 phiếu, trung bình **41,0/7
 
 Nhưng phiếu không phải lý do. Ba lý do thật, theo thứ tự quan trọng:
 
-**Lý do 1 — Chi phí sai lầm thấp nhất, chênh lệch không nhỏ.** 6,5 person-week so với 10,7 (C), 11,0 (A), 12,25 (B). Quy ra tiền: ~10 tuần lịch ở hiệu suất 65% ≈ **70–95 triệu VND chi phí cơ hội** theo lương dev VN, so với 120–200 triệu của A/B/C. Với founder bus-factor-1, ngân sách thấp, chưa pháp nhân, câu hỏi đúng không phải "hướng nào tốt nhất" mà **"thí nghiệm nào rẻ nhất đủ sức làm tôi đổi ý"**. Đây là câu hỏi mà judge user đã gọi tên chính xác và chỉ hướng D vô tình trả lời đúng.
+**Lý do 1 — Chi phí sai lầm thấp nhất, chênh lệch không nhỏ.** 6,5 person-week so với 10,7 (C), 11,0 (A), 12,25 (B). Quy ra tiền: 6,5 pw × 40 giờ = **260 giờ tập trung** (A80) ≈ **70–95 triệu VND chi phí cơ hội** theo lương dev VN, so với 120–200 triệu của A/B/C. ⚠️ **Quy ra lịch thì không phải 10 tuần:** ở 20 giờ/tuần × hệ số 0,65 `[ước lượng không nguồn — A81]` = **13 giờ code/tuần**, 6,5 pw = **20 tuần lịch** (A82), tức 1 pw ≈ **3,1 tuần lịch**. Với founder bus-factor-1, ngân sách thấp, chưa pháp nhân, câu hỏi đúng không phải "hướng nào tốt nhất" mà **"thí nghiệm nào rẻ nhất đủ sức làm tôi đổi ý"**. Đây là câu hỏi mà judge user đã gọi tên chính xác và chỉ hướng D vô tình trả lời đúng.
 
 **Lý do 2 — Bước 0 và MVP CÙNG HÌNH DẠNG.** Bước 0 là founder dán card làm bằng Canva vào nhóm Zalo; MVP là một nút bấm sinh card đó. Không có bước nhảy kiến trúc. 30 giờ làm tay không bị vứt đi — nó là bản prototype thật của sản phẩm thật. Ba hướng kia đều có một khoảng đứt: Bước 0 chạy trong Zalo, MVP chạy trong app native, và không có gì đảm bảo cái sau kế thừa cái trước. Đây là lý do **kỹ thuật**, không phải lý do marketing.
 
@@ -89,6 +102,8 @@ C đóng góp **4 ý được ghép vào v2**: nút "chọc" biến thể (tên 
 
 Hướng D cam kết **6,5 pw**. Bản v2 sau khi ghép cũng là **6,5 pw**. Mọi thứ ghép vào đều đã trả bằng một thứ bị cắt — bảng đối trừ đầy đủ ở §4.9.
 
+> ⚠️ **[Phán quyết 03/09/2026 — C08/C14, A83–A87] Câu trên đã không còn đúng khi cộng lại toàn hồ sơ.** Backlog thật tính ngày 03/09 là **≈7,25 pw** trên trần cứng **6,5 pw** (A83), vì sáu tài liệu đã xin thêm và nhiều khoản trả bằng **cùng một** khoản cắt. Riêng phạm vi **MVP-0**: trần **3,5 pw** (A84) nhưng ước lượng trung thực trên bảng US chi tiết là **4,58 pw** (A85) ⇒ **thiếu 1,08 pw phải cắt trước 22/09** (D-01). Bảng §4.9 và §4.10 dưới đây **giữ lại làm bối cảnh**; sổ cái pw duy nhất là **`docs/adr/pw-ledger.md`** (A87), luật: **một khoản cắt chỉ được chi MỘT LẦN**.
+
 ---
 
 ## 3. CORE LOOP CHỐT
@@ -102,7 +117,7 @@ Hướng D cam kết **6,5 pw**. Bản v2 sau khi ghép cũng là **6,5 pw**. M�
 | 3 | **Thấy ảnh của mọi người trước** — hàng ảnh hôm nay nằm ở pixel đầu tiên dưới header, ô của mình nằm SAU | Web | **4** | Phần thưởng đứng trước nghĩa vụ (lấy từ hướng A) |
 | 4 | **Nộp** — chọn ảnh có sẵn hoặc chụp, chọn **XONG** hoặc **TOANG**, gửi | Web | **16** | Mặc định mở thư viện, **không** ép chụp trực tiếp. Không caption, không filter, không chỉnh sửa |
 | 5 | **Cà khịa** — sticker / rep / voice ngay trên card, trong nhóm Zalo | Zalo | **10** | **0 person-week để build.** Mọi template roast tự viết đều thua đồ có sẵn của Zalo |
-| 6 | **Sổ cập nhật** — "Ngày thứ 34 · 71 tấm · chuỗi 6" | Web | **2** | Cuộn xuống là lưới 30 ngày. Không phải mỗi ngày ai cũng cuộn |
+| 6 | **Sổ cập nhật** — "Ngày thứ 34 · 71 tấm · chuỗi 6" | Web | **2** | ⚠️ **Lưới 30 ngày đã bị CẮT khỏi MVP-0** (A86, QĐ-25) — ở MVP-0 chỉ có ba con số, không có phần cuộn lịch sử. Lưới quay lại ở T13+ |
 
 **Tổng: ~40 giây/người/ngày**, trong đó chỉ **27 giây** nằm trong sản phẩm của mình. 13 giây còn lại nằm trong Zalo — và đó là **chủ ý**.
 
@@ -117,11 +132,15 @@ Phản biện #7 nói: _"Nghĩa vụ ở lại trong Teemi; phần thưởng rò
 ### 4.1. Định nghĩa "ngày"
 
 ```
-NGÀY        = 04:00 → 03:59 hôm sau, Asia/Ho_Chi_Minh
+NGÀY        = 04:00:00 → 03:59:59 hôm sau, Asia/Ho_Chi_Minh (UTC+7)   [A01]
 MÚI GIỜ     = duy nhất một. Không hỗ trợ đa múi giờ ở MVP
-ROLLOVER    = 04:00, tính batch, KHÔNG realtime
-GIỜ CHỐT SỔ = 21:00 (sổ chuyển sang trạng thái "sẵn sàng chốt")
+ROLLOVER    = batch, KHÔNG realtime. Cron `5 21 * * *` UTC = 04:05 ICT [A03]
+BIÊN MUỘN   = 120 giây tính trên `intent_at`                          [A02]
+GIỜ CHỐT SỔ = 21:00 — trạng thái "sẵn sàng chốt" SUY RA TỪ GIỜ SERVER,
+              KHÔNG có cron 21:00 (job `mo_chot_so` đã bị CẮT)        [A04]
 ```
+
+> **Vì sao cron chạy 04:05 chứ không 04:00 (A03):** biên nộp muộn kỹ thuật là 120 giây trên `intent_at`. Một job chạy đúng 04:00 sẽ tổng hợp ngày **trước khi** biên 120 giây đóng ⇒ vỡ bất biến của bảng `book_day`. Job đối soát TTL ảnh gốc chạy **04:10 ICT** (A05).
 
 Ranh giới 04:00 thay vì 00:00 lấy từ hướng A: **một dòng code, xoá một trạng thái thất bại nhân tạo** với đúng tệp Gen Z ngủ muộn. Nộp lúc 1h sáng vẫn tính cho hôm trước. Đây là ý rẻ nhất và rõ ràng đúng nhất trong cả 4 tài liệu.
 
@@ -137,12 +156,18 @@ Một **tấm** = một tấm ảnh, gắn với đúng một người và đún
 | Số lượng | Tối đa **1 tấm/người/ngày**. Nộp lại sẽ ghi đè, không cộng thêm |
 | Nhãn | Bắt buộc chọn **XONG** hoặc **TOANG**. Không có lựa chọn thứ ba |
 | Caption | **Không có.** Chữ nghĩa sống ở Zalo |
-| Xử lý | Nén client-side cạnh dài 1080px, JPEG q=0,72 → ~110 KB · **strip EXIF** · signed upload lên Cloudflare R2 |
-| Vòng đời | Ảnh gốc **TTL 72 giờ**, sau đó chỉ giữ **thumbnail 320px ~18 KB** vĩnh viễn (đến khi chủ ảnh xoá) |
+| Xử lý | Nén client-side cạnh dài 1080px, JPEG q=0,72 → **~110 KB** `[chưa đo — phải đo trên 20 ảnh Android thật trước khi tin, A37]` · **strip EXIF** · signed upload lên Cloudflare R2, key `orig/<book>/<date>/<person>/<client_proof_id>.jpg` (A34) |
+| Vòng đời | Ảnh gốc **TTL 72 giờ** (A36), sau đó chỉ giữ **thumbnail 320px ~18 KB** (A39) **VĨNH VIỄN** — xem hộp dưới bảng |
 | Nhận diện khuôn mặt | **Không, dưới bất kỳ hình thức nào, vĩnh viễn** |
 | Xác minh | Không pHash, không anti-cheat, không camera bắt buộc ở MVP |
 
 TTL 72h vừa giảm 15 lần dung lượng vừa là lá chắn pháp lý cho Điều 32 BLDS 2015 (quyền hình ảnh cá nhân) và NĐ 53/2022 (nội địa hoá dữ liệu).
+
+> **[A38] Thumbnail 320px: VĨNH VIỄN, KHÔNG có TTL — đây là lời hứa sản phẩm, và nó rẻ.** Sổ ngủ **180 ngày** ⇒ chuyển sang **lớp lưu trữ lạnh (R2 IA)**, **KHÔNG xoá**. Chỉ được xoá khi `book.status = 'archived'` **và** đã báo trước **30 ngày** **và** đã có đường tải dữ liệu về. Lý do định lượng: toàn bộ thumbnail của **10.000 sổ chỉ tốn ~$3/tháng** — kinh tế không biện minh được việc xoá ký ức của người dùng. Con số này **sẽ được in vào Chính sách quyền riêng tư**, nên nó phải chốt trước **07/09/2026**.
+>
+> ⚠️ **Đường tải dữ liệu về (export) chưa tồn tại trong bất kỳ bảng pw nào** — D-06. Phiên bản có hiệu lực từ hôm nay: **làm tay, 0 pw** (một truy vấn SQL + zip thủ công, SLA 10 ngày), ghi vào `RUNBOOK.md`. **Không được bán quyền này** — nó là nghĩa vụ luật định, không phải sản phẩm.
+
+**Chi phí lưu trữ media** (đối chiếu Bảng 6 §4.5): key R2 cho thumbnail là `thumb/…`, cho card là `card/<book>/<date>.png` (A35). Card PNG nặng **150 KB**, **TTL 90 ngày**; hết hạn ⇒ **thay bằng ảnh tĩnh trung tính, KHÔNG trả 404** (A40–A41) — dãy ảnh vỡ trong lịch sử chat Zalo là thiệt hại thương hiệu chậm mà không ai báo.
 
 ### 4.3. Ba trạng thái ngày của một người — và tại sao trạng thái thứ ba là thay đổi quan trọng nhất
 
@@ -161,28 +186,40 @@ Chi phí để có nó: **cùng một nút upload, một enum thêm một giá t
 Ba hệ quả cơ chế, không phải cảm xúc:
 
 1. **Nó tách "có mặt" khỏi "hoàn thành", và đó là biến số thật của sản phẩm.** Từ đây trở đi có hai chỉ số, không phải một:
-   - `q_x` = tỉ lệ ngày một người Active nộp **XONG**
-   - `q_c` = tỉ lệ ngày một người Active **CÓ MẶT** (XONG hoặc TOANG). Luôn ≥ `q_x`
+   - `q_x` = số lượt **XONG** / **`roster_size`**
+   - `q_c` = số lượt **CÓ MẶT** (XONG hoặc TOANG) / **`roster_size`**. Luôn ≥ `q_x`
    Chuỗi sổ chạy trên `q_c`. Cả 4 tài liệu trước đều gộp hai biến này làm một và đo sai mẫu số.
+
+   > **[A14–A15, C05] Mẫu số là `roster_size` ĐÓNG BĂNG, không phải "số người Active".** `roster_size` = số người đã nộp ≥1 tấm trong **3 ngày đầu** của sổ, **đóng băng và giữ nguyên 14 ngày**. Lý do là số học, không phải sở thích: mẫu số trượt theo Active làm `q_c` **TĂNG khi sổ đang chết** (ví dụ của `06` §9 BĐ-1: 0,54 → 0,90 khi ba người bỏ đi), tức chỉ số càng đẹp khi sản phẩm càng hỏng. Bản tính theo mẫu số trượt vẫn được giữ nhưng **đổi tên thành `q_c_sliding` / `q_x_sliding` và chỉ dùng để báo cáo phụ, không bao giờ dùng để so ngưỡng** (A19). ⏰ Cột `roster_size` phải có trong schema trước **07/09/2026** — sau ngày đó **không tái dựng được** roster ngày 1–3.
 2. **Nó giải quyết mâu thuẫn A-vs-B về mất mát.** Bằng chứng Duolingo nói phải LÀM MỀM mất mát chứ không XOÁ nó. TOANG làm đúng vậy: bạn vẫn phải mở ra và gửi một cái gì đó (nghĩa vụ còn nguyên), nhưng bạn không bao giờ bị đẩy vào trạng thái thất bại (mất mát được làm mềm). Đường thoát duy nhất khỏi cả hai là **VẮNG** — và đó mới là thứ tốn.
 3. **Nó là câu trả lời rẻ nhất cho rủi ro "ảnh proof lặp lại đến mức chết reaction"** — rủi ro mà chỉ hướng A nhắc tới đúng một lần rồi gạt đi. Ảnh XONG theo cấu trúc là cùng một khung hình mỗi ngày. Ảnh TOANG thì không.
 
 ### 4.4. Ngưỡng ngày của sổ
 
 ```
-A (Active)  = số người đã nộp ≥1 tấm trong 7 ngày gần nhất
-k           = 1  nếu A ≤ 2
-              2  nếu A ≥ 3
-NGÀY TÍNH   = (số người có trạng thái XONG hoặc TOANG) ≥ k
+A(D)        = số người đã nộp ≥1 tấm trong 7 ngày tính tới ngày D
+A_eff       = min( A(D), A(D−1) )          ← ngưỡng chấm trên A_eff   [A06]
+k           = 1  nếu A_eff ≤ 2
+              2  nếu A_eff ≥ 3                                        [A07]
+NGÀY TÍNH   = (số người có trạng thái XONG hoặc TOANG trong ngày D) ≥ k
 ```
 
-Ngưỡng phẳng `k=2` thay cho `ceil(0,6 × Active)` mà hướng B và C dùng. Lý do là một lỗi mà cả hai bỏ sót: **`ceil(0,6×A)` gãy tính đơn điệu ở A=4** — `ceil(2,4) = 3`, tức nhóm 4 người cần đúng bằng nhóm 5 người, khó hơn một cách vô lý. Sửa bằng một dòng, trước khi có user.
+**Vì sao `A_eff = min(A(D), A(D−1))` chứ không phải `A(D)` (A06, phán quyết C19).** `04` §4.1 chứng minh bằng số học: nếu chấm `k` trên `A` của **chính ngày đó**, một sổ 2 người (đang chạy `k=1`) sẽ **mất chuỗi đúng vào ngày có thêm bạn thứ ba** — vì `A` nhảy lên 3 làm `k` nhảy lên 2 ngay trong ngày mà người mới chưa kịp nộp. Lấy `min` của hôm nay và hôm qua khiến ngưỡng **không bao giờ siết chặt hơn trong cùng một ngày**, và người mới vào không bao giờ là nguyên nhân làm đứt chuỗi.
+
+Ngưỡng phẳng `k=2` thay cho `ceil(0,6 × A)` mà hướng B và C dùng. Lý do là một lỗi mà cả hai bỏ sót: **`ceil(0,6×A)` gãy tính đơn điệu ở A=4** — `ceil(2,4) = 3`, tức nhóm 4 người cần đúng bằng nhóm 5 người, khó hơn một cách vô lý. Công thức `ceil(0,6×A)` **đã chết, không được quay lại dưới bất kỳ tên nào**.
+
+**Ba định nghĩa sống-chết đi kèm, chốt bằng văn bản:**
+- `group_alive` = **`A ≥ 3` người nộp ≥1 tấm trong 7 ngày gần nhất** (A08). **Cấm nới sang ≥2 để qua ngưỡng.**
+- `duo_alive` = `A ≥ 2` — **đo song song, CHỈ tham khảo**, không được thay `group_alive` trong bất kỳ quyết định nào (A09).
+- Trạng thái sổ: `active` → `dormant` (7 ngày liên tiếp `A < 3`) → `dead` (21 ngày liên tiếp không tấm) → `archived` (mọi thành viên đã rời) — A12. **UI đọc `book.status`, không tự định nghĩa ngưỡng** (A13).
 
 ### 4.5. Bảng số cơ chế lõi
 
-#### Bảng 1 — P(ngày tính) = P(X ≥ k), X ~ Bin(A, q_c). Số học nhị thức, không phải ước lượng.
+#### Bảng 1 — P(ngày tính) = P(X ≥ k), X ~ Bin(A_eff, q_c). Số học nhị thức, không phải ước lượng.
 
-| q_c ↓ / A → | A=2 (k=1) | A=3 | A=4 | A=5 | A=6 |
+_Cột `A` dưới đây đọc là **`A_eff = min(A(D), A(D−1))`** (A06). Mọi ô dùng `q_c` = **có mặt / `roster_size` đóng băng** (A15). Toàn bộ hàng `0,53` mang nhãn `[suy luận, chưa đo — giả thuyết H2]` (A17)._
+
+| q_c ↓ / A_eff → | A=2 (k=1) | A=3 | A=4 | A=5 | A=6 |
 |---|---|---|---|---|---|
 | 0,35 | 57,8% | 28,2% | 43,7% | 57,2% | 68,1% |
 | 0,40 | 64,0% | 35,2% | 52,5% | 66,3% | 76,7% |

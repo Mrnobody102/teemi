@@ -1,6 +1,14 @@
 # 06 — METRICS, GIẢ THUYẾT KIỂM CHỨNG & KILL CRITERIA
 ### Sản phẩm: **Chốt Sổ** (`chotso.vn`) · Viết 03/09/2026 · Dựa trên `01-dinh-nghia-san-pham-v2.md`
 
+> ## ⚖️ ĐÃ ĐỐI CHIẾU VỚI BẢNG PHÁN QUYẾT TRỌNG TÀI — 2026-09-03
+>
+> Toàn bộ tài liệu này đã được rà lại theo **`docs/plan/_rulings.md`** (ban hành 03/09/2026: 53 phán quyết mâu thuẫn, 25 phán quyết scope creep, 123 dòng từ điển giá trị chuẩn).
+> - **Mọi hằng số trong tài liệu này lấy từ `_rulings.md` mục A (từ điển giá trị chuẩn).** Khi tài liệu này và `_rulings.md` khác nhau, `_rulings.md` thắng.
+> - Chủ quyền của tài liệu này là **ĐỊNH NGHĨA METRIC** (nguyên tắc 2). Nó **không** khai schema (schema nguồn duy nhất: `04` §1 — A32), **không** khai danh mục event (danh mục duy nhất: `04` §7.1, 32 event — A51), **không** đặt chi phí hạ tầng (chủ quyền: `03` — A74).
+> - Ký hiệu `[A##]` dưới đây trỏ tới dòng tương ứng trong từ điển giá trị chuẩn.
+> - Mục "Đã cắt" ở cuối tài liệu liệt kê mọi thứ đã bị cắt kèm điều kiện mở lại. Mục "Bất đồng với phán quyết" ghi hai chỗ tài liệu này vẫn thấy còn căng.
+
 > **Luật số 0 của tài liệu này (nguyên tắc P10 của v2):**
 > **Đơn vị đo là SỔ, không phải user.** Nếu cột đầu tiên của một bảng không phải **khoá sổ**, bảng đó đã sai trước khi có số.
 >
@@ -9,12 +17,17 @@
 > Lý do không phải triết lý: một sổ 5 người mà 4 người bỏ cho ra **user-retention 20%** — nghe như "hơi thấp" — trong khi **sổ đó đã chết 100%**. Đo theo user biến một cái chết thành một con số trung bình. [r04 §371 nêu đúng cơ chế này; c-retention-reality xác nhận]
 
 **Ba con số neo lấy từ v2, không được sửa ở đây:**
-`group_alive` = **≥3 thành viên nộp ≥1 tấm trong 7 ngày gần nhất** · `NGÀY` = 04:00→03:59 ICT · `q_c` (có mặt = XONG hoặc TOANG) tách khỏi `q_x` (XONG).
+`group_alive` = **≥3 thành viên nộp ≥1 tấm trong 7 ngày gần nhất** [A08] · `NGÀY` (`book_date`) = **04:00:00 → 03:59:59 ICT (UTC+7)** [A01] · `q_c` (có mặt = XONG hoặc TOANG) tách khỏi `q_x` (XONG).
+
+**Bốn hằng số của thuật toán chấm ngày, lấy nguyên từ `04` §4 — tài liệu này chỉ đọc, không định nghĩa lại:**
+`A_eff = min(A(D), A(D−1))` [A06] · `k = 1` nếu `A_eff ≤ 2`, `k = 2` nếu `A_eff ≥ 3` [A07] · van nghỉ **2 ngày hụt / cửa sổ 7 ngày trượt** [A10] · ngày được van đỡ thì chuỗi **đóng băng**, **không vào mẫu số `q_c`**, tiêu 1 slot van [A11].
+Công thức `ceil(0,6 × A)` đã chết (gãy đơn điệu ở A=4) và **không được xuất hiện ở bất kỳ phép tính nào trong tài liệu này**.
 
 > **[CHỐT 2026-08-28 — QĐ-03] MẪU SỐ CỦA `q_c` ĐÃ ĐỔI, và đây là sửa đổi quan trọng nhất trong tài liệu này.** Bản trước ghi mẫu số là "thành viên Active" (trượt 7 ngày). §9 BĐ-1 của chính tài liệu này chứng minh mẫu số trượt làm **`q_c` TĂNG khi sổ chết** (0,54 → 0,90 khi sổ mất 3/5 người). Chốt:
 > - **`q_c_roster` = `sum(present_count) / sum(roster_size)`** — mẫu số **đóng băng**: số người đã nộp ≥1 tấm trong **3 ngày đầu** của sổ, giữ nguyên 14 ngày. **Đây là con số so với ngưỡng** (0,45 / 0,35).
 > - `q_c` mẫu số trượt: giữ làm **cột báo cáo phụ**, không bao giờ dùng cho quyết định đi/dừng.
-> - Cột `roster_size` đã được thêm vào `book_day` (`04` §1.5). **Google Sheet Bước 0 phải có cả hai cột từ 08/09/2026** — sau ngày đó không sửa hồi tố được.
+> - Cột `roster_size` đã được thêm vào `book_day` (`04` §1.5) [A14]. **Google Sheet Bước 0 (8 cột — A96) phải chốt xong ngày 07/09/2026 và có hiệu lực từ ngày đầu Bước 0 (08/09/2026)** [A19, A106] — sau ngày 08/09 roster ngày 1–3 không tái dựng lại được, không sửa hồi tố được.
+> - `roster_size` = số người đã nộp ≥1 tấm trong **3 ngày đầu** của sổ, **đóng băng, giữ nguyên 14 ngày** [A14].
 
 ---
 

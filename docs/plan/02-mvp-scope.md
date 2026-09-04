@@ -2,7 +2,13 @@
 
 _Viết 03/09/2026. Tài liệu con của `/home/huypq/teemi/docs/plan/01-dinh-nghia-san-pham-v2.md` (§4.10, §5, §6, §11, §12). Mọi con số ở đây phải khớp với file đó; chỗ nào tôi thấy file đó sai hoặc thiếu, tôi ghi vào §8 "Bất đồng" chứ không tự đi hướng khác._
 
-**Lịch dùng trong tài liệu này lấy nguyên từ §4.10 của v2:** Bước 0 chạy 08/09 → 21/09/2026 · quyết định bằng văn bản 22/09 · dòng code đầu tiên 23/09 · beta chạy 02/12 · **trần cứng 15/12/2026**.
+> ### 🔒 ĐÃ ĐỐI CHIẾU VỚI BẢNG PHÁN QUYẾT TRỌNG TÀI — 2026-09-03
+> Toàn bộ tài liệu này đã được đối chiếu với **`/home/huypq/teemi/docs/plan/_rulings.md`** (bảng phán quyết trọng tài ban hành 03/09/2026: 53 mâu thuẫn · 25 mục scope creep · 123 dòng từ điển giá trị chuẩn).
+> **Mọi hằng số, ngưỡng, ngày tháng và con số pw trong file này lấy từ từ điển giá trị chuẩn của `_rulings.md` (mục A01–A123).** Khi tài liệu này và `_rulings.md` khác nhau, **`_rulings.md` thắng** — chỗ nào tôi thấy phán quyết sai, tôi ghi vào §8 "Bất đồng" và **vẫn sửa theo phán quyết**.
+> Các mục đã bị **CẮT** theo phán quyết scope creep được liệt kê đầy đủ ở **§10 "ĐÃ CẮT"** cuối tài liệu, kèm điều kiện mở lại.
+> Các mục **CẦN FOUNDER QUYẾT** (D-01 … D-10) không được máy tự quyết — chúng xuất hiện dưới dạng khối cảnh báo ⚠️ nêu đúng hai lựa chọn kèm khuyến nghị.
+
+**Lịch dùng trong tài liệu này lấy từ mục A104–A123 của `_rulings.md`:** gửi luật sư + báo giá domain 03/09 · buổi kiểm chứng nền tảng **04/09** (7 câu) · hạn chốt bất biến **07/09** · Bước 0 chạy **08/09 → 21/09/2026** · Cổng #1 + quyết định bằng văn bản **22/09** · dòng code đầu tiên **23/09** · kill gate kỷ luật scope **05/10** · cổng tiến độ build **02/11** · cổng sẵn sàng beta **30/11** · beta chạy **02/12** · **trần cứng 15/12/2026** · đọc `group-D14` beta **16/12** · cổng `sổ-D14` **11/01/2027** · cổng `sổ-D28`/widget **26/01/2027** · kill gate founder **31/03/2027**.
 
 ---
 
@@ -39,8 +45,12 @@ Tách thành hai chỉ số nhị phân, không có vùng diễn giải:
 
 | Ký hiệu | Định nghĩa | Ngưỡng | Đọc kết quả |
 |---|---|---|---|
-| **M1** | `group-D14(app)` trên ≥8 sổ beta | **≥ B**, với `B` = `group-D14` đo tay ở Bước 0 | Nếu app **không bằng** founder ngồi dán card Canva, app không có lý do tồn tại (v2 §11, neo nội bộ) |
+| **M1** | `group-D14(app)` trên **≥12 sổ beta** (cohort đợt 1, 02/12→29/12/2026 — A90) | **≥ B**, với `B` = công thức chốt ở A26 | Nếu app **không bằng** founder ngồi dán card Canva, app không có lý do tồn tại (v2 §11, neo nội bộ) |
 | **M2** | Số sổ mở mới **không do founder tuyển** trong 28 ngày beta | **≥ 1** | M2 = 0 nghĩa là card không phải kênh phân phối, mà chỉ là một tấm ảnh đẹp |
+
+**Công thức `B` (A26, QĐ-26) — chốt, không diễn giải lại:** `B` = **% sổ nhánh A còn `group_alive` ở ngày 14 của Bước 0**, mẫu số = **5 sổ nhánh A**, **loại sổ số 0 (nhóm founder) khỏi mẫu số** (A95), `group_alive` tính trên **roster đóng băng** (A08 + A14).
+
+> ⚠️ **Với n = 5, `B` chỉ nhận các giá trị {0 · 20 · 40 · 60 · 80 · 100}% — bước nhảy 20 điểm.** Con số này **phải được in kèm mỗi lần trích dẫn `B`**. Nếu nhánh A rơi xuống 4 sổ (§5.4), bước nhảy thành **25 điểm** và phải ghi lại.
 
 `B` chưa tồn tại hôm nay. **Không được đặt một con số cho `B` trước 22/09** — đặt trước là tự viết đề bài dễ cho mình.
 

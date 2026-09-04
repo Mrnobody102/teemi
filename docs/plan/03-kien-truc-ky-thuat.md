@@ -6,6 +6,18 @@
 > Nghiên cứu nền: `r05-tech-stack.md` (giá hạ tầng), `r06-legal-compliance.md` (pháp lý).
 > Quy ước: **[FACT + nguồn]** · **[suy luận từ X]** · **[ước lượng]** · **[cần kiểm chứng]**.
 
+> ## ✅ ĐÃ ĐỐI CHIẾU VỚI BẢNG PHÁN QUYẾT TRỌNG TÀI — 2026-09-03
+>
+> Tài liệu này **đã được rà soát dòng-theo-dòng** với `/home/huypq/teemi/docs/plan/_rulings.md` (ban hành 03/09/2026: 53 phán quyết mâu thuẫn · 25 phán quyết scope creep · 123 dòng từ điển giá trị chuẩn).
+>
+> **Mọi hằng số trong tài liệu này lấy từ `_rulings.md` mục A.** Nếu một con số ở đây khác với `_rulings.md`, **`_rulings.md` thắng** và đây là lỗi phải sửa, không phải một phương án thay thế.
+>
+> Chủ quyền của tài liệu này: **CHI PHÍ HẠ TẦNG** (nguyên tắc 2 của bảng phán quyết). Ba kết luận của `03` đã **thắng** ở phán quyết C17 (card TTL 90 ngày / 150 KB), C27 (Supabase Pro $25 bắt buộc từ 02/12, kỳ vọng $28–37/tháng) và C18 (không lưu năm sinh, xoá hai CHECK gọi `now()`).
+>
+> Tài liệu này **KHÔNG** có chủ quyền về: schema (`04` §1) · định nghĩa metric (`06`) · pháp lý (`05`) · tone/UX (`08`) · sản phẩm (`01-v2`). Ở những chỗ đó tài liệu này **chỉ tham chiếu**, không tự khai.
+>
+> Sổ cái pw duy nhất: **`docs/adr/pw-ledger.md`** (A87). File ADR duy nhất: **`docs/adr/ADR-000-bat-bien.md`** (A103) — mọi tham chiếu "ADR-001"/"ADR-002" trong bản cũ đã được đổi thành "ADR-000 §2"/"ADR-000 §3".
+
 > ⚠️ **Cảnh báo đọc r05:** r05 khuyến nghị **React Native + Expo SDK 55**. Khuyến nghị đó **đã chết** cùng với quyết định "không ai cài app" ở v2 §1. Mọi con số giá của r05 (R2, Supabase, Twilio, FCM) vẫn dùng được; mọi khuyến nghị *framework* của r05 thì không. Tài liệu này thay thế r05 §1, §3, §10; giữ và tinh chỉnh r05 §2, §4, §7, §8.
 
 ---
@@ -16,20 +28,22 @@
 |---|---|---|---|
 | Client | **Next.js 15 App Router, React 19, không PWA, không service worker** | React Native + Expo · Zalo Mini App | (nằm trong hosting) |
 | Hosting | **Vercel, region `sin1`, `output: 'standalone'`** | Cloudflare Pages/Workers · VPS tự quản | $0 / $20–35 / $150–300 |
-| Database | **Supabase Postgres (ap-southeast-1), truy cập bằng Drizzle qua pooler — KHÔNG dùng `supabase-js`** | Firebase/Firestore · Neon | $0–25 / $40 / $150–200 |
+| Database | **Supabase Postgres (ap-southeast-1), truy cập bằng Drizzle qua pooler — KHÔNG dùng `supabase-js`. Bậc Pro $25 BẮT BUỘC từ 02/12/2026** (A74) | Firebase/Firestore · Neon | $25 / $40 / $150–200 |
 | Auth | **Cookie HttpOnly 400 ngày + mirror localStorage + mã sổ 6 ký tự để khôi phục. Không OTP, không OAuth** | Phone OTP (ZNS/Twilio) · Zalo Login · Google/Apple · magic link | **$0 ở mọi mốc** |
-| Storage ảnh | **Cloudflare R2**, 3 prefix + lifecycle rule | Supabase Storage · Vercel Blob | $0 / $1 / $56 |
+| Storage ảnh | **Cloudflare R2**, 3 prefix + lifecycle rule | Supabase Storage · Vercel Blob | $0 / $1 / $60 |
 | Push | **KHÔNG CÓ. Kênh thông báo là Zalo** | FCM/web push · OneSignal | $0 / $0 / $0 |
-| Cron | **pg_cron gọi HTTP endpoint có shared secret** | Vercel Cron · GitHub Actions | $0 |
-| Analytics | **Bảng `su_kien` trong chính Postgres + trang `/admin` 8 câu SQL** | PostHog Cloud · Firebase Analytics | $0 (tốn dung lượng DB) |
+| Cron | **pg_cron gọi HTTP endpoint có shared secret. 3 job, không job nào lúc 21:00** | Vercel Cron · GitHub Actions | $0 |
+| Analytics | **Bảng `event` trong chính Postgres (schema ở `04` §1) + 6 truy vấn SQL chạy tay + 2 dòng đèn cảnh báo pháp lý. KHÔNG có UI dashboard ở MVP-0** | PostHog Cloud · Firebase Analytics | $0 (tốn dung lượng DB) |
 | Error tracking | **Sentry free → Team** | Không dùng gì · GlitchTip tự host | $0 / $26 / $80 |
 | CI/CD | **GitHub Actions + Vercel Git integration**, 7 check bắt buộc | CircleCI · Vercel-only | $0 |
-| **TỔNG** | | | **≈$3 / ≈$100 / ≈$500/tháng** |
+| **TỔNG** | | | **≈$28 / ≈$93–108 / ≈$456–633/tháng** |
+
+> **Con số $28 ở cột đầu là ngân sách beta có hiệu lực** [A74, thắng ở C27]: Supabase Pro $25 + domain ~$2,5 + Vercel Hobby $0. Dải kỳ vọng chính thức là **$28–37/tháng**. Con số "~$3/tháng" của v2 Bảng 6 giả định Supabase Free — **không còn hợp lệ từ 02/12/2026** vì Free không có backup hằng ngày. Đèn báo động chi phí: **>$60/tháng** (A75). DoD hoá đơn tháng đầu: **≤$40** (A76).
 
 **Ba câu quan trọng nhất của tài liệu này:**
-1. Ràng buộc thật không phải tiền, là **~200 giờ code** (20h/tuần × 10 tuần lịch). Mọi quyết định tốn >8 giờ hạ tầng đang tiêu 4% toàn bộ ngân sách MVP.
+1. Ràng buộc thật không phải tiền, là **giờ code**. Ngân sách: **6,5 pw × 40 giờ = 260 giờ tập trung** (A80, A83), nhưng tốc độ thực là **13 giờ code/tuần** (20 h/tuần × hệ số 0,65 `[không có nguồn]`) ⇒ **1 pw ≈ 3,1 tuần lịch**, 6,5 pw ≈ **20 tuần lịch**, không phải 10 (A80–A82). Mọi quyết định tốn >8 giờ hạ tầng đang tiêu ~3% toàn bộ ngân sách MVP.
 2. **`domain/` là code thuần, không I/O.** Mọi kịch bản thoát vendor (Vercel → Docker, Supabase → Postgres VN, R2 → VNG Cloud) đều không chạm vào nó. Đó là toàn bộ chiến lược thoát vendor, gói trong một quy tắc thư mục.
-3. Kế hoạch dự phòng "Android web push +0,3 pw" ở H1 vùng xám **có thể không tồn tại** — service worker trong webview Zalo nhiều khả năng không đăng ký được. Phải kiểm chứng trong buổi §10(h), **trước** dòng code đầu tiên.
+3. Kế hoạch dự phòng "Android web push +0,3 pw" ở H1 vùng xám **có thể không tồn tại** — service worker trong webview Zalo nhiều khả năng không đăng ký được. **Nó đã bị CẮT khỏi MVP-0** [S09] và **không được ghi ở bất kỳ đâu như khoản đã ngân sách**; nó là hạng mục **có điều kiện**. Phải kiểm chứng trong buổi 04/09 (A105), **trước** dòng code đầu tiên (23/09, A110).
 
 ---
 
@@ -39,14 +53,15 @@ Mỗi ràng buộc phải đẻ ra một **luật kiểm tra được**, nếu k
 
 | # | Ràng buộc | Nguồn | Luật kỹ thuật rút ra | Kiểm tra bằng |
 |---|---|---|---|---|
-| R1 | 1 dev, 20h/tuần, **~200 giờ** cho toàn bộ MVP | v2 §4.10 (6,5 pw ÷ 0,65 ≈ 10 tuần lịch) | Không tự vận hành bất kỳ tiến trình nào. Không có thành phần nào cần `ssh` để sửa | Đếm số dịch vụ phải tự patch: mục tiêu **0** |
-| R2 | Ngân sách <$50/tháng giai đoạn beta | v2 Bảng 6 (~$12) | Mọi dịch vụ phải có free tier đủ cho **30 sổ**, và có bậc trả tiền tuyến tính (không có bậc nhảy $200) | Bảng §7 |
-| R3 | >85% user Android VN, máy tầm trung, 4G | r02 / r05 §1.1 [FACT Statcounter] | **Ngân sách JS ≤120 KB gzip** trên route Sổ hôm nay. Ảnh nén ở client, không ở server | CI check `budget:js` |
+| R1 | 1 dev, 20h/tuần ⇒ **13 giờ code/tuần** (hệ số 0,65 `[không có nguồn]`). Trần backlog **6,5 pw = 260 giờ tập trung ≈ 20 tuần lịch** | A80–A83 (v2 §4.10 + `02` §3.2) | Không tự vận hành bất kỳ tiến trình nào. Không có thành phần nào cần `ssh` để sửa | Đếm số dịch vụ phải tự patch: mục tiêu **0** |
+| R2 | Ngân sách hạ tầng beta **$28–37/tháng**, trần <$50, đèn báo động **>$60** | A74–A76 (`03` §2.3+§5+§9 B6, thắng ở C27) | Mọi dịch vụ phải đủ cho **≤30 sổ đợt 2** (A91) ở bậc thấp nhất, và có bậc trả tiền tuyến tính (không có bậc nhảy $200). **Supabase Pro $25 là khoản cố định, không phải tuỳ chọn** | Bảng §5 + §7 |
+| R3 | Đa số user là Android VN, máy tầm trung, 4G — **">85%" là con số đang tranh chấp** `[cần kiểm chứng]`: `08` §8.2 dẫn StatCounter T7/2026 = **60,38%** | r02 / r05 §1.1 ↔ `08` §8.2. **D-08, hạn 04/09/2026** | **Ngân sách JS ≤120 KB gzip** trên route Sổ hôm nay. Ảnh nén ở client, không ở server | CI check `budget:js` |
 | R4 | Mọi lưu lượng vào qua **webview Zalo** | v2 §3 bước 2 | Không dựa vào: OAuth popup, service worker, `Notification API`, `navigator.share` (có fallback), IndexedDB bền, localStorage bền | Ma trận 4 máy thật §10 |
-| R5 | Nội địa hoá dữ liệu có thể bị áp | NĐ 53/2022 Điều 26 [FACT r06 §2.5] | Không dùng dịch vụ độc quyền của một vendor cho: DB, storage, cron, auth, render | Job CI `docker-compose` §8 |
-| R6 | Phải thoát vendor được | v2 §9 mục 2 (ADR-001) | 4 luật portability §8.1 | Job CI `docker-compose` §8 |
+| R5 | Nội địa hoá dữ liệu có thể bị áp | NĐ 53/2022 Điều 26 [FACT r06 §2.5] | Không dùng dịch vụ độc quyền của một vendor cho: DB, storage, cron, auth, render | Job CI `docker-compose` §6 |
+| R6 | Phải thoát vendor được | v2 §9 mục 2 (**ADR-000 §2**, A103) | 4 luật portability §6.1 | Job CI `docker-compose` §6 |
 | R7 | Giữ miễn trừ Điều 38.2 Luật 91/2025 | r06 §4.2 [FACT] | Strip EXIF ở client · không face detection · không toạ độ · không taxonomy sức khoẻ | Test đơn vị + review schema |
-| R8 | Bus factor = 1, **SLA KÉP** [CHỐT 2026-08-28, QĐ-17]: **48 giờ** cho khiếu nại người dùng · **24 giờ, khẩn cấp 6 giờ** cho yêu cầu của cơ quan nhà nước (luật định, không thương lượng) | v2 §10(d) + Luật ANM 116/2025 | Phải có **kill switch không cần deploy** (`remote_config['service.paused']`), **script khoá một sổ khẩn cấp**, và một `RUNBOOK.md` người khác đọc hiểu. Trang chính sách in **cả hai** con số | Diễn tập 1 lần trước beta, **và một lần nữa trước 03/02/2027** (founder về quê Tết 11 ngày) |
+| R8 | Bus factor = 1, **SLA KÉP** [CHỐT 2026-08-28, QĐ-17 · A59]: **48 giờ** cho khiếu nại người dùng · **24 giờ, khẩn cấp 6 giờ** cho yêu cầu của cơ quan nhà nước (luật định, không thương lượng) | v2 §10(d) + Luật ANM 116/2025 + `05` BĐ#5 | Phải có **kill switch không cần deploy** (`remote_config['service_paused']`), **script khoá một sổ khẩn cấp**, và một `RUNBOOK.md` người khác đọc hiểu (nội dung bắt buộc: §10 mục 6). Trang chính sách in **cả hai** con số. Cơ chế xử report: **auto-hide TOÀN CỤC ngay ở report đầu tiên** (A60) | Diễn tập 1 lần trước beta, **và một lần nữa trước 03/02/2027** (founder về quê Tết 11 ngày, cửa sổ freeze 03/02→13/02/2027) |
+| R10 | **Nghĩa vụ lưu vết ≥2 năm** (IP, login/logout, giao dịch) | `05` GIAI ĐOẠN 2 (QĐ-19) · **A49** | Bảng **`audit_log` có từ migration đầu tiên** — "rẻ nhất khi làm sớm, **không thể làm bù**". Schema ở `04` §1. **+0,15 pw đã ghi `docs/adr/pw-ledger.md`** | Migration đầu tiên phải chứa bảng này; test CI kiểm bảng tồn tại |
 | R9 | Cao điểm dồn 21:00–23:00, không có san bằng ngày đêm | v2 §3, §4.1 | Cron nặng **chỉ chạy 04:00**. Provision theo đỉnh, không theo trung bình | Đo p95 trong cửa sổ 21–23h |
 
 > **R9 là đặc điểm kiến trúc riêng của sản phẩm này và không tài liệu nào trước đó nêu.** Một app thường có tải trải đều 16 giờ. Chốt Sổ dồn ~70% toàn bộ request vào 3 giờ [suy luận từ v2 §3: giờ chốt sổ 21:00, ngày kết thúc 03:59]. Tỉ số đỉnh/trung bình ≈ **5–6×**. Hệ quả: mọi tính toán "qps trung bình" trong tài liệu này phải nhân 6 trước khi chọn cấu hình máy.

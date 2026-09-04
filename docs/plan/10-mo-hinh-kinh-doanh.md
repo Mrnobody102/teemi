@@ -4,12 +4,25 @@ _Viết 03/09/2026. Dựa trên `01-dinh-nghia-san-pham-v2.md` (hướng D-chat-
 
 **Nhãn dùng trong tài liệu:** `[FACT + nguồn]` · `[suy luận từ X]` · `[ước lượng]` · `[cần kiểm chứng]`.
 
+> ### ⚖️ ĐÃ ĐỐI CHIẾU BẢNG PHÁN QUYẾT TRỌNG TÀI — 03/09/2026
+>
+> Toàn bộ tài liệu này đã được đối chiếu và sửa theo **bảng phán quyết trọng tài ngày 2026-09-03**, ghi tại `/home/huypq/teemi/docs/plan/_rulings.md`. **Mọi hằng số trong tài liệu này lấy từ file đó** (từ điển giá trị chuẩn A01–A123). Khi tài liệu này và `_rulings.md` khác nhau, `_rulings.md` thắng và tài liệu này là lỗi phải sửa.
+>
+> **Bốn thay đổi lớn nhất mà phán quyết áp lên tài liệu này:**
+> 1. **Doanh thu = 0đ tuyệt đối trong 6 tháng đầu** (A62). Ba phương án monetization P1/P2/P3 của §3 **đều bị xoá hoặc cắt**: P1 (bán export) **XOÁ** — không bán một quyền luật định (D-06) · P2 (Sổ in Tết) **CẮT** (S13) · P3 (B2B) **CẮT khỏi 12 tháng đầu** (S11). §3 được giữ lại làm **hồ sơ phân tích**, không còn là kế hoạch.
+> 2. **Con số 700 bị bác hoàn toàn**, thay bằng **hai counter** `monthly_visits` (vàng 6.000 / đỏ 8.500) và `monthly_active_persons` (vàng 600 / đỏ 850) — A54.
+> 3. **Chi phí beta là $28–37/tháng**, Supabase Pro $25 **bắt buộc từ 02/12/2026** (A74). Mọi bảng "$3/tháng, Free tier" đã sai và đã sửa, kể cả bảng tiền mặt 6 tháng ở §9.
+> 4. **Tài liệu này sau phán quyết xin 0 pw.** Ba khoản +0,4 pw (magic link, S05), +0,2 pw (fake door T3, S04), +0,6/+0,8 pw (P2/P3) **đều bị cắt**. Sổ cái pw duy nhất là `docs/adr/pw-ledger.md` (A87).
+>
+> Danh sách đầy đủ những gì bị cắt và điều kiện mở lại: xem mục **"Đã cắt"** ở cuối tài liệu.
+
 > **Kết luận đặt trước, không giấu ở cuối:**
 >
 > 1. Kiến trúc v2 (web, không IAP, không push riêng, không SMS) **hạ chi phí hạ tầng ~4,3 lần** so với mô hình app trong r05 — phản biện "ở 10.000 DAU app đã lỗ" **không còn đúng về mặt server**. Nhưng nó đúng hơn bao giờ hết về mặt **giờ founder**, và giờ founder mới là dòng chi phí duy nhất có ý nghĩa.
 > 2. **Việc bàn giấy 3 giờ ở §10(b) của v2 đã được làm trong tài liệu này, và kết quả là ÂM.** Quảng cáo không cứu được mô hình: trần quảng cáo ở 1 triệu MAU là **1,3–2,3 tỷ VND/năm**, tức *không cao hơn* con số 2,6 tỷ IAP mà nó được kỳ vọng sửa. Quảng cáo không phải mô hình kinh doanh — nó là cách trả tiền điện.
-> 3. Ở cấu hình B2C-VN, thu nhập 1 người (300 triệu/năm) đòi **61.000 MAU ở giả định lạc quan nhất** (giá 399k × 5% sổ trả tiền — hai điều kiện lạc quan phải đúng cùng lúc, [ước lượng] xác suất <5%) hoặc **615.000 MAU ở giả định cơ sở**. Phương án duy nhất chạm ngưỡng đó bằng hai chữ số khách hàng là **B2B — 20 khách tổ chức** — và nó phá định vị §1.
-> 4. Vì vậy **founder phải chọn định nghĩa thành công TRƯỚC 22/09/2026**, cùng lúc với quyết định đi tiếp/dừng của Bước 0. Ba định nghĩa ở §1. v2 như đang viết được **tối ưu cho định nghĩa B và C, và có cấu trúc thù địch với A**.
+> 3. Ở cấu hình B2C-VN, thu nhập 1 người (300 triệu/năm) đòi **61.000 MAU ở giả định lạc quan nhất** (giá 399k × 5% sổ trả tiền — hai điều kiện lạc quan phải đúng cùng lúc, [ước lượng] xác suất <5%) hoặc **615.000 MAU ở giả định cơ sở**. Phương án duy nhất chạm ngưỡng đó bằng hai chữ số khách hàng là **B2B — 20 khách tổ chức** — và nó phá định vị §1. **[03/09/2026] Phán quyết S11 đã CẮT P3 B2B khỏi 12 tháng đầu** ⇒ trong 12 tháng đầu **không tồn tại phương án nào chạm 300 triệu/năm**. Đó không phải một thất bại chưa xảy ra, đó là một **hệ quả đã được chọn**.
+> 4. Vì vậy **founder phải chọn định nghĩa thành công TRƯỚC 22/09/2026**, cùng lúc với quyết định đi tiếp/dừng của Bước 0. Ba định nghĩa ở §1. v2 như đang viết được **tối ưu cho định nghĩa B và C, và có cấu trúc thù địch với A**. Khuyến nghị của bảng phán quyết (D-04): **chọn B trong 12 tháng đầu** — xem khối cảnh báo ở mục "Câu hỏi mở".
+> 5. **[03/09/2026] Doanh thu bằng 0đ tuyệt đối trong 6 tháng đầu (A62) không phải một lựa chọn kinh doanh, nó là một ràng buộc pháp lý** (`05` §0 kết luận 3). Hệ quả trực tiếp: kill gate 31/03/2027 **bỏ vế "doanh thu = 0"** (A64) — dùng một hệ quả pháp lý làm tín hiệu thị trường là tự lừa mình.
 
 ---
 
@@ -20,7 +33,7 @@ Câu trả lời ngắn: **ở hình dạng hiện tại, không.** Không phả
 | Ràng buộc | Con số | Nguồn |
 |---|---|---|
 | Trần chi tiêu giải trí số còn lại của Gen Z VN sau Spotify/Netflix | **20.000–50.000đ/tháng, không phải mỗi tháng** | [suy luận từ r08 §2.3 — Appota 100–500k tổng] |
-| Trần convert của social app monetize tốt nhất thế giới | Discord **3,2–3,6% MAU** | [FACT — Sacra, DemandSage 2026] |
+| Trần convert của social app monetize tốt nhất thế giới | Discord **3,2–3,6% MAU** | [FACT về Discord — Sacra, DemandSage 2026] **nhưng là trần VAY MƯỢN** (A78): Chốt Sổ là web, không IAP, thanh toán chuyển khoản tay ⇒ không có cơ sở nào nói Chốt Sổ được phép chạm trần của Discord |
 | Sản phẩm gần Teemi nhất về định vị, được mua 17,5 triệu USD | Geneva, **doanh thu 0 đồng**, đóng cửa 9/2025 | [FACT — TechCrunch, Sunset HQ] |
 | Kênh thanh toán IAP một chạm | **Không có** — v2 là web, không lên store | v2 §5 |
 
@@ -30,10 +43,10 @@ Câu trả lời ngắn: **ở hình dạng hiện tại, không.** Không phả
 
 | | **A. Business tự nuôi** | **B. Dự án cá nhân có ý nghĩa** | **C. Bàn đạp / portfolio** |
 |---|---|---|---|
-| **Định nghĩa số** | Doanh thu ròng ≥ **300 triệu VND/năm** (thu nhập 1 người ở VN, [ước lượng] mức dev mid 25tr/tháng) | Doanh thu **0đ là chấp nhận được**. Chi phí tiền mặt < **500.000đ/tháng vĩnh viễn**. Có ≥30 sổ sống | Ship công khai, có một con số đọc lên được: "**200 nhóm bạn thật, 8.000 tấm, group-D28 35%**" |
+| **Định nghĩa số** | Doanh thu ròng ≥ **300 triệu VND/năm** (thu nhập 1 người ở VN, [ước lượng] mức dev mid 25tr/tháng) | Doanh thu **0đ là bắt buộc trong 6 tháng đầu** (A62), và là chấp nhận được sau đó. Chi phí tiền mặt ≤ **1.000.000đ/tháng** — kỳ vọng thật **$28–37 = 730.000–960.000đ** sau khi Supabase Pro thành bắt buộc từ 02/12 (A74); đèn báo động **>$60/tháng** (A75). Có ≥30 sổ sống, **dưới trần vận hành 35 sổ** (A92) | Ship công khai, có một con số đọc lên được: "**200 nhóm bạn thật, 8.000 tấm, `sổ-D28` 35%**" |
 | **Cần bao nhiêu user** | **61.000 – 615.000 MAU** tuỳ giá × conversion (bảng §6.3). Chỉ để trả công vận hành 10h/tuần: 47.600 – 192.000 MAU | **300 – 3.000 MAU**, và cố ý **giữ dưới đèn đỏ pháp lý** — [CHỐT 2026-08-28, QĐ-04] tức `monthly_active_persons` < 850 **VÀ** `monthly_visits` < 8.500, không phải "dưới 700 MAU" | 500 – 5.000 MAU. Số tuyệt đối không quan trọng bằng chất lượng câu chuyện |
 | **Cần pháp nhân?** | **Có, bắt buộc** — mọi cổng thanh toán merchant (MoMo Business/VNPay/ZaloPay Business) đều đòi ĐKKD [FACT — Airwallex 2026]; giấy phép MXH đòi doanh nghiệp VN [FACT — r06] | **Không.** Nhận tiền cá nhân, dưới ngưỡng miễn thuế | **Không** |
-| **Cần mở lại bề mặt nào của §6** | **Có** — ít nhất một trong: quảng cáo (mục 13), B2B, hoặc bán hàng vật lý. Không có bề mặt nào hiện đang mở ra tiền | Không mở gì | Không mở gì |
+| **Cần mở lại bề mặt nào của §6** | **Có** — ít nhất một trong: quảng cáo (mục 13), B2B, hoặc bán hàng vật lý. **[03/09/2026] CẢ BA đều đang đóng bằng phán quyết**: quảng cáo giữ khoá (S16) · B2B cắt 12 tháng (S11) · hàng vật lý cắt (S13) ⇒ **A không mở được trong 12 tháng đầu, kể cả khi founder muốn** | Không mở gì | Không mở gì |
 | **Trần giờ 10h/tuần** | **Vỡ.** Bán hàng + hỗ trợ + hoàn tiền + kế toán thêm 6–10h/tuần | Giữ được | Giữ được |
 | **Xác suất [ước lượng]** | **< 10%** trong 24 tháng | ~60% nếu H1+H2 pass | ~80% nếu ship đúng hạn 15/12/2026 |
 | **Rủi ro chính** | Tiêu 2 năm để có 300tr/năm — thấp hơn lương đi làm | Founder tự chán vì "không đi tới đâu" | Không ai đọc; portfolio chỉ có giá nếu được viết ra |

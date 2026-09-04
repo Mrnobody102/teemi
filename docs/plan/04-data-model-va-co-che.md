@@ -3,13 +3,20 @@
 _Viết 03/09/2026. Nguồn duy nhất: `/home/huypq/teemi/docs/plan/01-dinh-nghia-san-pham-v2.md`. Mọi con số cơ chế ở đây phải khớp §4 của tài liệu đó; chỗ nào tôi thấy nó chưa đủ để code được, tôi ghi vào §9 "Bất đồng" thay vì tự đổi._
 _Mục tiêu: một người ngồi xuống mở editor là gõ được, không phải hỏi lại._
 
+> **[ĐỐI CHIẾU TRỌNG TÀI — 2026-09-03]**
+> Tài liệu này **đã được đối chiếu với bảng phán quyết trọng tài ngày 2026-09-03**. Mọi hằng số, ngưỡng, ngày tháng và tên bảng trong file lấy từ **`/home/huypq/teemi/docs/plan/_rulings.md`** (mục A — Từ điển giá trị chuẩn, A01–A123).
+> Luật đọc: khi file này và `_rulings.md` khác nhau, **`_rulings.md` thắng**. Khi tài liệu khác (`01`…`10`) khác file này ở phần **schema hoặc thuật toán**, **file này thắng** (nguyên tắc chủ quyền lĩnh vực: `04` = SCHEMA + THUẬT TOÁN, A32).
+> Sổ cái pw duy nhất: **`docs/adr/pw-ledger.md`** (A87) — tài liệu này không tự khai khoản đối trừ.
+> File ADR duy nhất: **`docs/adr/ADR-000-bat-bien.md`** (A103) — mọi tham chiếu "ADR-001"/"ADR-002" trong bản cũ đã đổi thành "ADR-000 §2"/"ADR-000 §3".
+> Danh sách nội dung đã bị cắt khỏi MVP-0 và điều kiện mở lại: xem mục **11. ĐÃ CẮT** ở cuối file.
+
 ---
 
 ## 0. QUY ƯỚC TÊN & PHẠM VI
 
 | Chữ trong sản phẩm | Bảng | Ghi chú |
 |---|---|---|
-| sổ | `book` | v2 §6 mục 14 viết `group_id`. Ở đây đổi thành `book_id` vì UI gọi là "sổ" và trộn hai chữ là nguồn bug vĩnh viễn. **Nếu founder muốn giữ `group_id`, đổi bằng một lệnh sed TRƯỚC commit đầu, sau đó không đổi nữa.** Ghi vào ADR-002 |
+| sổ | `book` | **[CHỐT 2026-09-03, A30/C52] `book` / `book_id` THẮNG, hết tranh luận.** v2 §6 mục 14 viết `group_id`; luật P10 của v2 đọc lại thành "cột đầu tiên của mọi bảng và mọi event là **khoá sổ (`book_id`)**". Ngôn ngữ đặt tên schema: **tiếng Anh** (A29). Ghi vào `docs/adr/ADR-000-bat-bien.md` §2 |
 | thành viên | `membership` | quan hệ người ↔ sổ |
 | người | `person` | không phải "user" — không có tài khoản, không có mật khẩu |
 | kèo | `goal` | free-text, **không taxonomy** (§4.8) |
@@ -55,7 +62,7 @@ language sql immutable as $fn$
 $fn$;
 
 -- ============================================================
--- DANH TÍNH: KHÔNG dùng Supabase Auth (ADR-001: không khoá cứng).
+-- DANH TÍNH: KHÔNG dùng Supabase Auth (ADR-000 §2: không khoá cứng).
 -- Server tự ký JWT HS256 {sub: person_id, role:'authenticated'}
 -- bằng chính JWT secret của project ⇒ RLS chạy như bình thường,
 -- và gỡ khỏi Supabase là đổi một hàm.
@@ -131,6 +138,20 @@ create table book (
   -- đúng ký tự dễ đọc nhầm thành 1/I trên ảnh JPEG đã qua nén của Zalo —
   -- mà mã in trên card là đường thoát hiểm duy nhất khi Zalo chặn domain (08 UX-2).
   -- Bảng chữ này phải nằm trong remote_config để sửa được không cần deploy.
+  --
+  -- [CHỐT 2026-09-03, A42/A45/C32] HAI CHUỖI, KHÔNG ĐƯỢC TRỘN:
+  --   book.code       = khoá VÀO sổ, in lên card, gõ tay được.
+  --   card.share_token = chỉ để XEM trang public, nằm trong slug (§1.6).
+  -- Hai chuỗi sinh RIÊNG, không suy ra được từ nhau, và slug công khai
+  -- KHÔNG được chứa code6 như substring (A44 — có test CI ở 08 §2.2).
+  --
+  -- ĐIỀU KIỆN DÙNG code6 (A45): mã chỉ mở được cửa khi CẢ HAI đúng
+  --   (a) sổ đang có < 8 người (trần A46), VÀ
+  --   (b) card in mã đó <= 7 ngày tuổi.
+  -- Ngoài hai điều kiện này, mã trả về lỗi "Mã đã hết hạn" — không phải
+  -- khoá vào vô điều kiện (03 §9 B2). Kiểm tra ở tầng ứng dụng, vì nó
+  -- phụ thuộc card chứ không phụ thuộc riêng hàng book. +0,10 pw cho việc
+  -- tách hai chuỗi, đã ghi vào docs/adr/pw-ledger.md.
   constraint book_name_len   check (char_length(name) between 1 and 24),
   constraint book_branch_ok  check (branch in ('A','B'))
 );
@@ -147,6 +168,18 @@ create table membership (
   invited_by   uuid references person(id),
   rotation_pos int not null,          -- thứ tự vào sổ = thứ tự xoay vòng chốt sổ
   keep_proofs_on_leave boolean not null default true,  -- §6.4
+  paused_until timestamptz,           -- [CHỐT 2026-09-03, A50/C34/S06] CÓ TRONG SCHEMA
+                                      -- TỪ COMMIT ĐẦU, KHÔNG CÓ UI Ở MVP-0.
+                                      -- Nút "Nghỉ 7 ngày" của 06 §9 BĐ-5 BỊ BÁC ở MVP-0
+                                      -- (khoản trả bù "Tết freeze" đã bị 07 tiêu).
+                                      -- Chi phí một cột = 0; chi phí một migration sau
+                                      -- khi có dữ liệu lịch sử thì không. Khi cột này
+                                      -- có giá trị > now(), người đó bị loại khỏi A
+                                      -- đúng như status='paused' (§4.3).
+                                      -- Hệ quả bắt buộc ghi kèm: không có nút Nghỉ thì
+                                      -- "người bận" và "người bị đẩy ra" sinh chuỗi event
+                                      -- GIỐNG HỆT NHAU ⇒ HM-4 ở 06 §4.2 phải mang nhãn
+                                      -- "MƠ HỒ CÓ CHỦ Ý".
   primary key (book_id, person_id)
 );
 create index membership_person_idx on membership(person_id) where status = 'active';
@@ -215,10 +248,17 @@ create table proof (
 );
 
 -- MỘT TẤM / NGƯỜI / NGÀY. Nộp lại = UPDATE hàng này, không INSERT hàng mới (§4.2).
-create unique index proof_one_per_day_uq on proof(book_id, person_id, book_date);
+-- [A33/C02] Khoá duy nhất là BỘ BA (book_id, person_id, book_date). Khoá hai cột
+-- (person_id, book_date) mà 03 §3.2 đề nghị BỊ BÁC: nó chặn cứng đa sổ ở tầng CSDL,
+-- tức biến một quyết định sản phẩm có thời hạn thành một ràng buộc vĩnh viễn.
+-- [A101/S02/C25] Trần "1 sổ / thiết bị" ở MVP-0 là quyết định CÓ Ý THỨC và được
+-- thực thi ở TẦNG ỨNG DỤNG, không ở tầng CSDL. Hệ quả đã ghi ra thay vì để nó xảy ra
+-- âm thầm: hệ số lan truyền G ≡ 0 trong 12 tháng đầu. Trần 3 sổ/thiết bị là hằng số
+-- đặt trước cho v1.1, CHƯA CÓ HIỆU LỰC.
 -- Chống double-submit / retry mạng
 create unique index proof_client_uq      on proof(client_proof_id);
--- Đọc màn Sổ hôm nay + lưới 30 ngày
+-- Đọc màn Sổ hôm nay (+ lưới 30 ngày khi nó được mở lại ở T13+ — A86: lưới 30 ngày
+-- ĐÃ BỊ CẮT khỏi MVP-0; index vẫn giữ vì nó phục vụ màn Sổ hôm nay, chi phí = 0)
 create index proof_book_day_idx  on proof(book_id, book_date desc)
   where deleted_at is null and hidden_at is null;
 -- Tính A (Active) trong cửa sổ 7 ngày
@@ -290,7 +330,9 @@ create trigger book_day_monotonic_trg before insert or update on book_day
 > - Google Sheet của Bước 0 phải có **cả hai cột** kể từ ngày 08/09/2026. `roster_size` được chốt ở cuối ngày 3 (10/09) và **không được sửa sau đó**.
 > - **Hạn: 07/09/2026.** Sau ngày 08/09 không sửa hồi tố được, vì roster ngày 1–3 không tái dựng lại được từ dữ liệu đã thu.
 
-### 1.6. Card, mở card, thả tim
+### 1.6. Card và mở card
+
+> **[CHỐT 2026-09-03, A27/S01/C03] Bảng `heart` và nút thả tim ẩn danh đã bị CẮT khỏi MVP-0.** Mục này trước đây tên "Card, mở card, thả tim". Xem mục **11. ĐÃ CẮT** để biết điều kiện mở lại.
 
 ```sql
 create table card (
@@ -306,7 +348,19 @@ create table card (
                                     -- một dãy ảnh vỡ trong nhóm là thiệt hại thương hiệu
                                     -- diễn ra chậm và không ai báo (03 §9 B3).
   next_closer uuid references person(id),   -- "mai tới lượt Linh"
-  share_token text not null,        -- token trong link dán vào Zalo
+  share_token text not null,        -- token trong link dán vào Zalo — CHỈ ĐỂ XEM
+                                    -- [CHỐT 2026-09-03, A42/C32] Sinh ĐỘC LẬP HOÀN TOÀN
+                                    -- với book.code: hai bảng chữ khác nhau, hai nguồn
+                                    -- ngẫu nhiên khác nhau, KHÔNG suy ra được từ nhau,
+                                    -- và slug công khai không được chứa code6 (A44).
+  share_expires_at timestamptz not null      -- TTL 7 NGÀY (A42) — đã chốt, không còn là
+    default (now() + interval '7 days'),     -- câu hỏi mở (§8.5 cũ). Hết hạn ⇒ trang public
+                                    -- trả về trang "Link này đã hết hạn", KHÔNG 404 trần.
+                                    -- 24h giết phép đo M2 (card dán tối nay, bạn mở trưa
+                                    -- hôm sau đã chết); vĩnh viễn để lộ lưới ảnh của người
+                                    -- 16 tuổi ra ngoài nhóm mãi mãi. 7 ngày là điểm giữa
+                                    -- đã chốt. Trang public BẮT BUỘC gắn <meta name="robots"
+                                    -- content="noindex,nofollow"> + chặn ở robots.txt.
   open_count  int not null default 0
 );
 -- MỘT CARD / SỔ / NGÀY. Hai người bấm "Chốt sổ" cùng lúc ⇒ người ghi trước lên card.
@@ -321,15 +375,24 @@ create table card_open (
   primary key (card_id, opener_hash)
 );
 create index card_open_time_idx on card_open(card_id, opened_at);
--- H1 (≥60% Active mở trong 24h) tính TRỰC TIẾP từ bảng này. Không có bảng này
--- thì không đo được H1, và H1 là giả thuyết sống-chết của cả hướng.
+-- H1 tính TRỰC TIẾP từ bảng này. Không có bảng này thì không đo được H1,
+-- và H1 là giả thuyết sống-chết của cả hướng.
+-- [CHỐT 2026-09-03, A21/A22/C21] HAI GIAI ĐOẠN ĐO H1, KHÔNG ĐƯỢC TRỘN:
+--   Bước 0 (08–21/09/2026): KHÔNG có code, KHÔNG có bảng này. Thiết bị đo là
+--     SHORTLINK THEO NGÀY THEO SỔ của bên thứ ba — 8 sổ × 14 ngày = 112 link (A22),
+--     chỉ số tên là `click-shortlink`. Ảnh Canva dán vào Zalo KHÔNG sinh sự kiện mở.
+--     Ở Bước 0, H1 CHỈ CÓ QUYỀN DỪNG (< 40% ⇒ DỪNG). KHÔNG CÓ QUYỀN ĐI.
+--   Beta (từ 02/12/2026): bảng này chạy, event 14 `card_opened` là số thật.
+--     Ngưỡng "≥60% Active mở trong 24h" chỉ được dùng TỪ TUẦN 2 CỦA BETA trở đi.
 
-create table heart (                  -- nút thả tim ẩn danh trên trang public (§4.9)
-  proof_id    uuid not null references proof(id) on delete cascade,
-  viewer_hash bytea not null,
-  created_at  timestamptz not null default now(),
-  primary key (proof_id, viewer_hash)
-);
+-- [CẮT 2026-09-03 — A27/S01/C03] Bảng `heart` (nút thả tim ẩn danh trên trang public,
+-- v2 §4.9) ĐÃ BỊ XOÁ khỏi schema MVP-0. Ba tài liệu độc lập (03 §10 c7, 04 §9.4,
+-- 07 MVP-0) cùng chọn nó làm ứng viên cắt ⇒ nó KHÔNG còn là "tiền" để đối trừ, nó chỉ
+-- là một khoản cắt đã chi một lần vào MVP-0 của 07 (QĐ-05b, ghi ở pw-ledger.md).
+-- Hệ quả phải ghi rõ, không được giấu: HM-1, HM-3, event 25 `heart_sent` và trường
+-- `hearts_recv_14d` CHẾT THEO ⇒ bộ chỉ số tác hại còn 7 chỉ số (A27) và chỉ còn phát
+-- hiện RÚT LUI, không phát hiện LOẠI TRỪ. Thay thế gần nhất: HM-8 + `pulse_survey`
+-- (event 30, BẮT BUỘC — A28). Điều kiện mở lại: xem mục 11.
 ```
 
 ### 1.7. An toàn, moderation, cấu hình, sự kiện
@@ -424,7 +487,9 @@ create table remote_config (            -- P6: không hằng số ma trong code
 );
 insert into remote_config(key,value,note) values
   ('day.cutoff_hour',        '4',      'ranh giới ngày, giờ ICT'),
-  ('day.close_time',         '"21:00"','giờ sổ sẵn sàng chốt'),
+  -- day.close_time: cờ "sẵn sàng chốt" SUY RA từ giờ server mỗi lần đọc màn Sổ hôm nay.
+  -- KHÔNG có cron 21:00 (A04/C15 — job mo_chot_so đã bị CẮT, −0,10 pw, xem §3.5).
+  ('day.close_time',         '"21:00"','giờ sổ sẵn sàng chốt, suy ra từ giờ server'),
   ('threshold.k_small',      '1',      'A <= 2'),
   ('threshold.k_large',      '2',      'A >= 3 — ngưỡng phẳng, KHÔNG ceil(0,6A)'),
   ('threshold.active_window','7',      'ngày, để tính A'),
@@ -440,13 +505,25 @@ insert into remote_config(key,value,note) values
   ('legal.persons_amber',    '600',    'QĐ-04 đèn vàng monthly_active_persons'),
   ('legal.persons_red',      '850',    'QĐ-04 đèn đỏ monthly_active_persons'),
   ('service.paused',         'false',  'công tắc khoá sổ khẩn cấp, RUNBOOK.md'),
-  ('freeze.dates',           '[]',     'Tết Đinh Mùi: cửa sổ 03/02/2027 04:00 -> 13/02/2027 03:59 ICT (QĐ-06b)');
+  ('freeze.dates',           '[]',     'RỖNG ở MVP-0. Tết Đinh Mùi: xem khối ngay dưới');
 
--- [CHỐT 2026-08-28, QĐ-06b] NGÀY TẾT — ĐÃ SỬA. Mùng 1 Tết Đinh Mùi là
--- 06/02/2027 (thứ Bảy), KHÔNG phải 17/02/2027 (đó là mùng 1 Tết Bính Ngọ 2026).
--- Ví dụ cũ "2027-02-16" trong bảng này sẽ đóng băng nhầm 8-14 ngày SAU khi Tết
--- đã kết thúc. Cửa sổ đúng: 03/02/2027 04:00 ICT -> 13/02/2027 03:59 ICT
--- (spec §6.2 của 09-cold-start-va-gtm.md).
+-- [CHỐT 2026-09-03, A119/A120/C06] NGÀY TẾT — ĐÃ SỬA VÀ KHOÁ.
+-- Mùng 1 Tết Đinh Mùi = 06/02/2027 (thứ Bảy). "17/02/2027" là mùng 1 Tết Bính Ngọ
+-- 2026 — SAI, và nếu để nguyên thì hệ thống đóng băng nhầm 8-14 ngày SAU khi Tết
+-- đã kết thúc. Cửa sổ freeze đúng (09 §6.2):
+--     03/02/2027 04:00 ICT  ->  13/02/2027 03:59 ICT
+--   = book_date từ '2027-02-03' đến '2027-02-12', ĐÚNG 10 NGÀY.
+-- Ví dụ giá trị khi bật (một ngày bất kỳ trong cửa sổ, ví dụ mùng 1 - 2 ngày là
+-- '2027-02-05'; ví dụ cũ '2027-02-16' nằm NGOÀI cửa sổ và đã bị xoá):
+--   update remote_config set value = to_jsonb(array(
+--     select (date '2027-02-03' + i)::text from generate_series(0,9) i))
+--    where key = 'freeze.dates';
+--   -- => ["2027-02-03","2027-02-04","2027-02-05", ... ,"2027-02-12"]
+-- [A86/A121/S07] Tết freeze ĐÃ BỊ CẮT khỏi MVP-0 (12 tuần kết thúc 29/11/2026, còn
+-- Tết rơi 06/02/2027 — vẫn ngoài cửa sổ). Thứ GIỮ LẠI ở MVP-0 là ĐÚNG MỘT HẰNG SỐ:
+-- key này + hàm thuần đọc nó (§4.1), sửa bằng một câu UPDATE, không cần deploy, 0 pw.
+-- Sáu thành phần còn lại của "Tết Mode" (tần suất card 1/3 ngày, 2 dòng copy riêng,
+-- 3 preset Tết) build ở T13-T18, HẠN HOÀN THÀNH 25/01/2027.
 
 create table safety_keyword (
   pattern text primary key,

@@ -1,8 +1,16 @@
 # 08 — UX FLOW, ONBOARDING & TONE OF VOICE
 
-_Tài liệu thiết kế trải nghiệm cho **Chốt Sổ** (`chotso.vn`). Viết 03/09/2026. Nguồn duy nhất: `/home/huypq/teemi/docs/plan/01-dinh-nghia-san-pham-v2.md`. Mọi thứ dưới đây nằm trong 6,5 pw đã chốt — không hạng mục nào ở đây làm tăng scope, và ba thứ ở đây **giảm** scope. Bất đồng với v2 nằm ở mục cuối, không nằm rải rác trong thân bài._
+> ### ⚖️ ĐÃ ĐỐI CHIẾU VỚI BẢNG PHÁN QUYẾT TRỌNG TÀI — 03/09/2026
+> Tài liệu này đã được rà soát từng dòng theo **bảng phán quyết trọng tài ngày 2026-09-03**, đặt tại `/home/huypq/teemi/docs/plan/_rulings.md` (53 phán quyết mâu thuẫn · 25 phán quyết scope creep · từ điển giá trị chuẩn A01–A123 · 10 mục cần founder quyết D-01…D-10).
+> **Mọi hằng số trong tài liệu này lấy từ `_rulings.md`, không lấy từ trí nhớ và không lấy từ các bản trước.** Khi tài liệu này mâu thuẫn với `_rulings.md`, `_rulings.md` thắng.
+> Chủ quyền của tài liệu này theo nguyên tắc 2 của bảng phán quyết: **TONE + UX**. Nó thắng ở caption card (A99), ở việc không có chức năng kick (A61), và ở lưới ảnh thích ứng trên card (A100). Nó **thua** ở: số màn (A79), auto-hide report (A60), số domain (A68), ngưỡng ngủ đông (A12), số event analytics (A51).
+> Những hạng mục bị CẮT bởi phán quyết được liệt kê ở mục **"Đã cắt"** cuối tài liệu, kèm điều kiện mở lại.
 
-**Phạm vi:** **7 màn web + 1 slot dự phòng để trống** [CHỐT 2026-08-28, QĐ-32] (Next.js, chạy trong webview Zalo lẫn browser). v2 §5 chốt 7 màn, trần 8, và slot 8 **chỉ** được lấp nếu Bước 0 chứng minh một màn là bắt buộc — `02` §7.1 biến điều đó thành tiêu chí Definition of Done nhị phân. Wireframe cho màn 8 dưới đây giữ lại **như bản vẽ dự phòng, không phải như scope**. Yêu cầu của `10` §4 (lấp slot 8 bằng fake door "Bao cả sổ") đã bị từ chối ở MVP-0: một fake door bán hàng không phải phát hiện của Bước 0, và QĐ-01 đang khoá mọi bề mặt doanh thu. Phạm vi còn lại giữ nguyên: luồng onboarding, luồng mời, luồng nộp, toàn bộ chữ do app sinh ra, và các hàng rào an toàn ở tầng UI.
+_Tài liệu thiết kế trải nghiệm cho **Chốt Sổ** (`chotso.vn`). Viết 03/09/2026, rà soát theo phán quyết trọng tài 03/09/2026. Nguồn duy nhất về sản phẩm: `/home/huypq/teemi/docs/plan/01-dinh-nghia-san-pham-v2.md`; nguồn duy nhất về hằng số: `_rulings.md`. Trần backlog cứng là **6,5 pw** [A83]; sổ cái pw duy nhất là **`docs/adr/pw-ledger.md`** [A87] — mọi khoản ±pw nêu trong tài liệu này chỉ có hiệu lực khi đã được ghi vào sổ cái đó, và **một khoản cắt chỉ được chi MỘT LẦN**. Bất đồng với v2 nằm ở mục cuối, không nằm rải rác trong thân bài._
+
+**Phạm vi:** **7 màn web + 1 slot dự phòng ĐỂ TRỐNG** [A79 · CHỐT 2026-08-28, QĐ-32] (Next.js, chạy trong webview Zalo lẫn browser). v2 §5 chốt 7 màn, trần 8, và slot 8 **chỉ** được lấp nếu Bước 0 chứng minh một màn là bắt buộc, lý do ghi vào ADR-000 — `02` DoD 7.1 biến điều đó thành tiêu chí Definition of Done nhị phân. **Không có wireframe cho màn 8 trong tài liệu này**: một bản vẽ dự phòng là scope dưới tên khác.
+**Ba yêu cầu lấp slot 8 đều đã bị bác** [S19]: (a) fake door "Bao cả sổ" của `10` §4 — một fake door bán hàng không phải phát hiện của Bước 0, và A62 khoá mọi bề mặt doanh thu trong 6 tháng đầu; (b) màn preview của `09`; (c) **chế độ demo "Sổ mẫu" ở màn 1 của chính tài liệu này** — nó là màn thứ 8 dưới tên khác, đã bị cắt ở §1.1 dưới đây.
+Phạm vi còn lại giữ nguyên: luồng onboarding, luồng mời, luồng nộp, toàn bộ chữ do app sinh ra, và các hàng rào an toàn ở tầng UI.
 **Ngoài phạm vi:** mọi thứ xảy ra trong Zalo (sticker, voice, cà khịa) — đó là 13/40 giây của core loop và **0 pw**. Tài liệu này không viết một dòng roast template nào, vì §6 mục 4 của v2 cấm reaction/comment/chat trong sản phẩm.
 
 ---
@@ -13,9 +21,9 @@ _Tài liệu thiết kế trải nghiệm cho **Chốt Sổ** (`chotso.vn`). Vi�
 
 | # | Quyết định | Chi phí | Nó cứu cái gì |
 |---|---|---|---|
-| **UX-1** | **Nhãn XONG/TOANG CHÍNH LÀ nút Gửi.** Không có nút "Gửi" thứ ba. Chạm nhãn = nộp xong, kèm thanh Hoàn tác 10 giây | −0,05 pw (bớt một nút, một state) | Kéo bước 4 từ 18–22 giây (3 hành động) xuống **11–15 giây** (2 hành động). Đây là khác biệt giữa đạt và không đạt mục tiêu ≤15 giây |
+| **UX-1** | **Nhãn XONG/TOANG CHÍNH LÀ nút Gửi.** Không có nút "Gửi" thứ ba. Chạm nhãn = nộp xong, kèm thanh Hoàn tác 10 giây | −0,05 pw (bớt một nút, một state) — **chỉ có hiệu lực khi đã ghi vào `docs/adr/pw-ledger.md`** [A87] | Kéo bước 4 từ 18–22 giây (3 hành động) xuống **11–15 giây** (2 hành động). Đây là khác biệt giữa đạt và không đạt mục tiêu ≤15 giây |
 | **UX-2** | **In mã sổ 6 ký tự LÊN card**, góc dưới phải, font mono, tương phản ≥4,5:1 | 0 pw (một dòng text trong template satori) | Nếu Zalo cảnh báo/chặn domain (rủi ro §9 mục 7 của v2 — "growth về 0"), **ảnh không bị chặn**. Mã đọc được bằng mắt là đường thoát hiểm duy nhất sống sót qua sự cố đó |
-| **UX-3** | **Chế độ nghỉ không cần build.** VẮNG đã render ra số 0 pixel ⇒ "tạm nghỉ" chỉ là một dòng chữ giải thích trong màn Của tôi, không phải một cơ chế | 0 pw | Xoá hẳn nhu cầu "pause mode" mà 4 hướng trước đều định build. Người nghỉ đã vô hình sẵn — việc còn lại là **nói cho họ biết điều đó**, vì họ không tự đoán được |
+| **UX-3** | **Chế độ nghỉ không cần build.** VẮNG đã render ra số 0 pixel ⇒ "tạm nghỉ" chỉ là một dòng chữ giải thích trong màn Của tôi, không phải một cơ chế. Cột `paused_until` **vẫn có trong schema từ commit đầu** (chi phí cột = 0), **nhưng KHÔNG có UI ở MVP-0** [A50 · S06] | 0 pw | Xoá hẳn nhu cầu "pause mode" mà 4 hướng trước đều định build. Người nghỉ đã vô hình sẵn — việc còn lại là **nói cho họ biết điều đó**, vì họ không tự đoán được |
 | **UX-4** | **Sản phẩm của 90 giây đầu là MỘT TẤM CARD ĐỂ GỬI, không phải một tài khoản.** Onboarding kết thúc ở share sheet, không kết thúc ở màn chính | 0 pw (đảo thứ tự màn) | Trả lời câu "app cần ≥2 người mới có nghĩa": người thứ 1 một mình **không** dùng sản phẩm, họ **sản xuất ra vật phẩm** để kéo người thứ 2. Xem §1.4 |
 
 ---
@@ -28,7 +36,7 @@ _Tài liệu thiết kế trải nghiệm cho **Chốt Sổ** (`chotso.vn`). Vi�
 
 | Giây | Màn | Người dùng thấy gì | Dòng chữ chính xác | Hành động |
 |---|---|---|---|---|
-| 0–5 | **1 · Sổ hôm nay (demo)** | Một sổ mẫu đang chạy thật: 3 ảnh thật (ảnh stock đời thường, không phải người mẫu), hai nhãn ✓ một nhãn 💀, dòng số | Header: `Sổ mẫu · Ngày thứ 12 · 27 tấm · chuỗi 4`<br>Nút chính: **`Mở sổ của nhóm mình`** | Cuộn hoặc chạm nút |
+| 0–5 | **1 · Sổ hôm nay (trạng thái chưa-có-sổ)** | **MỘT ẢNH CARD MẪU TĨNH** (một file PNG dựng sẵn, nhúng thẳng vào trang) + câu định vị. **KHÔNG phải một sổ mẫu đang chạy thật**, không có dữ liệu giả sinh động, không có state — xem khối cắt ngay dưới bảng | Câu: `Tối nào nhóm cũng chốt sổ: mỗi đứa một tấm, không ai cài app.`<br>Nút chính: **`Mở sổ của nhóm mình`** | Cuộn hoặc chạm nút |
 | 5–14 | **3 · Mở sổ** | Một ô text + 4 gợi ý tên | `Sổ này tên gì?`<br>Placeholder: `Ví dụ: Sổ nhà 4 đứa`<br>Gợi ý: `Sổ lớp mình` · `Sổ phòng trọ` · `Sổ 5 đứa` · `Sổ cày đêm`<br>Nút: **`Tiếp`** | 1 chạm gợi ý **hoặc** gõ ≤24 ký tự |
 | 14–20 | **3 · Mở sổ (bước 2)** | Ô tên hiển thị | `Tên bạn hiện trên card là gì?`<br>Placeholder: `Linh`<br>Chú thích nhỏ: `≤12 ký tự. Cả sổ sẽ thấy tên này.` | Gõ |
 | 20–32 | **3 · Chọn kèo** | 8 nút preset, 2 cột × 4 hàng, + 1 ô "Tự viết" | Tiêu đề: `Kèo của bạn tháng này`<br>Preset: `Ngủ trước 12h` · `Đi bộ 20 phút` · `Học 15 phút` · `Đọc 5 trang` · `Không trà sữa hôm nay` · `Tập 15 phút` · `Không bỏ bữa sáng` · `Không mất tích`<br>Chú thích: `Chỉ người trong sổ thấy kèo của bạn. Kèo không bao giờ lên card.` | **1 chạm** |
@@ -38,6 +46,11 @@ _Tài liệu thiết kế trải nghiệm cho **Chốt Sổ** (`chotso.vn`). Vi�
 
 **Tổng: 90 giây, 8–9 lần chạm, 0 lần cài, 0 lần nhập số điện thoại, 0 lần đọc điều khoản.**
 
+> ### ❌ [PHÁN QUYẾT 03/09/2026 — S19] CHẾ ĐỘ DEMO "SỔ MẪU" BỊ CẮT.
+> Bản trước mở màn 1 bằng **một sổ mẫu đang chạy thật** (dữ liệu giả, 3 ảnh, nhãn, dòng số động). Phán quyết S19 xếp nó cùng nhóm với fake door "Bao cả sổ" của `10` §4 và màn preview của `09`: **cả ba đều là cách lấp slot màn 8 dưới một cái tên khác**, và v2 §5 giữ slot đó **để trống** cho đúng một màn được **Bước 0 chứng minh** là bắt buộc [A79].
+> **Thay bằng:** một **ảnh PNG tĩnh** của một card mẫu (chính là artefact card 4:5 mà template satori đã sinh ra — dựng một lần, xuất một file, nhúng vào trang). Chi phí **0 pw**, không state, không route, không fixture, không snapshot test thứ hai.
+> **Điều kiện mở lại:** chỉ khi Bước 0 (08/09→21/09/2026) chứng minh bằng dữ liệu rằng người mở link lần đầu **không hiểu sản phẩm** nếu không thấy một sổ đang chạy — lý do phải ghi vào `docs/adr/ADR-000-bat-bien.md` [A103] và khoản pw phải vào `docs/adr/pw-ledger.md` [A87].
+
 ### 1.2. Bảng số chạm chi tiết (để dựng UI, không phải để marketing)
 
 | Bước | Số chạm | Giây (máy tầm trung, 4G) | Giây (máy tầm thấp ≤3GB RAM) | Rủi ro |
@@ -46,12 +59,12 @@ _Tài liệu thiết kế trải nghiệm cho **Chốt Sổ** (`chotso.vn`). Vi�
 | Đặt tên sổ | 1–2 | 6 | 8 | Bàn phím tiếng Việt bật chậm trên máy yếu |
 | Tên hiển thị | 1 | 6 | 8 | — |
 | Chọn kèo | 1 | 5 | 5 | — |
-| Mở picker ảnh | 1 | 1,5–3 | 3–6 | **Rủi ro nền tảng: `<input type=file>` trong webview Zalo. Cần kiểm chứng — §10(h) v2** |
+| Mở picker ảnh | 1 | 1,5–3 | 3–6 | **Rủi ro nền tảng: `<input type=file>` trong webview Zalo. Là câu 2 trong buổi kiểm chứng nền tảng 04/09/2026 — 7 câu, ma trận ≥3 máy Android thật** [A105] |
 | Chọn ảnh | 1 | 4 | 6 | — |
 | Nén + strip EXIF client | 0 | 0,8–1,5 | 2–5 | **OOM canvas trên máy 2–3GB với ảnh 12MP. Xem §8.2** |
-| Chạm nhãn (= gửi) | 1 | 0,3 | 0,3 | Upload 110 KB chạy nền, UI không chờ |
-| Render card server-side | 0 | 0,9–1,8 | 0,9–1,8 | satori/@vercel/og; phụ thuộc cold start |
-| Share sheet | 1 | 8–14 | 10–18 | **Web Share API level 2 (chia sẻ file ảnh) trong webview Zalo — chưa kiểm chứng. Xem bất đồng #6** |
+| Chạm nhãn (= gửi) | 1 | 0,3 | 0,3 | Upload **~110 KB** `[chưa đo — phải đo trên 20 ảnh Android thật, A37]` chạy nền, UI không chờ |
+| Render card server-side | 0 | 0,9–1,8 | 0,9–1,8 | satori/@vercel/og; card ~**150 KB** [A41]; phụ thuộc cold start |
+| Share sheet | 1 | 8–14 | 10–18 | **Web Share API level 2 (chia sẻ file ảnh) trong webview Zalo — chưa kiểm chứng, là câu 5 của buổi 04/09** [A105]. Phương án B đã viết sẵn: xem bất đồng #6 [D-09] |
 
 ### 1.3. Người thứ 2 trở đi (vào sổ có sẵn) — 42 giây
 
@@ -59,7 +72,7 @@ Người này đến từ card trong nhóm Zalo, tức đã thấy sản phẩm 
 
 | Giây | Màn | Dòng chữ | Chạm |
 |---|---|---|---|
-| 0–6 | **1 · Sổ hôm nay (chế độ public)** | Ảnh của bạn bè **mờ 12px**, tên hiện rõ, ba con số hiện rõ. Nút: **`Vào sổ này`**. Nút phụ: `♡` (thả tim ẩn danh, không cần vào sổ) | 1 |
+| 0–6 | **1 · Sổ hôm nay (chế độ public)** | Ảnh của bạn bè **mờ 12px**, tên hiện rõ, ba con số hiện rõ. Nút duy nhất: **`Vào sổ này`**. **Không có nút `♡`** — nút thả tim đã bị cắt khỏi MVP-0 [A27 · S01], xem §6.2. Trang public ở MVP-0 là **chỉ-đọc, không có hành động nào ngoài `Vào sổ này`** | 1 |
 | 6–12 | **3 · Vào sổ** | `Tên bạn hiện trên card là gì?` | gõ |
 | 12–22 | **3 · Chọn kèo** | y hệt §1.1 | 1 |
 | 22–40 | **2 · Nộp** | y hệt §1.1 | 3 |
@@ -91,7 +104,7 @@ Dải này **không đếm ngược, không đỏ, không rung, không đổi ch
 
 Không có chữ nào nói về việc bạn bè bạn không quan tâm. Nguyên nhân được gán cho **card trôi**, không gán cho **người**.
 
-**Và một điều v2 đã làm sẵn mà onboarding phải nói ra:** `k = 1 khi A ≤ 2`. Nghĩa là **sổ một người vẫn tính ngày, vẫn lên chuỗi.** Dòng chữ ở màn Của tôi: `Sổ vẫn tính ngày kể cả khi chỉ có một người nộp.` Đây là sự thật cơ chế, không phải lời an ủi — và nó là lý do người thứ 1 không mất chuỗi trong 3 ngày chờ bạn vào.
+**Và một điều v2 đã làm sẵn mà onboarding phải nói ra:** `k = 1 khi A_eff ≤ 2`, với **`A_eff = min(A(D), A(D−1))`** [A06–A07]. Nghĩa là **sổ một người vẫn tính ngày, vẫn lên chuỗi.** Dòng chữ ở màn Của tôi: `Sổ vẫn tính ngày kể cả khi chỉ có một người nộp.` Đây là sự thật cơ chế, không phải lời an ủi — và nó là lý do người thứ 1 không mất chuỗi trong 3 ngày chờ bạn vào.
 
 ---
 
@@ -105,7 +118,8 @@ Không có chữ nào nói về việc bạn bè bạn không quan tâm. Nguyên
 | **B · Mã 6 ký tự in trên card** | Người nhận vào `chotso.vn` gõ mã | **Sống hoàn toàn** — mã nằm trong pixel của ảnh, không phải trong text. Mã này là **khoá VÀO sổ**, độc lập hoàn toàn với `share_token` trong slug (QĐ-12b), và chỉ dùng được khi sổ <8 người và link <7 ngày | 2 (dự phòng) |
 | **C · Link trần** | Chép link, dán | Chết | 3 |
 
-**Slug:** 10 ký tự ngẫu nhiên base32 (không phải số thứ tự), `noindex, nofollow` trên mọi trang sổ, không sitemap. Lý do: URL đoán được = một người lạ duyệt qua ảnh của các nhóm bạn 17 tuổi.
+**Slug:** dựng từ **`share_token`** — 10 ký tự ngẫu nhiên base32 (không phải số thứ tự), `noindex, nofollow` trên mọi trang sổ, cộng `robots.txt`, không sitemap. Lý do: URL đoán được = một người lạ duyệt qua ảnh của các nhóm bạn 17 tuổi.
+**`share_token` có TTL = 7 NGÀY** [A42 · QĐ-36]. Hết 7 ngày, link công khai ngừng phục vụ; người muốn vào sổ dùng mã 6 ký tự (điều kiện ở A45) hoặc xin card mới. Hai đầu bị bác: **24 giờ** giết phép đo M2 (card lan trong nhóm nhiều ngày sau khi dán), **vĩnh viễn** để lộ lưới ảnh của người 16 tuổi ra ngoài nhóm mãi mãi. Cả `share_token` lẫn TTL của nó do `04` §8.5 định nghĩa; tài liệu này không tự khai.
 **Mã 6 ký tự:** [CHỐT 2026-08-28, QĐ-12] bảng chữ **đúng 28 ký tự**, liệt kê tường minh vì ba tài liệu từng ghi ba bảng chữ khác nhau:
 
 ```
