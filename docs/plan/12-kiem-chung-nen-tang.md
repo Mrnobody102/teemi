@@ -58,7 +58,7 @@
 
 **Đo:** cảnh báo có/không · nguyên văn · có chặn hẳn không · webview hay trình duyệt ngoài.
 
-**Nếu KHÔNG (bị cảnh báo/chặn):** kích hoạt A68 ⇒ **mua domain thứ hai ngay trong tuần**, ≈750.000đ, khoản này **không** nằm trong ngân sách MVP-0 và phải ghi vào sổ tiền mặt. Xem `13` §6 ca 10.
+**Nếu KHÔNG (bị cảnh báo/chặn):** kích hoạt A68 ⇒ **mua domain thứ hai ngay trong tuần**, **770.000đ**, khoản này **không** nằm trong ngân sách MVP-0 và phải ghi vào sổ tiền mặt. Xem `13` §6 ca 10.
 
 ---
 

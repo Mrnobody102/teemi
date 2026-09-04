@@ -1,0 +1,27 @@
+{
+  "name": "teemi",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Teemi — social challenge app cho nhóm bạn thân VN. Phần này chỉ chứa schema CSDL và logic nghiệp vụ thuần.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "drizzle-kit": "^0.31.10",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  }
+}

@@ -461,7 +461,7 @@ book_date      date GENERATED ALWAYS AS (
 <input type="file" accept="image/*">        ← KHÔNG dùng capture="environment" (v2 §4.2: không ép chụp)
   → createImageBitmap(file, {resizeWidth:1080, resizeQuality:'high'})
         ↑ giải mã ở độ phân giải giảm sẵn — tránh OOM với ảnh 48MP của Xiaomi
-  → canvas.drawImage → toBlob('image/jpeg', 0.72)    → orig  ~110 KB
+  → canvas.drawImage → toBlob('image/jpeg', 0.72)    → orig  ~110 KB  [CHƯA ĐO — A37; phải đo 20 ảnh Android thật]
   → canvas 320px      → toBlob('image/jpeg', 0.70)    → thumb ~18 KB
   → POST /api/tam/sign   (trả 2 presigned PUT, TTL 5 phút)
   → 2 × fetch PUT thẳng lên R2

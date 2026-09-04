@@ -12,7 +12,7 @@ _Viết 03/09/2026. Tài liệu con của `/home/huypq/teemi/docs/plan/01-dinh-n
 **Lịch dùng trong tài liệu này lấy từ mục A104–A123 của `_rulings.md`:** gửi luật sư + báo giá domain 03/09 · buổi kiểm chứng nền tảng **04/09** (7 câu) · hạn chốt bất biến **07/09** · Bước 0 chạy **08/09 → 21/09/2026** · Cổng #1 + quyết định bằng văn bản **22/09** · dòng code đầu tiên **23/09** · kill gate kỷ luật scope **05/10** · cổng tiến độ build **02/11** · cổng sẵn sàng beta **30/11** · beta chạy **02/12** · **trần cứng 15/12/2026** · đọc `group-D14` beta **16/12** · cổng `sổ-D14` **11/01/2027** · cổng `sổ-D28`/widget **26/01/2027** · kill gate founder **31/03/2027**.
 
 > ### ⚠️ CẦN FOUNDER QUYẾT — TÊN SẢN PHẨM (chưa được duyệt, máy không tự quyết)
-> Tài liệu này đang viết tên **Chốt Sổ** ở tiêu đề, ở domain `chotso.vn` và trong 9 script Bước 0 (§5.9). **Founder chưa duyệt việc đổi tên khỏi tên gốc `Teemi`.** Bảng phán quyết không có dòng nào phán quyết tên sản phẩm — nó chỉ giả định `chotso.vn` khi chốt A67/A68 (một domain, ≈750.000đ/năm).
+> Tài liệu này đang viết tên **Chốt Sổ** ở tiêu đề, ở domain `chotso.vn` và trong 9 script Bước 0 (§5.9). **Founder chưa duyệt việc đổi tên khỏi tên gốc `Teemi`.** Bảng phán quyết không có dòng nào phán quyết tên sản phẩm — nó chỉ giả định `chotso.vn` khi chốt A67/A68 (một domain, **770.000đ**/năm).
 > **Hai lựa chọn, chọn trước 07/09/2026** (hạn mua domain + hạn chốt bank câu của Bước 0 — sau 08/09 tên đã đi vào 112 lần dán card vào nhóm bạn thật, đổi sau là đổi trong đầu người dùng chứ không phải đổi trong file):
 > - **(a) Chốt tên `Chốt Sổ`** — mua `chotso.vn`, giữ nguyên mọi thứ trong file này. Giá: bỏ tên `Teemi` và mọi tài sản gắn với nó.
 > - **(b) Giữ tên `Teemi`** — phải sửa tiêu đề tài liệu, S1–S9 ở §5.9, và **lấy lại báo giá domain** (A67 là báo giá cho `.vn`, không phụ thuộc tên, nhưng chuỗi tên miền thì có).
@@ -200,7 +200,7 @@ Founder có đúng ba lựa chọn, và phải chọn bằng văn bản trước
 | **Làm gì** | Toàn bộ §5 |
 | **Bao lâu** | 14 ngày lịch (08/09 → 21/09), **~30 giờ** của founder, **0 dòng code sản phẩm** |
 | **Học được** | H1 (proxy), H2, H3, cổng phi số, và giá trị `B` để làm neo cho MVP |
-| **Chi phí tiền mặt** | ~**0đ** cho Bước 0. (Domain `chotso.vn` **≈750.000đ/năm** — một con số duy nhất, QĐ-27 — mua trong tuần này vì lý do pháp lý, không vì Bước 0. ⚠️ **Hạn lấy báo giá thật là 03/09 — ĐÃ QUÁ HẠN tính từ 04/09. Lấy trong hôm nay và thay con số này.** Chỉ **MỘT** domain, A68 — domain dự phòng đã cắt; đường thoát hiểm là mã 6 ký tự trên card, 0đ) |
+| **Chi phí tiền mặt** | ~**0đ** cho Bước 0. (Domain `chotso.vn` **770.000đ/năm** — một con số duy nhất, QĐ-27 — mua trong tuần này vì lý do pháp lý, không vì Bước 0. ⚠️ **Hạn lấy báo giá thật là 03/09 — ĐÃ QUÁ HẠN tính từ 04/09. Lấy trong hôm nay và thay con số này.** Chỉ **MỘT** domain, A68 — domain dự phòng đã cắt; đường thoát hiểm là mã 6 ký tự trên card, 0đ) |
 | **Điều kiện đi tiếp** | H2 đạt theo tiêu chí A20 (**≥60% sổ nhánh A đạt ≥9/14 ngày tính**) **và** H3 không fail **và** **≥12,5% số sổ** (≥1 trên 8; nếu rơi xuống sàn 6 sổ thì vẫn là **≥12,5%**, không phải "≥1/6") tự hỏi "mai còn chốt sổ không?". [C53/A94: mọi ngưỡng phát biểu bằng **%**, không bằng phân số trên cỡ mẫu] |
 
 ### 4.1. Mức 1 — Walking skeleton (1 nhóm bạn thật của founder)
@@ -302,7 +302,7 @@ Cách xử lý: **Bước 0 chia hai giai đoạn, và độ chênh giữa hai g
 |---|---|---|
 | **Google Form (tuyển)** | Lọc sổ đủ điều kiện | Bắt nhập **tên 3 người bạn + link nhóm chat ĐÃ CÓ**. Chỉ duyệt khi đủ 3. **Không tạo nhóm mới — chiếm nhóm đã có** |
 | **Google Form (nộp hằng ngày, G2)** | Thay màn Nộp | 1 form/sổ. 3 câu: tên (dropdown, không gõ tay) · ảnh (file upload) · nhãn (radio XONG/TOANG) |
-| **Google Sheet** | Thay database + dashboard | 2 sheet: `raw` và `daily` — §5.6 |
+| **Google Sheet** | Thay database + dashboard | **3 sheet**: `raw` · `daily` (đúng **8 cột** A96) · `obs` (bốn con số quan sát + đối chứng A72) — §5.6 |
 | **Canva** | Thay màn Card chốt sổ | 1 template 1080×1350, **lưới THÍCH ỨNG theo số người ĐÃ NỘP: 1 · 1×2 · 2×2 · 2×3 · 2×4, tối đa 8 ô** (A100/QĐ-30 + A46). ⚠️ Lưới 6 ô cố định là đúng cái lỗi QĐ-30 đã bác — ở sổ 7–8 người nó **im lặng loại 2 người đã nộp** khỏi card, vi phạm P2. Ô của người vắng **không tồn tại** (không ô xám, không silhouette) |
 | **Zalo** | Kênh phân phối + kênh cà khịa | Không thay thế bằng gì cả — đó là toàn bộ luận điểm |
 
@@ -701,7 +701,7 @@ Xếp theo hạn chót. Mỗi câu phải trả lời bằng một câu văn có
 | 6 | Google Form file upload bắt đăng nhập Google — bao nhiêu % thành viên vướng? | Ngày 8 của Bước 0 | Nếu >30% vướng thì `q_c_roster`(G2) đang đo Google, không đo sản phẩm |
 | 7 | Zalo có cho xem **danh sách người đã xem** một tin nhắn nhóm không? | 04/09/2026 | Quyết định proxy H1 ở §5.7 |
 | 8 | Luật sư trả lời gì cho **7 câu** đã hợp nhất ở `05` §11 (QĐ-14)? **MỘT email, MỘT lần trả phí, ngân sách 5–15 triệu đồng** (A65/A66 — không mua thư 1 câu 3–5 triệu nữa) | Gửi **03/09/2026 — ĐÃ QUÁ HẠN**; **câu 3 bắt buộc có trước 20/12/2026** (ngày T4 của `10`) | Câu 1b quyết định trần beta là 60 hay 600 sổ. Câu 3 quyết định toàn bộ §3–§7 của `10` có tồn tại không. Hai câu Điều 32 BLDS quyết định card (ảnh 4–8 người) và cả hai phương án monetization |
-| 9 | Giá thật của `.vn` năm 2026 và thời gian chờ cấp? Con số đang dùng là **≈750.000đ/năm** `[cần báo giá thật]`, **MỘT** domain (A67/A68) | **03/09/2026 — ĐÃ QUÁ HẠN** | Giấy phép MXH đòi tên miền còn hiệu lực ≥6 tháng — đây là việc rẻ nhất mà tốn thời gian chờ nhất |
+| 9 | Giá thật của `.vn` năm 2026 và thời gian chờ cấp? ✅ **ĐÃ CÓ SỐ THẬT: 770.000đ/năm đầu, 460.000đ/năm sau** (`11` §7.2, kiểm chứng 04/09/2026), **MỘT** domain (A67/A68) | ~~03/09/2026~~ — **đã xong 04/09** | Giấy phép MXH đòi tên miền còn hiệu lực ≥6 tháng — đây là việc rẻ nhất mà tốn thời gian chờ nhất |
 | 10 | Trần doanh thu tính lại bằng eCPM thật của tệp VN là bao nhiêu? | 06/09/2026 (3 giờ bàn giấy) | Con số 2,6 tỷ VND/năm tính trên IAP, trong khi Locket kiếm tiền bằng quảng cáo. Không được dùng con số cũ để ra quyết định chiến lược |
 | 11 | Nếu ngày 3 của Bước 0 vẫn mất 20 phút/sổ, cắt nhánh A xuống 4 sổ (= **sàn tuyệt đối** C53, `B` nhảy 25 điểm) hay giữ 5 và chấp nhận 15,2 giờ/tuần? | 10/09/2026 | Bước 0 chết vì kiệt sức ở tối thứ 9 là kịch bản thất bại có thật nhất |
 | 12 | `B` (`group-D14` đo tay ở Bước 0) bằng bao nhiêu? Nhớ in kèm: **n=5 ⇒ B ∈ {0,20,40,60,80,100}%, bước nhảy 20 điểm** (A26) | 22/09/2026, **không sớm hơn** | Đặt trước là tự ra đề dễ cho mình |

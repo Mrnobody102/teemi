@@ -7,3 +7,13 @@ build/
 .expo/
 *.log
 .DS_Store
+
+# Build & test
+coverage/
+*.tsbuildinfo
+.vitest/
+
+# Editor / OS
+.idea/
+.vscode/
+Thumbs.db

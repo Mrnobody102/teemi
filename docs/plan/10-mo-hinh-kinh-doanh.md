@@ -12,7 +12,7 @@ _Viết 03/09/2026. Dựa trên `01-dinh-nghia-san-pham-v2.md` (hướng D-chat-
 > |---|---|---|
 > | Chi phí câu chữ | Sửa tên trong 10 tài liệu kế hoạch — `sed`, ~30 phút | **0đ** — đã viết sẵn |
 > | Chi phí kỹ thuật | **0đ.** Tên sản phẩm không phải tên schema (A29–A31: schema tiếng Anh, `book`/`book_day`) ⇒ đổi tên hiển thị **không** đụng một dòng DDL nào | 0đ, cùng lý do |
-> | Domain | `chotso.vn` đã là domain **DUY NHẤT** ở MVP-0 (A68, ~750.000đ/năm — A67) và đã nằm trong bảng tiền mặt §9 | như trên |
+> | Domain | `chotso.vn` đã là domain **DUY NHẤT** ở MVP-0 (A68, **770.000đ**/năm — A67) và đã nằm trong bảng tiền mặt §9 | như trên |
 > | Rủi ro | Domain đã chọn không khớp tên sản phẩm — lệch nhẹ, không chặn gì | Không có rủi ro kỹ thuật đã biết |
 >
 > **Khuyến nghị: (2) — duyệt chính thức tên "Chốt Sổ", bằng một dòng trong `docs/adr/ADR-000-bat-bien.md`.** Ba lý do: (a) domain `chotso.vn` đã được chốt và đã tính tiền — đổi lại nghĩa là mua domain thứ hai, mà A68 đã **CẮT** domain thứ hai · (b) tên "Chốt Sổ" là **chính động từ của core loop** ("bấm Chốt sổ") và của caption chuẩn A99, nên nó đã ăn vào copy sản phẩm chứ không chỉ vào bìa tài liệu · (c) chi phí đổi bằng 0 hôm nay và tăng dần theo mỗi tài liệu/ảnh card được sản xuất.
@@ -598,7 +598,7 @@ Và cùng ngưỡng 300 triệu đó cho P3: **20 khách tổ chức.** So sánh
 
 | Hạng mục | Bắt buộc? | Tiền mặt 6 tháng | Ghi chú |
 |---|---|---|---|
-| Domain `chotso.vn` (1 năm) | **Có** — v2 §12, và là điều kiện giấy phép MXH sau này | **~750.000đ** [ước lượng — **cần kiểm chứng** giá VNNIC/nhà đăng ký] | Việc rẻ nhất, tốn thời gian chờ nhất. Mua trong tuần này |
+| Domain `chotso.vn` (1 năm) | **Có** — v2 §12, và là điều kiện giấy phép MXH sau này | **770.000đ** [KIỂM CHỨNG 04/09/2026 — VNNIC, `11` §7.2] | Việc rẻ nhất, tốn thời gian chờ nhất. Mua trong tuần này |
 | Vercel | Có | **0đ** (Hobby đủ tới beta 30 sổ) | Pro $20/tháng chỉ khi vượt |
 | **Supabase Pro** | **Có — BẮT BUỘC từ 02/12/2026** [QĐ-09, A74] | **~1.950.000đ** ($25 × **3 tháng**: 12/2026 + 01/2027 + 02/2027) | ⚠️ **Sửa 03/09/2026.** Bản trước ghi "0đ, Free tier đủ tới ~5.000 MAU" — **sai**. Free **không có backup hằng ngày**, trong khi ToS (`05` §8.2) hứa giữ ảnh và sản phẩm hứa thumbnail **vĩnh viễn** (A38). Mất CSDL beta = mất tài sản của mọi sổ, không có đường về |
 | Cloudflare R2 | Có | **~150.000đ** ($0–3/tháng × 3 tháng beta) | Free 10 GB; beta 30 sổ ≈ 0,6 GB/năm ⇒ gần như luôn trong free tier, để 150k làm đệm |
@@ -611,7 +611,7 @@ Và cùng ngưỡng 300 triệu đó cho P3: **20 khách tổ chức.** So sánh
 | Cổng thanh toán merchant | **KHÔNG** | 0đ | Đòi ĐKKD [FACT — Airwallex 2026]. T4 dùng chuyển khoản cá nhân + Google Form |
 | ~~In thử 1 cuốn sổ mẫu~~ | **KHÔNG** | **0đ** | ⚠️ **CẮT 03/09/2026 — S13.** P2 bị cắt khỏi 12 tháng đầu ⇒ không in gì cả, kể cả một cuốn mẫu. Mở lại cùng điều kiện với P2 (§3.2) |
 | Canva Pro (Bước 0) | Không | 0đ (bản free đủ) | |
-| **TỔNG BẮT BUỘC** | | **7,85 – 17,85 triệu VND** | domain 750k + luật sư 5–15tr + Supabase Pro 1,95tr + R2 150k |
+| **TỔNG BẮT BUỘC** | | **7,87 – 17,87 triệu VND** | domain **770k** (báo giá thật 04/09) + luật sư 5–15tr + Supabase Pro 1,95tr + R2 150k. _(Bản trước ghi 7,85–17,85 khi domain còn là ước lượng 750k.)_ |
 
 > **[03/09/2026] Vì sao tổng tăng từ "5,75–15,75" lên "7,85–17,85 triệu".** Hai khoản trước đây ghi 0đ nay không còn là 0đ: **Supabase Pro 1,95 triệu** (bắt buộc từ 02/12 — A74) và **R2 150.000đ** (đệm). Bản trước còn có dòng thứ hai "TỔNG nếu cộng luôn hạ tầng trả phí sớm + sổ mẫu ≈ 7–17,5 triệu" — dòng đó **đã bị xoá**: hạ tầng trả phí nay là **bắt buộc, không phải tuỳ chọn**, nên nó thuộc dòng TỔNG BẮT BUỘC; và sổ mẫu đã bị cắt (S13). **Một dòng tổng, không hai** — hai dòng tổng gần nhau là cách rẻ nhất để sau này trích dẫn nhầm con số thấp hơn.
 

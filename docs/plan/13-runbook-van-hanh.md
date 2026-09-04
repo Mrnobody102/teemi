@@ -104,7 +104,7 @@ Sheet `daily`, **một dòng/sổ/ngày**, đúng 8 cột (A96/QĐ-03), **pseudo
 
 `q_c_roster` · `q_x_roster` · `q_c_sliding` · `q_x_sliding` · `roster_size` · `số người nộp` · `số XONG` · `số TOANG`
 
-- **Mẫu số so ngưỡng luôn là `roster_size` ĐÓNG BĂNG** (A15) — số người trong sổ tại **ngày 1**, không đổi trong 14 ngày, không co lại khi có người bỏ cuộc. Cột `_sliding` **chỉ để báo cáo, cấm dùng ra quyết định**.
+- **Mẫu số so ngưỡng luôn là `roster_size` ĐÓNG BĂNG** (A14/A15) — **số người đã nộp ≥1 tấm trong 3 NGÀY ĐẦU của sổ**, chốt một lần vào cuối ngày 3 (**10/09**) và **không sửa sau đó**, giữ nguyên 14 ngày, không co lại khi có người bỏ cuộc. ⚠️ Bản trước ghi "số người trong sổ tại ngày 1" — **sai theo A14**; ngày 1 chưa biết ai thật sự nộp. Cột `_sliding` **chỉ để báo cáo, cấm dùng ra quyết định**.
 - 4 quan sát cũ (số ngày tụt dưới 3 · tự nhắc · TOANG · click) chuyển sang sheet phụ **`obs`**, không vào `daily`.
 - Sheet `raw`: một dòng/người/ngày, có cột `in_roster` và cột `path` (đường nộp: `form` hay `zalo-thoát-hiểm`).
 
@@ -396,7 +396,7 @@ Sau khi có phần mềm, tối của founder **phải ngắn hơn Bước 0 m�
 
 ### Ca 10 — Zalo cảnh báo domain, hoặc link bị chặn
 - **15 phút:** thử trên **≥2 máy khác**, ≥2 tài khoản Zalo khác. Một máy báo không đủ kết luận.
-- **Nếu xác nhận:** mua **domain thứ hai ngay trong tuần** (A68, ≈750.000đ — khoản này **không** nằm trong ngân sách MVP-0, phải ghi vào sổ tiền mặt). Điều kiện mở khoản chi này đã được viết sẵn từ 04/09; không cần họp lại.
+- **Nếu xác nhận:** mua **domain thứ hai ngay trong tuần** (A68, **770.000đ** — khoản này **không** nằm trong ngân sách MVP-0, phải ghi vào sổ tiền mặt). Điều kiện mở khoản chi này đã được viết sẵn từ 04/09; không cần họp lại.
 - **Song song:** in **mã 6 ký tự to hơn** trên card (A45) — nó là đường vào **không phụ thuộc domain**. Nhớ giới hạn: mã 6 ký tự chỉ dùng được khi **sổ < 8 người VÀ card ≤ 7 ngày tuổi**.
 
 ### Ca 11 — `share_token` hoặc link card lọt ra ngoài nhóm
@@ -625,7 +625,7 @@ MẬT KHẨU: bạn KHÔNG có mật khẩu nào. Chỉ có 1 login CHỈ-ĐỌC
 | **D+14** | **Tắt dịch vụ.** Trang thay bằng một trang tĩnh: sản phẩm đã dừng ngày ___, dữ liệu đã xoá ngày ___, email liên hệ | Trang 404 là cách tệ nhất để kết thúc |
 | **D+14** | **Xoá dữ liệu**: `proof`, `book_day`, `person`, media, thumbnail. **Giữ `audit_log`** | `audit_log` giữ **≥2 năm** — nghĩa vụ độc lập với việc dừng dịch vụ |
 | **D+14** | Xử lý **ảnh Bước 0 còn sót** trên Drive (đáng lẽ đã xoá 22/09 — kiểm lại) | Đây là chỗ dữ liệu hay bị bỏ quên nhất |
-| **D+14** | Giữ **`chotso.vn` thêm 12 tháng** (≈750.000đ) | Rẻ hơn mọi lựa chọn khác nếu quay lại; và giữ email liên hệ sống |
+| **D+14** | Giữ **`chotso.vn` thêm 12 tháng** (**770.000đ**) | Rẻ hơn mọi lựa chọn khác nếu quay lại; và giữ email liên hệ sống |
 | **D+14 → D+30** | **Một người vẫn đọc email khiếu nại**, kể cả sau khi tắt | Nghĩa vụ trả lời không tắt cùng với server |
 | **D+14 → D+28** | **Không khởi động dự án mới trong 2 tuần** | Quy tắc chống việc chạy trốn bằng cách khởi động lại |
 

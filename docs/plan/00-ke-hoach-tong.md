@@ -15,7 +15,7 @@
 **Giải thích cho người chưa biết gì:**
 
 1. Một nhóm bạn 3–8 người có một cuốn "sổ" chung trên web. Mỗi tối 21:00, **một người bất kỳ** bấm nút "Chốt sổ" → hệ thống sinh ra một tấm ảnh tổng kết ngày hôm đó → người đó **dán tấm ảnh vào nhóm Zalo**.
-2. Ai thấy tấm ảnh thì chạm vào, mở ra một trang web, nộp **đúng một tấm ảnh** của mình kèm **đúng một nhãn: XONG hoặc TOANG**. Hết 16 giây. Không cài ứng dụng, không đăng ký, không mật khẩu.
+2. Ai thấy tấm ảnh thì chạm vào, mở ra một trang web, nộp **đúng một tấm ảnh** của mình kèm **đúng một nhãn: XONG hoặc TOANG**. Hết ~16 giây theo thiết kế của `01` §3 — ⚠️ `08` §11 (chủ quyền UX) đo lại ra **18–22 giây** trên máy tầm trung nếu giữ đủ ba hành động, và đề nghị gộp nhãn XONG/TOANG thành chính nút Gửi (−0,05 pw). **Bất đồng này chưa được gỡ.** Không cài ứng dụng, không đăng ký, không mật khẩu.
 3. Việc cười nhau, cà khịa nhau diễn ra **bằng sticker ngay trong Zalo** — không phải trong sản phẩm. Sản phẩm chỉ giữ ba con số: ngày thứ mấy, bao nhiêu tấm, chuỗi mấy ngày.
 
 **Tên:** tài liệu đang viết **Chốt Sổ** (domain `chotso.vn`); tên gốc là **Teemi**. **Founder chưa duyệt việc đổi tên** — xem mục 5, dòng F-01.
@@ -123,7 +123,7 @@ Bốn dòng này khác phần dưới: chúng **đã được thi hành xuyên s
 | **F-03** | **Đổi sang hướng chat-native (không app, sống trong Zalo)?** | Quyết định kiến trúc không đảo ngược được sau 23/09. Nó đánh đổi: được xoá funnel 2% và vòng lặp sửa lỗi ngắn nhất; mất widget, mất push riêng, mất mọi bề mặt chỉ app native mới có — tức mất luôn **lớp utility** mà nghiên cứu chỉ đích danh là lý do Locket chưa bao giờ sụp | **Duyệt.** Nhưng biết rõ cái mất: hồ sơ tự nhận làm phần "chống trũng sau đỉnh" **tệ hơn cả ba hướng kia** (D-10). App native chỉ mở khoá nếu `sổ-D28 ≥ 35%` ở 26/01/2027 | **22/09** |
 | **F-04** | **Hạ đơn vị nhóm?** Từ "nhóm 4–6 người, cần ≥3 người mới bắt đầu" xuống **sổ chạy được với 1–2 người** (`k`=1 khi `A_eff ≤ 2`), trần 8 người, và hệ số quy đổi **A = 4,0** thay vì 5 | Chạm mọi thứ: `roster_size`, `q_c`, mọi quy đổi sổ↔người, cả ba trần pháp lý 60/85/100 sổ. Nếu A thật là 5 thì trần pháp lý rơi từ 60 xuống 48 sổ. **`roster_size` và `A_eff` phải vào schema trước 07/09 — sau đó không tái dựng được** | **Duyệt.** Hạ ngưỡng bắt đầu xoá số hạng `0,735⁴` khỏi funnel cold start; A=4,0 là con số bảo thủ hơn ở phía pháp lý. **Nhưng giữ `group_alive ≥ 3` cho mọi quyết định đi/dừng** — cấm nới sang ≥2 để qua ngưỡng | **07/09** |
 
-### 5.2. Mười hai mục D của bảng phán quyết
+### 5.2. Mười hai mục D — D-01…D-10 của bảng phán quyết `_rulings.md` mục D · **D-11 và D-12 là hai mục MỚI**, mở ra ngày 04/09 bởi `11-hang-rao-ky-thuat-phap-ly-tien.md` §8 (không nằm trong `_rulings.md`)
 
 | # | Câu hỏi | Ảnh hưởng gì | Khuyến nghị | Hạn |
 |---|---|---|---|---|
@@ -188,7 +188,7 @@ Bốn dòng này khác phần dưới: chúng **đã được thi hành xuyên s
 
 > Cửa sổ: **04/09 → 11/09/2026**. Bước 0 khởi động **20:40 ngày 08/09** và không dời được — mọi việc dưới đây phải xong trước lúc đó, trừ việc số 2 vốn đã trễ hạn.
 >
-> **Tổng ước tính ≈ 18,5 giờ trong 4 ngày.** Con số này vượt cả hai nhánh của D-02 (15 và 20 giờ/tuần). Nếu chỉ làm được ba việc, làm **1, 2, 5** — đó là ba việc **không hồi tố được**: một buổi test không chạy hôm nay thì kết quả không có kịp cho quyết định 22/09; một email không gửi hôm nay thì luật sư trả lời sau khi đã viết code; và 112 shortlink không dựng trước 08/09 thì ngày 22/09 **không có một con số H1 nào, kể cả để dừng**.
+> **Tổng ước tính ≈ 17,3 giờ trong 4 ngày** (2,5 + 1,5 + 2,5 + 1,0 + 3,0 + 3,0 + 3,5 giờ, cộng 20 phút `rclone` ở việc 5). Con số này **vượt nhánh 15 giờ/tuần** của D-02 và **sát trần nhánh 20 giờ** — trong khi bốn ngày này chưa có một dòng code nào. Nếu chỉ làm được ba việc, làm **1, 2, 5** — đó là ba việc **không hồi tố được**: một buổi test không chạy hôm nay thì kết quả không có kịp cho quyết định 22/09; một email không gửi hôm nay thì luật sư trả lời sau khi đã viết code; và 112 shortlink không dựng trước 08/09 thì ngày 22/09 **không có một con số H1 nào, kể cả để dừng**.
 
 ### 1. Chạy buổi kiểm chứng nền tảng 7 câu — **HÔM NAY 04/09** · ~2,5 giờ (20 phút chuẩn bị + 2 giờ chạy)
 **Làm gì:** deploy trang test tĩnh ~40 dòng HTML, chạy 7 câu trên **ma trận ≥3 máy Android thật** (không emulator) với ≥3 tài khoản Zalo. Bảy câu: Zalo có cảnh báo domain `.vn` lạ không · `<input type=file>` trong webview có đồng nhất không · OG preview 4:5 có bị crop không · Service Worker có đăng ký được không · `navigator.share({files})` có gửi được file ảnh không · Zalo có hiện danh sách "Đã xem" không · generated column `AT TIME ZONE` + `CREATE TABLE` có chạy không.
