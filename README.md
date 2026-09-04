@@ -24,7 +24,7 @@ Social challenge app private-first cho nhóm bạn thân. Repo này hiện đang
 ## Trạng thái
 
 - [x] Ghi lại chiến lược gốc
-- [ ] Nghiên cứu thị trường & phản biện
+- [x] Nghiên cứu thị trường & phản biện
 - [ ] Chốt MVP scope
 - [ ] Chốt kiến trúc kỹ thuật
 - [ ] Prototype / kiểm chứng giả thuyết lõi
