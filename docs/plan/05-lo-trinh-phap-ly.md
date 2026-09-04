@@ -10,6 +10,8 @@ _Sản phẩm: **Chốt Sổ** (`chotso.vn`) — web app, sổ kín ≤8 ngườ
 >
 > `05` là **file chủ quyền về PHÁP LÝ** (nguyên tắc 2 của bảng phán quyết). Nó thắng ở C01, C04, C18, C23, C24, C40, C62 — nhưng **thua ở C03 (nút thả tim bị cắt), C28 (A = 4,0 thay vì 5), C16/C38 (TTL thumbnail), S22 (trần 60 sổ không được nới)**, và phần này đã sửa theo.
 >
+> **Vòng soát lại 04/09/2026 đã thi hành nốt:** §3 dấu hiệu 4 **bỏ nút thả tim** (C03/S01) ⇒ kết luận đổi từ "4/5 dấu hiệu" sang **"3/5 rõ + 1 tranh cãi + 1 không"** · §8.1 mục 5 ghi đủ **TTL thumbnail vĩnh viễn + cold storage 180 ngày + `archived` 30 ngày báo trước** (A38/C38) · §8.1 mục 7 + §8.2 điều 6 chốt **export = phiên bản tay, 0 pw, SLA 10 ngày, `RUNBOOK.md`** (D-06) · §2 ghi **định nghĩa tạm của hai counter** (A56) · mọi tham chiếu **ADR-001/ADR-002 → `ADR-000-bat-bien.md`** (A103/S21) · chỉ số đổi tên **`group-D28` → `sổ-D28`** (A23) · quy đổi người ở GIAI ĐOẠN 2/3 và ở phần "Bất đồng" tính lại theo **A = 4,0** · thêm mục **"Đã cắt"** ở cuối file.
+>
 > **Sổ cái pw:** mọi khoản pw nêu trong file này (`audit_log` +0,15 · hai counter +0,05 · export tay 0,00) **chỉ có hiệu lực khi đã ghi vào `docs/adr/pw-ledger.md`** — nơi DUY NHẤT, một khoản cắt chỉ được chi MỘT LẦN (A87).
 
 > **Đây không phải phụ lục.** Ba trong bốn quyết định lớn nhất của v2 — không lên store, không SMS OTP, không boss — đều là quyết định pháp lý đội lốt quyết định sản phẩm. Nếu một trong ba cái đó sai về luật, `6,5 pw` và **20 tuần lịch** đi theo nó (6,5 pw × 3,1 tuần/pw ở tốc độ 13 giờ code/tuần — A80/A82/A83; con số "10 tuần" của v2 chỉ đúng nếu founder làm 40 giờ/tuần).
@@ -22,10 +24,10 @@ _Sản phẩm: **Chốt Sổ** (`chotso.vn`) — web app, sổ kín ≤8 ngườ
 
 | # | Kết luận | Hệ quả trực tiếp |
 |---|---|---|
-| 1 | **Chốt Sổ gần như chắc chắn là "mạng xã hội"** theo Điều 3 NĐ 147/2024. 4/5 dấu hiệu của định nghĩa đều có. "Nhóm kín ≤8 người" không phải ngoại lệ trong luật — luật không có chữ nào về quy mô nhóm | Câu hỏi là **khi nào**, không phải **có hay không** |
+| 1 | **Chốt Sổ gần như chắc chắn là "mạng xã hội"** theo Điều 3 NĐ 147/2024. **3/5 dấu hiệu CÓ rõ ràng** (hệ thống thông tin · cung cấp thông tin · chia sẻ thông tin với nhau) **+ 1 tranh cãi** (tương tác — yếu đi sau khi nút thả tim bị CẮT, C03/S01) **+ 1 KHÔNG** (trao đổi). Ba dấu hiệu rõ đã đủ để kết luận. "Nhóm kín ≤8 người" không phải ngoại lệ trong luật — luật không có chữ nào về quy mô nhóm | Câu hỏi là **khi nào**, không phải **có hay không**. ⚠️ **Không được dùng việc cắt nút tim làm lập luận "không còn là MXH"** — xem §3 |
 | 2 | **Ngưỡng bind sớm hơn v2 tưởng ~2,5 lần.** v2 §9 đặt đèn cảnh báo ở 700 *người dùng thường xuyên/tháng* — ở hệ số chuẩn **A = 4,0** (A70) thì 700 người ≈ **175 sổ**. Nhưng ngưỡng là **OR**: `10.000 lượt truy cập/tháng` **hoặc** `1.000 người dùng thường xuyên/tháng`. Core loop mở app hằng ngày ⇒ mỗi người sinh 16–30 lượt/tháng, mốc thận trọng **25** `[ước lượng]` ⇒ **ngưỡng luật 10.000 lượt chạm ở ~100 sổ; đèn vàng 6.000 lượt rơi ở 60 sổ; đèn đỏ 8.500 lượt ở 85 sổ**. Con số 700 báo động **muộn ~2,5 lần** | 🔴 **Con số 700 bị BÁC hoàn toàn (C04/A54).** Thay bằng **HAI counter**: `monthly_visits` vàng **6.000** / đỏ **8.500** · `monthly_active_persons` vàng **600** / đỏ **850**. **Trần hành chính của beta: 60 sổ = 240 người active** — kế hoạch beta duy nhất (12 sổ đợt 1 từ 02/12, ≤30 sổ đợt 2 từ tuần 15) nằm ở **20–50% trần**, còn đệm thật |
-| 3 | 🔴 **Nếu là MXH mà chỉ có Giấy xác nhận thông báo thì KHÔNG được thu tiền.** NĐ 147/2024 dành livestream và **hoạt động phát sinh doanh thu** cho MXH đã được cấp **Giấy phép** [FACT, xác nhận qua VietnamNet + tổng hợp NĐ 147; cần luật sư đối chiếu điều khoản gốc] | Toàn bộ §5 của kế hoạch monetization (kể cả quảng cáo kiểu Locket) bị khoá sau một thủ tục 3–6 tháng cần pháp nhân VN. **Đây là phát hiện nặng nhất của tài liệu này** |
-| 4 | **Rủi ro G1 của v2 đã về mức thấp, và đó là thành quả của thiết kế chứ không phải may mắn.** G1 (Điều 37 khoản 1 NĐ 147/2024) = "tương tác **đồng thời** giữa nhiều người chơi qua hệ thống **máy chủ trò chơi**". Chốt Sổ v2 hụt 2/4 dấu hiệu: không phải trò chơi (không thắng/thua, không điểm cá nhân, không vật phẩm) và rollover batch 04:00 phá vế "đồng thời" | Giới hạn phải giữ vĩnh viễn: không boss/HP/damage/vật phẩm/gacha/leaderboard. **Mục 1 §6 của v2 (boss opt-in v1.2) phải bị khoá thêm bằng một điều kiện pháp lý, không chỉ `group-D28`** |
+| 3 | 🔴 **Nếu là MXH mà chỉ có Giấy xác nhận thông báo thì KHÔNG được thu tiền.** NĐ 147/2024 dành livestream và **hoạt động phát sinh doanh thu** cho MXH đã được cấp **Giấy phép** ✅ **[KIỂM CHỨNG 04/09/2026 — ĐÃ TRÍCH ĐƯỢC SỐ ĐIỀU: NĐ 147/2024 **Điều 24 khoản 6 điểm d**]** — chỉ MXH *"đã được Bộ TT&TT cấp Giấy phép cung cấp dịch vụ mạng xã hội"* mới được cung cấp **livestream** hoặc **hoạt động phát sinh doanh thu dưới mọi hình thức**. Nguồn: `11` §6 #2. Vẫn là nguồn thứ cấp có trích số điều ⇒ luật sư chỉ cần **xác nhận cách hiểu**, không phải tra cứu | Toàn bộ §5 của kế hoạch monetization (kể cả quảng cáo kiểu Locket) bị khoá sau một thủ tục 3–6 tháng cần pháp nhân VN. **Đây là phát hiện nặng nhất của tài liệu này** |
+| 4 | **Rủi ro G1 của v2 đã về mức thấp, và đó là thành quả của thiết kế chứ không phải may mắn.** G1 (Điều 37 khoản 1 NĐ 147/2024) = "tương tác **đồng thời** giữa nhiều người chơi qua hệ thống **máy chủ trò chơi**". Chốt Sổ v2 hụt 2/4 dấu hiệu: không phải trò chơi (không thắng/thua, không điểm cá nhân, không vật phẩm) và rollover batch 04:00 phá vế "đồng thời" | Giới hạn phải giữ vĩnh viễn: không boss/HP/damage/vật phẩm/gacha/leaderboard. **Mục 1 §6 của v2 (boss opt-in v1.2) phải bị khoá thêm bằng một điều kiện pháp lý, không chỉ `sổ-D28`** |
 | 5 | 🟠 **Miễn trừ startup 5 năm (Điều 38.2 Luật 91/2025) mong manh hơn v2 tuyên bố.** v2 §8 ghi "Giữ được". Nhưng Điều 4 NĐ 356/2025 liệt kê **"thông tin về đời sống riêng tư, bí mật cá nhân"** trong danh mục nhạy cảm — mục này rộng hơn "sức khoẻ" rất nhiều, và một ô `goal_text` tự viết + ảnh đời thường hằng ngày rơi thẳng vào vùng tranh cãi | Đừng cược vào miễn trừ. Tin tốt: mất miễn trừ = phải làm **DPIA + TIA + chỉ định người phụ trách**, tức ~2–3 ngày công giấy tờ/năm, **không phải một dự án**. Hạ nó từ "sống còn" xuống "chi phí đã biết" |
 
 ---
@@ -60,8 +62,8 @@ _Sản phẩm: **Chốt Sổ** (`chotso.vn`) — web app, sổ kín ≤8 ngườ
 | 12 (beta đợt 1, 02/12→29/12) | 48 | 1.200 | 12% ngưỡng |
 | 30 (beta đợt 2, mở dần từ tuần 15) | 120 | 3.000 | **30% ngưỡng** |
 | **35 — TRẦN VẬN HÀNH** (8,4 phút/sổ/tuần ⇒ 10 giờ/tuần, A92) | 140 | 3.500 | 35% ngưỡng — **trần thời gian của founder, chạm trước trần pháp lý** |
-| **60 — TRẦN HÀNH CHÍNH (PHÁP LÝ)** | **240** | **6.000** | 🟠 **60% — đèn vàng, dừng nhận sổ mới nếu chưa nộp thông báo.** A93: đây là **trần không được chạm**, không phải mục tiêu |
-| 85 | 340 | 8.500 | 🔴 **đèn đỏ — dừng nhận sổ mới ngay trong ngày** |
+| **60 — TRẦN HÀNH CHÍNH (PHÁP LÝ)** | **240** | **6.000** | 🟠 **60% — đèn vàng: bắt đầu soạn hồ sơ Giấy phép MXH** (3–6 tháng, cần pháp nhân VN + người chịu trách nhiệm nội dung quốc tịch VN — A57). A93: đây là **trần không được chạm**, không phải mục tiêu |
+| 85 | 340 | 8.500 | 🔴 **đèn đỏ — dừng nhận sổ mới ngay trong ngày** + cân nhắc bật phone OTP (A58) |
 | 100 | 400 | 10.000 | 🔴 **CHẠM ngưỡng giấy phép** |
 | 250 | 1.000 | 25.000 | Vượt cả hai ngưỡng |
 
@@ -76,7 +78,7 @@ _Sản phẩm: **Chốt Sổ** (`chotso.vn`) — web app, sổ kín ≤8 ngườ
 |---|---|---|---|---|---|
 | **Không có nghĩa vụ MXH** — chưa cung cấp dịch vụ, chỉ dán ảnh Canva vào nhóm bạn | NĐ 147/2024 Đ.3 (không có "hệ thống thông tin" nào của mình) | Giữ nguyên: Canva + Zalo + Google Sheet | 0 | **0đ** | — |
 | **Bảo vệ DLCN với chính Google Sheet của founder** | Luật 91/2025 Đ.9–11 | Sheet **8 cột** (A96: `q_c_roster · q_x_roster · q_c_sliding · q_x_sliding · roster_size · số người nộp · số XONG · số TOANG`), định danh **pseudonymised** dạng `S03-M2`, **không tên thật, không SĐT, không ảnh trong sheet**. **Xoá sheet sau 22/09** | 20 phút | **0đ** | Founder tự tạo ra một cơ sở dữ liệu cá nhân không có cơ sở pháp lý — vô lý vì nó **miễn phí để tránh** |
-| 🔴 **Kho ảnh Bước 0 trên Google Drive** — nghĩa vụ THẬT, không được coi là "chưa có hệ thống thông tin" | Luật 91/2025 Đ.9–11, Đ.13; NĐ 356/2025 | Bước 0 thu **ảnh thật của ~32–35 người** (8 sổ × 4,0 người) vào Drive của founder ⇒ founder **là bên kiểm soát dữ liệu**. Ba việc bắt buộc: (a) **văn bản thông báo + đồng ý** gửi trong nhóm trước ngày 08/09, nêu rõ ai giữ ảnh, giữ ở đâu, giữ bao lâu, dùng làm gì; (b) **thời hạn lưu công bố trước: tới 22/09/2026**; (c) **kế hoạch xoá**: xoá toàn bộ thư mục Drive + sheet **chậm nhất 22/09**, chụp màn hình làm bằng chứng. Thư mục để **chế độ riêng tư, không link chia sẻ công khai** | 45 phút | **0đ** | 🔴 Đây là lỗ hổng thật của lập luận "Bước 0 không có nghĩa vụ MXH": **nghĩa vụ MXH** thì không có, nhưng **nghĩa vụ DLCN thì có ngay từ tấm ảnh đầu tiên**. Thu ảnh 35 người không thông báo, không thời hạn, không kế hoạch xoá = vi phạm Luật 91/2025 trước cả khi có một dòng code |
+| 🔴 **Kho ảnh Bước 0 trên Google Drive** — nghĩa vụ THẬT, không được coi là "chưa có hệ thống thông tin" | Luật 91/2025 Đ.9–11, Đ.13; NĐ 356/2025 | Bước 0 thu **ảnh thật của ~32 người** (8 sổ × 4,0 người/sổ — A70) vào Drive của founder ⇒ founder **là bên kiểm soát dữ liệu**. Ba việc bắt buộc: (a) **văn bản thông báo + đồng ý** gửi trong nhóm trước ngày 08/09, nêu rõ ai giữ ảnh, giữ ở đâu, giữ bao lâu, dùng làm gì; (b) **thời hạn lưu công bố trước: tới 22/09/2026**; (c) **kế hoạch xoá**: xoá toàn bộ thư mục Drive + sheet **chậm nhất 22/09**, chụp màn hình làm bằng chứng. Thư mục để **chế độ riêng tư, không link chia sẻ công khai** | 45 phút | **0đ** | 🔴 Đây là lỗ hổng thật của lập luận "Bước 0 không có nghĩa vụ MXH": **nghĩa vụ MXH** thì không có, nhưng **nghĩa vụ DLCN thì có ngay từ tấm ảnh đầu tiên**. Thu ảnh của ~32 người không thông báo, không thời hạn, không kế hoạch xoá = vi phạm Luật 91/2025 trước cả khi có một dòng code |
 | **Đăng ký `chotso.vn`** (điều kiện giấy phép MXH sau này: .vn còn hiệu lực ≥6 tháng lúc nộp) | Điều kiện cấp GP MXH, NĐ 147 | **MỘT domain** (A68 — domain thứ hai đã CẮT; đường thoát hiểm là mã 6 ký tự trên card, 0đ). Đăng ký **đứng tên đúng người sẽ là chủ TNHH sau này** — tránh phải chuyển nhượng | 1 giờ | **~750.000đ/năm** `[cần báo giá thật 03/09 — A67]` | Nộp hồ sơ giấy phép mà tên miền mới đăng ký 2 tháng ⇒ trượt điều kiện, chờ thêm 4 tháng |
 | **Gửi luật sư BẢY câu hỏi** (§11) | A65 / QĐ-14 | **7 câu, MỘT email, MỘT lần trả phí** — danh sách hợp nhất thay mọi danh sách rời ở v2 §12, `03` §10, `04` §8, digest #20 | 1 giờ soạn | **5.000.000–15.000.000đ** [A66 — dải rộng vì là 7 câu; thay bằng số thật sau 3 báo giá, hạn 10/09] | Xây **20 tuần lịch** trên một giả định chưa ai xác nhận |
 
@@ -87,27 +89,31 @@ _Kế hoạch beta duy nhất (QĐ-25 / A88–A91): chạy **02/12/2026**, trầ
 | Nghĩa vụ | Căn cứ | Hành động cụ thể | Thời gian | Chi phí | Rủi ro nếu bỏ qua |
 |---|---|---|---|---|---|
 | **Thông báo & đồng ý xử lý DLCN** (không được miễn, kể cả startup) | Luật 91/2025 Đ.11, Đ.13 | Màn chính sách + checkbox **không tick sẵn**, tách riêng: (a) vận hành sổ, (b) lưu ảnh. Không dark pattern | 0,15 pw (đã nằm trong hạng mục 9 của v2) | 0đ | Phạt tới 3 tỷ (NĐ 330/2026); và đây là vi phạm dễ bị phát hiện nhất vì nó nằm trên màn hình |
-| **Quyền chủ thể: truy cập 10 ngày · rút đồng ý 15 ngày · xoá 20 ngày** | Luật 91/2025 + NĐ 356/2025 | Nút "Xoá dữ liệu của tôi" ngay trong màn **Của tôi** (v2 đã có). Soft-delete tức thì + hard-delete ≤20 ngày bằng cron | 0,1 pw | 0đ | Vi phạm định lượng, không cãi được |
+| **Quyền chủ thể: truy cập 10 ngày · rút đồng ý 15 ngày · xoá 20 ngày** | Luật 91/2025 + NĐ 356/2025 | Nút "Xoá dữ liệu của tôi" ngay **trong sản phẩm**. Soft-delete tức thì + hard-delete ≤20 ngày bằng cron. ⚠️ A86 hạ **màn Của tôi xuống 0,00 pw** ở MVP-0 ⇒ nếu màn 6 không tồn tại, nút này **phải nằm ở màn khác**, không được biến mất (xem §8.4) | 0,1 pw | 0đ | Vi phạm định lượng, không cãi được |
 | **Không tạo dữ liệu nhạy cảm** | NĐ 356/2025 Đ.4 | 5 khoá cứng: strip EXIF client-side · **không** face detection/recognition/clustering · **không** xin quyền Location · **không** HealthKit/Google Fit · `preset_id` **không lưu per-user** (v2 §4.8 đã chốt) | 0 thêm | 0đ | Mất miễn trừ Đ.38.2 + kích hoạt nghĩa vụ đồng ý riêng cho dữ liệu nhạy cảm |
 | **Báo cáo / chặn / rời sổ / xoá ảnh của mình** | NĐ 147 Đ.27; Luật ANM 116/2025 Đ.16 khoản 3 | Nút trên **màn Ảnh chi tiết** (v2 màn 5). Trong sản phẩm, không qua email | trong 0,5 pw hạng mục 9 | 0đ | Không có "biện pháp kỹ thuật phát hiện, ngăn chặn, gỡ bỏ kịp thời" ⇒ vi phạm Điều 16 |
 | **Gỡ nội dung theo yêu cầu cơ quan nhà nước: 24h, khẩn cấp 06h** | Luật ANM 116/2025 | Một email liên hệ pháp lý công bố trên màn 7 + nút "khoá sổ khẩn cấp" (một dòng SQL, chuẩn bị sẵn script) | 2 giờ | 0đ | SLA luật định, không thương lượng được |
-| **SLA khiếu nại người dùng: công bố 48h** | Thực tiễn + Apple/Play (khi lên store) | Auto-hide nội dung khi ≥1 report, chờ founder xử lý ≤48h | trong 0,5 pw | 0đ | SLA bị vi phạm tệ hơn SLA khiêm tốn (v2 đã chốt đúng) |
-| **Không index công khai** — giữ lập luận "chưa cung cấp dịch vụ ra công chúng" | Lập luận, không phải điều luật | `robots.txt` + `<meta noindex>` trên mọi trang trừ landing. Vào sổ **chỉ bằng link mời/mã 6 ký tự** | 30 phút | 0đ | Mất một lập luận miễn phí. Lưu ý: đây là **lập luận yếu**, không phải lá chắn |
-| **Đếm 2 chỉ số pháp lý trong dashboard từ dòng code đầu** | §2 bảng trên | `monthly_visits` (session duy nhất/tháng) và `monthly_active_persons` (người có ≥1 lượt/tháng). Đèn vàng ở 6.000 / 600; đèn đỏ 8.500 / 850 | 0,05 pw | 0đ | Vượt ngưỡng mà không biết = vi phạm không cố ý, vẫn bị phạt |
-| **Chưa cần pháp nhân** — vận hành tư cách cá nhân, **doanh thu 0** | Không có hoạt động kinh doanh sinh lợi | Không lập TNHH, không D-U-N-S, không Apple/Google account | — | **0đ** | (ngược lại: lập sớm = đốt 10–20 triệu/năm cho một thứ có thể bị dừng ngày 22/09) |
+| **SLA khiếu nại người dùng: công bố 48h** | Thực tiễn + Apple/Play (khi lên store) | **Auto-hide TOÀN CỤC** (ẩn với mọi thành viên, không phải chỉ với người báo cáo) ngay khi có report đầu tiên — A60/C23; founder xử lý ≤48h; khôi phục nếu report sai | trong 0,5 pw | 0đ | SLA bị vi phạm tệ hơn SLA khiêm tốn (v2 đã chốt đúng) |
+| **Không index công khai** — giữ lập luận "chưa cung cấp dịch vụ ra công chúng" | Lập luận, không phải điều luật | `robots.txt` + `<meta noindex>` trên mọi trang trừ landing. Vào sổ **chỉ bằng link mời hoặc mã 6 ký tự** — mã 6 ký tự là đường thoát hiểm **có điều kiện**: chỉ dùng được khi sổ **< 8 người VÀ card ≤ 7 ngày tuổi** (A45), không phải khoá vào vô điều kiện | 30 phút | 0đ | Mất một lập luận miễn phí. Lưu ý: đây là **lập luận yếu**, không phải lá chắn |
+| **Đếm 2 chỉ số pháp lý trong dashboard từ dòng code đầu** | §2 bảng trên | **Định nghĩa tạm, chờ luật sư (A56/QĐ-24 — đếm rộng, báo động sớm):** `monthly_visits` = **số phiên khác nhau** (phiên mới sau **30 phút** không hoạt động) chạm **bất kỳ route nào, kể cả trang public** · `monthly_active_persons` = **số `person` khác nhau có ≥1 `proof` trong 30 ngày**. Đèn vàng 6.000 / 600; đèn đỏ 8.500 / 850. Hai event `visits_alert` (28) + `persons_alert` (29) — A55. **`monthly_visits` không backfill được**, phải đếm từ dòng code đầu | 0,05 pw (đã ghi `pw-ledger.md`) | 0đ | Vượt ngưỡng mà không biết = vi phạm không cố ý, vẫn bị phạt |
+| **Chưa cần pháp nhân** — vận hành tư cách cá nhân, **doanh thu 0** | Không có hoạt động kinh doanh sinh lợi | Không lập TNHH, không D-U-N-S, không Apple/Google account | — | **0đ** | (ngược lại: lập sớm = đốt 10–22 triệu/năm (§7) cho một thứ có thể bị dừng ngày 22/09) |
 
-### GIAI ĐOẠN 2 — 30 → 80 sổ (150 → 400 người) · vùng phải chuẩn bị
+### GIAI ĐOẠN 2 — 30 → 80 sổ (**120 → 320 người**, A = 4,0) · vùng phải chuẩn bị
+
+_Quy đổi lại theo A70 (A = 4,0, không phải 5): 30 sổ = **120 người**, 80 sổ = **320 người**. Mốc tham chiếu trong giai đoạn này: đèn vàng **60 sổ / 240 người / 6.000 lượt**; đèn đỏ **85 sổ / 340 người / 8.500 lượt**; ngưỡng luật **100 sổ / 400 người / 10.000 lượt**._
 
 | Nghĩa vụ | Căn cứ | Hành động cụ thể | Thời gian | Chi phí | Rủi ro nếu bỏ qua |
 |---|---|---|---|---|---|
 | **Lập Công ty TNHH MTV** — điều kiện tiên quyết của cả hai thủ tục MXH | Điều kiện cấp GP/GXN MXH: phải là cơ quan/tổ chức/**doanh nghiệp thành lập theo pháp luật VN** | Mã ngành **6201** (lập trình) + **6311** (xử lý dữ liệu) + **6312** (cổng thông tin) — đăng đủ 3 mã lên Cổng thông tin quốc gia | 3–7 ngày làm việc | Đăng ký **25.000đ** (miễn nếu nộp online) + công bố **100.000đ** + khắc dấu ~300.000đ + dịch vụ 1–5 triệu. **Vận hành: chữ ký số ~1,5 tr/năm + hoá đơn điện tử ~600k/năm + kế toán thuê ngoài 500k–1,5 tr/tháng** ⇒ **~10–22 triệu/năm** [ước lượng] | Không có pháp nhân = không nộp được cả thông báo lẫn giấy phép = mọi thứ sau đây bị chặn |
 | **Nộp Giấy xác nhận thông báo cung cấp dịch vụ MXH** — làm SỚM, khi còn nhỏ | NĐ 147/2024 (dưới ngưỡng) | Hồ sơ: **Mẫu số 20** + bản sao chứng thực GCN đăng ký doanh nghiệp. Nộp lên **Bộ VHTTDL** (thẩm quyền đã chuyển từ Bộ TT&TT sau tái cơ cấu 2025) | **05 ngày làm việc** kể từ ngày nhận hồ sơ hợp lệ | **0đ lệ phí** [FACT, xác nhận] | Cung cấp dịch vụ MXH không thông báo. Và: hồ sơ nộp lúc 30 sổ dễ hơn hẳn lúc bị chú ý |
-| ⚠️ **Xác thực tài khoản (họ tên · ngày sinh · SĐT di động VN, hoặc số định danh cá nhân)** | **NĐ 147/2024 Điều 27 khoản 3 điểm a/b** — áp cho **tổ chức, doanh nghiệp cung cấp dịch vụ MXH trong nước**, văn bản **không** phân biệt tier giấy phép hay tier thông báo | Nếu luật sư xác nhận áp: bật SMS OTP. Nếu không: giữ device token | 0,4 pw + tích hợp nhà cung cấp | **$0,2852/SMS đi VN** ⇒ 400 người × 1,5 lần xác thực ≈ **$171 ≈ 4,5 triệu VND một lần**; ở 1.000 người ≈ 11 triệu | 🔴 **Đây là mâu thuẫn trực diện với v2 §5 ("Không SMS OTP ở MVP").** Xem §12 Bất đồng |
+| ⚠️ **Xác thực tài khoản (họ tên · ngày sinh · SĐT di động VN, hoặc số định danh cá nhân)** | **NĐ 147/2024 Điều 27 khoản 3 điểm a/b** — áp cho **tổ chức, doanh nghiệp cung cấp dịch vụ MXH trong nước**, văn bản **không** phân biệt tier giấy phép hay tier thông báo | Nếu luật sư xác nhận áp: bật SMS OTP. Nếu không: giữ device token | 0,4 pw + tích hợp nhà cung cấp | 🔧 **[SỬA 04/09/2026 — sai 8–23 lần]** Giá đúng của kênh VN: **ZNS OTP 300đ + 10% VAT = 330đ/tin** · **SMS Brandname 800–900đ/tin** [KIỂM CHỨNG, `11` §7.3]. ⇒ **320 người × 1,5 = 480 tin = 158.400đ (ZNS) / 432.000đ (SMS)**; ở 1.000 người = **495.000đ / 1,35 triệu**. Con số cũ **$0,2852/tin ≈ 7.500đ** là giá **Twilio gửi SMS quốc tế vào VN**, không phải giá kênh trong nước — và chính `03` §2.6 đã có con số đúng (300đ) từ đầu | 🔴 **Đây là mâu thuẫn trực diện với v2 §5 ("Không SMS OTP ở MVP").** Xem §12 Bất đồng |
 | **Lưu thông tin tài khoản + nhật ký (IP, login/logout, giao dịch) ≥ 02 năm** | NĐ 147/2024 Đ.27 | Bảng `audit_log` append-only từ **trước** khi có user — thêm sau = mất toàn bộ lịch sử | 0,15 pw | ~0đ (text log, R2/Postgres) | Không hồi tố được. Đây là hạng mục **rẻ nhất khi làm sớm, không thể làm bù** |
 | **Đánh giá lại nội địa hoá dữ liệu** | NĐ 53/2022 Đ.26 — DN **trong nước** có nghĩa vụ mặc định | Xem §5 | 1 pw nếu phải chuyển | ~300–500k VND/tháng (so với ~79k trên R2) | Phạt tới 5% doanh thu / trần 3 tỷ |
-| **Kiểm tra ngưỡng 100.000 chủ thể dữ liệu tích luỹ** | Luật 91/2025 Đ.38 khoản 2 (ngưỡng "số lượng lớn") | Một counter. Ở 400 người thì còn cách 250 lần — **chưa phải việc năm nay** | 0 | 0đ | Mất miễn trừ mà không biết |
+| **Kiểm tra ngưỡng 100.000 chủ thể dữ liệu tích luỹ** | Luật 91/2025 Đ.38 khoản 2 (ngưỡng "số lượng lớn") | Một counter. Ở **320 người** (trần giai đoạn này) còn cách **~310 lần**; kể cả ở 400 người vẫn còn 250 lần — **chưa phải việc năm nay** | 0 | 0đ | Mất miễn trừ mà không biết |
 
-### GIAI ĐOẠN 3 — >80 sổ / >400 người · phải có GIẤY PHÉP MXH
+### GIAI ĐOẠN 3 — >80 sổ / >320 người · phải có GIẤY PHÉP MXH
+
+_Ngưỡng luật thật chạm ở **100 sổ = 400 người = 10.000 lượt/tháng** (A73); đèn đỏ bật trước đó ở **85 sổ**. Giai đoạn 3 bắt đầu sớm hơn ngưỡng vì hồ sơ mất 3–6 tháng._
 
 | Nghĩa vụ | Căn cứ | Hành động cụ thể | Thời gian | Chi phí | Rủi ro nếu bỏ qua |
 |---|---|---|---|---|---|
@@ -119,7 +125,7 @@ _Kế hoạch beta duy nhất (QĐ-25 / A88–A91): chạy **02/12/2026**, trầ
 
 | Nghĩa vụ | Căn cứ | Hành động | Thời gian | Chi phí | Rủi ro |
 |---|---|---|---|---|---|
-| 🔴 **Phải có GIẤY PHÉP MXH trước, không phải giấy xác nhận thông báo** | NĐ 147/2024 — livestream và **hoạt động phát sinh doanh thu** chỉ dành cho MXH đã được cấp **Giấy phép** [cần luật sư đối chiếu điều khoản gốc] | Không thu một đồng nào — kể cả quảng cáo, kể cả donate — cho tới khi có giấy phép | 3–6 tháng | (như trên) | Thu tiền không phép: xử phạt + buộc nộp lại khoản thu bất hợp pháp |
+| 🔴 **Phải có GIẤY PHÉP MXH trước, không phải giấy xác nhận thông báo** | **NĐ 147/2024 Điều 24 khoản 6 điểm d** ✅ [KIỂM CHỨNG 04/09/2026, `11` §6 #2] — livestream và **hoạt động phát sinh doanh thu dưới mọi hình thức** chỉ dành cho MXH đã được cấp **Giấy phép** | Không thu một đồng nào — kể cả quảng cáo, kể cả donate — cho tới khi có giấy phép | 3–6 tháng | (như trên) | Thu tiền không phép: xử phạt + buộc nộp lại khoản thu bất hợp pháp |
 | **Thuế TNDN** | Luật Thuế TNDN | 20%; ưu đãi **10% trong 15 năm** cho sản xuất sản phẩm phần mềm — **phải đáp ứng quy trình sản xuất phần mềm theo quy định**, không tự động [cần kiểm chứng điều kiện 2026] | — | Kế toán | Truy thu + phạt chậm nộp |
 | **Nếu nhận tiền với tư cách cá nhân** (không khuyến nghị) | Thông tư 40/2021/TT-BTC | **5% GTGT + 2% TNCN** trên doanh thu. Ngưỡng miễn: r06 ghi 100 triệu/năm — **ngưỡng này đã được nâng từ 01/01/2026, con số mới CẦN KIỂM CHỨNG** | — | 7% doanh thu | Cục Thuế đã truy thu **203 tỷ** từ nhóm người viết app cho App Store [FACT, Tuổi Trẻ 2021] |
 | **Điều khoản subscription / hoàn tiền** | Luật BVQL người tiêu dùng 2023 | Giá, chu kỳ, auto-renew, cách huỷ, chính sách hoàn tiền — viết rõ trước khi bật nút | 3 giờ | 0đ | Khiếu nại + rủi ro store nếu sau này lên store |
@@ -138,10 +144,10 @@ _Kế hoạch beta duy nhất (QĐ-25 / A88–A91): chạy **02/12/2026**, trầ
 | 1 | "hệ thống thông tin trên nền tảng **website** hoặc ứng dụng" | Next.js app, máy chủ riêng, DB riêng | ✅ **CÓ, rõ ràng** | **Không.** Điều 3 nói rõ "website **hoặc** ứng dụng". Lập luận "làm web nên luật không đụng tới" là hiểu sai luật — v2 §9 đã nói đúng điều này |
 | 2 | cho phép người dùng **cung cấp** thông tin | Nộp 1 tấm ảnh + nhãn XONG/TOANG + `goal_text` ≤30 ký tự | ✅ **CÓ** | Không, trừ khi bỏ toàn bộ sản phẩm |
 | 3 | cho phép **trao đổi** | ❌ Không chat, không comment, không caption, không reaction trong sản phẩm. Trao đổi 100% xảy ra **trong Zalo** | 🟡 **KHÔNG** — đây là dấu hiệu duy nhất Chốt Sổ hụt, và nó hụt nhờ quyết định v2 §6 mục 4 | Đang hụt. **Phải giữ nguyên** |
-| 4 | cho phép **tương tác** | Nút **thả tim ẩn danh** trên trang public (v2 §4.9, +0,20 pw) | 🟠 **CÓ, yếu** | Có thể bỏ để làm mỏng thêm dấu hiệu — nhưng đổi 0,2 pw lấy một lập luận yếu là **không đáng**. Giữ tim |
+| 4 | cho phép **tương tác** | ❌ **Không còn nút tương tác nào trong sản phẩm** — nút thả tim ẩn danh đã bị **CẮT** khỏi MVP-0 (C03/S01, xem "Đã cắt"). Còn lại: trạng thái XONG/TOANG của người này hiển thị cho người kia, chuỗi chung của sổ, card sinh từ hành động của nhiều người | 🟡 **TRANH CÃI** — không có hành vi tương tác trực tiếp, nhưng vẫn có tương tác gián tiếp qua trạng thái chung | Không cần cố nữa. **Cảnh báo:** dấu hiệu này mỏng đi là **hệ quả phụ của việc cắt scope, KHÔNG phải lá chắn pháp lý** — 3 dấu hiệu còn lại đã đủ kết luận là MXH |
 | 5 | cho phép **chia sẻ thông tin với nhau** | Ảnh của A hiển thị cho B, C, D trong màn Sổ hôm nay; card 4:5 rời hệ thống vào nhóm Zalo | ✅ **CÓ, rất rõ** | Không |
 
-**Kết luận: 4/5 dấu hiệu. Chốt Sổ là mạng xã hội theo Điều 3.** Nhóm kín không phải ngoại lệ — Zalo và Messenger đều có nhóm kín và vẫn là MXH. "Private-first" là định vị sản phẩm, không phải lá chắn pháp lý.
+**Kết luận: 3/5 dấu hiệu CÓ rõ ràng (1, 2, 5) + 1 tranh cãi (4) + 1 KHÔNG (3). Chốt Sổ là mạng xã hội theo Điều 3.** Ba dấu hiệu rõ đã đủ; việc dấu hiệu 4 mỏng đi sau khi cắt nút tim **không đổi kết luận** và không được trình bày như thể nó đổi. Nhóm kín không phải ngoại lệ — Zalo và Messenger đều có nhóm kín và vẫn là MXH. "Private-first" là định vị sản phẩm, không phải lá chắn pháp lý.
 
 ### Nếu có, làm gì
 
@@ -150,7 +156,8 @@ Thứ tự **bắt buộc**, không đảo được:
 ```
 TNHH VN (3–7 ngày)
    → Giấy xác nhận thông báo (Mẫu 20, 05 ngày làm việc, 0đ)   ← làm ở 30–60 sổ
-      → Giấy phép MXH (25 ngày quy định / 3–6 tháng thực tế)  ← bắt đầu ở 40 sổ
+      → Giấy phép MXH (25 ngày quy định / 3–6 tháng thực tế)  ← khởi động ở ~40 sổ,
+                                                                 CHẬM NHẤT ở đèn vàng 60 sổ (A57)
          → mới được thu tiền
 ```
 
@@ -160,7 +167,7 @@ Việc **nộp thông báo sớm** là quyết định rẻ nhất trong toàn t
 
 **Trả lời thẳng: không, và đừng cố.** Nhưng có một danh sách giới hạn thiết kế làm cho lập luận "đây là công cụ lưu trữ dùng chung cho một nhóm xác định, không phải mạng xã hội" **đủ tử tế để luật sư đưa ra** — và quan trọng hơn, làm cho Chốt Sổ **thực sự ít rủi ro nội dung hơn** một MXH thật. Đây là chiến lược **có rủi ro**: nó không đảm bảo kết quả, nó chỉ mua thời gian và thiện chí.
 
-**Tám giới hạn thiết kế — đề xuất đưa vào ADR-002, coi như bất khả xâm phạm:**
+**Tám giới hạn thiết kế — ghi vào mục PHÁP LÝ của `docs/adr/ADR-000-bat-bien.md` (A103/S21: chỉ có MỘT file ADR, không tạo ADR-001/ADR-002), coi như bất khả xâm phạm:**
 
 | # | Giới hạn | Đã có trong v2? |
 |---|---|---|
@@ -171,7 +178,7 @@ Việc **nộp thông báo sớm** là quyết định rẻ nhất trong toàn t
 | L5 | **Không chat, không comment, không caption tự do** | ✅ (§6 mục 4, 5) |
 | L6 | **Không livestream, vĩnh viễn** | ⚠️ Chưa nói. Thêm vào danh sách 20 mục §6 |
 | L7 | **Không nội dung nào rời sổ mà không do một con người bấm nút** — card chia sẻ là hành vi thủ công, không auto-post | ✅ (v2 §4.7) |
-| L8 | **Trang public của link mời chỉ hiện ảnh MỜ + tên + nút thả tim**, không hiện ảnh rõ cho người chưa vào sổ | ✅ (v2 màn 1) |
+| L8 | **Trang public của link mời chỉ hiện ảnh MỜ + tên, KHÔNG có nút tương tác nào** (nút thả tim đã cắt — C03/S01), không hiện ảnh rõ cho người chưa vào sổ. `share_token` **TTL 7 ngày** + `noindex` (A42) | ✅ (v2 màn 1), sau khi bỏ nút tim |
 
 Và **một điều phải nói thẳng**: tám giới hạn này không làm Chốt Sổ hết là MXH. Chúng làm cho việc **là MXH** trở nên rẻ — ít bề mặt nội dung, ít nghĩa vụ moderation, ít khả năng có sự cố. Đó mới là giá trị thật của chúng.
 
@@ -198,7 +205,7 @@ Và **một điều phải nói thẳng**: tám giới hạn này không làm Ch
 4. **Không quy đổi bất cứ thứ gì ra tiền, voucher, thẻ cào, hiện vật**
 5. **Giữ rollover batch** — đây là biện pháp pháp lý, không chỉ là quyết định kỹ thuật. Nếu sau này ai đó "tối ưu" nó thành realtime để UI mượt hơn, người đó vừa phá một lá chắn pháp lý mà không biết. **Ghi vào comment ngay trên hàm rollover.**
 6. **Bảy chữ bị cấm giữ nguyên**: `boss` `game` `nhiệm vụ` `gamification` `ritual` `đứa nào chưa` `thử thách` — cộng thêm **`chơi`, `người chơi`, `điểm`, `level`, `phần thưởng`** trong mọi vật liệu đối ngoại
-7. 🔴 **Sửa điều kiện mở lại của §6 mục 1.** v2 hiện ghi điều kiện mở lại boss là "opt-in v1.2, A/B 50%, chênh group-D28 <10 điểm → gỡ vĩnh viễn". **Điều kiện đó thiếu vế pháp lý.** Đề xuất viết lại: _"Không được mở lại nếu chưa có ý kiến luật sư bằng văn bản rằng cơ chế cụ thể đó không cấu thành G1. Ngưỡng group-D28 là điều kiện cần, ý kiến luật sư là điều kiện đủ."_
+7. 🔴 **Sửa điều kiện mở lại của §6 mục 1.** v2 hiện ghi điều kiện mở lại boss là "opt-in v1.2, A/B 50%, chênh `sổ-D28` <10 điểm → gỡ vĩnh viễn". **Điều kiện đó thiếu vế pháp lý.** Đề xuất viết lại: _"Không được mở lại nếu chưa có ý kiến luật sư bằng văn bản rằng cơ chế cụ thể đó không cấu thành G1. Ngưỡng `sổ-D28` là điều kiện cần, ý kiến luật sư là điều kiện đủ."_
 
 **Chuyện gì xảy ra nếu vẫn bị xếp G1:** cần **Giấy phép cung cấp dịch vụ G1** + **Quyết định phát hành** cho từng trò chơi. Đắt hơn và khó hơn giấy phép MXH đáng kể, và cộng dồn chứ không thay thế. Đây là lý do đơn lẻ mạnh nhất để không bao giờ mở lại boss.
 
@@ -218,7 +225,7 @@ Và **một điều phải nói thẳng**: tám giới hạn này không làm Ch
 
 ### Chuẩn bị trước — 4 việc, tổng ~2 giờ, làm ở dòng code đầu tiên
 
-1. **`StorageAdapter` interface** cho mọi truy cập media (v2 ADR-001 đã có) — giữ nguyên
+1. **`StorageAdapter` interface** cho mọi truy cập media (v2 gọi là "ADR-001"; nay là **mục 2 (schema & đặt tên) + mục 3 (pháp lý) của `docs/adr/ADR-000-bat-bien.md`** — A103) — giữ nguyên
 2. **Không khoá vào Supabase Edge Functions và Supabase Auth.** Dùng Postgres thuần + logic ở tầng app. Đây là điều kiện để 1 pw di chuyển là con số thật, không phải mong ước
 3. **Không dùng bất kỳ tính năng nào chỉ Supabase mới có** (Realtime, Vault, pgsodium wrappers). Nếu buộc phải, ghi vào một file `VENDOR-LOCKIN.md` — một dòng cho mỗi lần
 4. **Tách dữ liệu quan hệ (`sổ`, `thành viên`) khỏi media từ đầu** — nếu phải chuyển gấp, chuyển bảng quan hệ (vài MB) dễ hơn chuyển 200 GB ảnh
@@ -231,7 +238,7 @@ Và **một điều phải nói thẳng**: tám giới hạn này không làm Ch
 | Postgres managed nhỏ | Supabase Pro $25 ≈ 660.000đ/tháng | ~1,5–4 triệu đ/tháng [ước lượng, cần báo giá] | **2–6×** |
 | Công sức di chuyển | — | **≤1 pw** nếu 4 việc chuẩn bị trên đã làm; **3–4 pw** nếu chưa | — |
 
-**Đánh giá:** con số tuyệt đối vẫn nhỏ (chênh ~400k–4 triệu VND/tháng ở quy mô 10.000 sổ). **Nội địa hoá không phải rủi ro tài chính, nó là rủi ro thời điểm** — nó đắt khi phải làm gấp, rẻ khi đã chuẩn bị. Đồng ý với ADR-001 của v2.
+**Đánh giá:** con số tuyệt đối vẫn nhỏ (chênh ~400k–4 triệu VND/tháng ở quy mô 10.000 sổ). **Nội địa hoá không phải rủi ro tài chính, nó là rủi ro thời điểm** — nó đắt khi phải làm gấp, rẻ khi đã chuẩn bị. Đồng ý với kết luận nội địa hoá của v2 (nay nằm trong `docs/adr/ADR-000-bat-bien.md`, không còn file ADR-001 riêng — A103/S21).
 
 ---
 
@@ -260,8 +267,8 @@ Và **một điều phải nói thẳng**: tám giới hạn này không làm Ch
 
 v2 đã chọn đúng và đã tự nhận đúng ("hàng rào giấy tờ, không phải hàng rào kỹ thuật"). Năm bổ sung để P1 có giá trị pháp lý thật, tổng ~1,5 giờ:
 
-1. **Ô nhập năm sinh neutral** — không prefill, không gợi ý đáp án đúng, không hiện "bạn phải ≥16" **trước** khi nhập
-2. **Chỉ lưu cờ `is_16_plus: boolean`, không lưu ngày sinh đầy đủ.** Nguyên tắc tối thiểu hoá dữ liệu (Luật 91/2025) và giảm bề mặt rò rỉ. Đây là một dòng code
+1. **Ô hỏi tuổi neutral** — không prefill, không gợi ý đáp án đúng, không hiện "bạn phải ≥16" **trước** khi nhập. Năm sinh (nếu có hỏi) chỉ dùng để **tính tại chỗ ở tầng ứng dụng**, **không đi vào CSDL**
+2. **Chỉ lưu `person.is_16_plus boolean` + `age_gate_at`. KHÔNG lưu năm sinh, KHÔNG lưu ngày sinh** (A47/QĐ-20 — `04` §1.2 đã xoá cột `birth_year` và hai CHECK gọi `now()`). Nguyên tắc tối thiểu hoá dữ liệu (Luật 91/2025) và giảm bề mặt rò rỉ. Kiểm tra tuổi làm ở **tầng ứng dụng**, không ở tầng CSDL
 3. **Chặn thử lại ngay lập tức** bằng `localStorage` — không chặn được quyết tâm, nhưng chứng minh có biện pháp
 4. **Quy trình phản ứng viết sẵn**: nhận báo cáo "người này 14 tuổi" ⇒ khoá tài khoản ≤48h ⇒ xoá dữ liệu ≤20 ngày ⇒ ghi log. **Có log là bằng chứng, không có log là không có gì**
 5. **Không quảng bá trên kênh nhắm dưới 16** (fanpage trường cấp 2, hashtag lớp 8/9) — ghi vào playbook go-to-market
@@ -279,8 +286,8 @@ v2 đã chọn đúng và đã tự nhận đúng ("hàng rào giấy tờ, khô
 | Giai đoạn | Hình thức | Lý do |
 |---|---|---|
 | Bước 0 (8 sổ, 14 ngày) | **Không gì cả** | Không cung cấp dịch vụ, không thu tiền, không máy chủ. Lập pháp nhân lúc này = đốt 10–22 triệu/năm cho một thứ có 3 nhánh kết cục ở ngày 22/09, trong đó 2 nhánh là "dừng" hoặc "đổi hướng" |
-| Beta ≤30 sổ, doanh thu 0 | **Cá nhân** | Rủi ro: trách nhiệm cá nhân vô hạn. Đổi lại: 0đ, 0 thủ tục, 0 kế toán. Ở 150 người dùng là bạn bè của bạn bè, đây là đánh đổi đúng [lập luận, **cần luật sư xác nhận rằng vận hành phi lợi nhuận ở quy mô này không cấu thành hoạt động kinh doanh phải đăng ký**] |
-| **30 → 60 sổ** | 🔴 **Công ty TNHH MTV** — mã ngành **6201 + 6311 + 6312** | Điều kiện tiên quyết của cả giấy xác nhận thông báo lẫn giấy phép MXH. Lập ở đây để có **3–6 tháng đệm** trước khi chạm ngưỡng ở ~80 sổ |
+| Beta ≤30 sổ, doanh thu 0 | **Cá nhân** | Rủi ro: trách nhiệm cá nhân vô hạn. Đổi lại: 0đ, 0 thủ tục, 0 kế toán. Ở **120 người dùng** (30 sổ × 4,0 — A70) là bạn bè của bạn bè, đây là đánh đổi đúng [lập luận, **cần luật sư xác nhận rằng vận hành phi lợi nhuận ở quy mô này không cấu thành hoạt động kinh doanh phải đăng ký**] |
+| **30 → 60 sổ** | 🔴 **Công ty TNHH MTV** — mã ngành **6201 + 6311 + 6312** | Điều kiện tiên quyết của cả giấy xác nhận thông báo lẫn giấy phép MXH. Lập ở đây để có **3–6 tháng đệm** trước khi chạm đèn đỏ ở **85 sổ** và ngưỡng luật ở **100 sổ** (A73) |
 | Khi gọi vốn quốc tế (nếu có) | Holding Singapore **đặt lên trên** subsidiary VN | Không bao giờ đảo thứ tự |
 
 ### Chi phí TNHH MTV — bảng thật
@@ -291,7 +298,7 @@ v2 đã chọn đúng và đã tự nhận đúng ("hàng rào giấy tờ, khô
 | Phí công bố nội dung đăng ký | ~100.000đ | [FACT] |
 | Khắc dấu | ~200.000–500.000đ | [ước lượng] |
 | Dịch vụ soạn hồ sơ (nếu thuê) | 1–5 triệu | [FACT, khảo giá thị trường] |
-| Lệ phí môn bài | **Miễn 100% năm thành lập.** Từ 2026 khoản này được nêu là **không còn áp dụng** — [**cần kiểm chứng**, đây là thay đổi lớn và nguồn thứ cấp] | |
+| Lệ phí môn bài | ✅ **[KIỂM CHỨNG 04/09/2026] ĐÃ BỊ XOÁ BỎ với hộ kinh doanh và cá nhân kinh doanh từ 01/01/2026** — Điều 10 **Nghị quyết 198/2025/QH15**. Với TNHH vẫn còn miễn 100% năm thành lập. Câu hỏi mở #6 của tài liệu này **ĐÓNG**. Xem `11` §7.2 | |
 | Chữ ký số | ~1,5 triệu/năm | [ước lượng] |
 | Hoá đơn điện tử | ~600.000đ/năm | [ước lượng] |
 | Kế toán thuê ngoài | **500.000–1.500.000đ/tháng** | [ước lượng]. Với doanh nghiệp doanh thu 0, chọn gói rẻ nhất |
@@ -318,14 +325,14 @@ Cả 4 tài liệu dưới đây nằm gọn trong **màn 7 (Chính sách & an t
 | # | Mục | Nội dung tối thiểu cho Chốt Sổ |
 |---|---|---|
 | 1 | **Ai xử lý** | Tên đầy đủ (cá nhân hoặc TNHH), địa chỉ, **email liên hệ thật** |
-| 2 | **Dữ liệu thu thập** | Liệt kê đúng, không nhiều không ít: ảnh do bạn nộp · nhãn XONG/TOANG · `goal_text` bạn tự viết · tên hiển thị · device token · năm sinh dạng cờ ≥16 · IP + log truy cập |
+| 2 | **Dữ liệu thu thập** | Liệt kê đúng, không nhiều không ít: ảnh do bạn nộp · nhãn XONG/TOANG · `goal_text` bạn tự viết · tên hiển thị · device token · **một cờ `is_16_plus` (đúng/sai) + thời điểm khai `age_gate_at` — KHÔNG lưu năm sinh, KHÔNG lưu ngày sinh** (A47) · IP + log truy cập |
 | 3 | **Không thu thập** | Nói thẳng: **không** vị trí · **không** EXIF (bị xoá ngay trên máy bạn trước khi gửi) · **không** nhận diện khuôn mặt · **không** danh bạ · **không** dữ liệu sức khoẻ từ HealthKit/Google Fit · **không** số điện thoại (ở giai đoạn không có OTP) |
 | 4 | **Mục đích, tách riêng từng mục đích** | (a) vận hành sổ, (b) lưu ảnh để hiển thị lại cho nhóm. **Không gộp một checkbox** |
-| 5 | **Thời gian lưu** | **Ảnh gốc 72 giờ**; thumbnail 320px giữ tới khi bạn xoá hoặc xoá sổ; log kỹ thuật giữ theo nghĩa vụ luật định (nêu rõ ≥2 năm khi đã là MXH có giấy phép) |
+| 5 | **Thời gian lưu** — chốt trước **07/09** vì con số này in thẳng vào Chính sách (C38) | **Ảnh gốc 72 giờ** (A36) · **Thumbnail 320px: VĨNH VIỄN** — giữ tới khi **chính bạn xoá** hoặc sổ bị xoá; sổ ngủ **180 ngày: KHÔNG xoá** (⚠️ vế *"chuyển sang R2 Infrequent Access"* của A38 **không thi hành ở MVP-0** — `11` §7.4 chứng minh nó tiết kiệm **0đ** ở trần 60 sổ và làm mỗi lần đọc đắt 2,5×; điều này **không đổi lời hứa in vào Chính sách**, chỉ đổi lớp lưu trữ); chỉ dọn khi sổ ở trạng thái `archived` (mọi thành viên đã rời) **và** đã **báo trước 30 ngày** **và** đã có **đường tải về** (A38/C16/C38) · **Card PNG 90 ngày**, hết hạn thay bằng ảnh tĩnh trung tính, không 404 (A40) · **Trang chia sẻ công khai (`share_token`) 7 ngày** rồi hết hiệu lực (A42) · **`goal_text` xoá cùng sổ, KHÔNG giữ lại sau khi thành viên rời** (A69) · log kỹ thuật giữ theo nghĩa vụ luật định (nêu rõ ≥2 năm khi đã là MXH đã thông báo/có giấy phép) |
 | 6 | **Bên thứ ba** | Nêu **đích danh** từng vendor và **quốc gia đặt máy chủ**: Cloudflare R2 (…), Supabase (Singapore), Vercel (…). Đây cũng là bản khai chuyển dữ liệu xuyên biên giới |
-| 7 | **Quyền của bạn + thời hạn** | Truy cập/cung cấp bản sao **10 ngày** · rút đồng ý **15 ngày** · xoá **20 ngày**. Ghi đúng con số |
+| 7 | **Quyền của bạn + thời hạn** | Truy cập/cung cấp bản sao **10 ngày** · rút đồng ý **15 ngày** · xoá **20 ngày**. Ghi đúng con số. **Cách thực hiện quyền "cung cấp bản sao" ở MVP-0: PHIÊN BẢN TAY, 0 pw** — một truy vấn SQL + đóng gói zip thủ công, gửi qua email liên hệ, SLA 10 ngày, quy trình ghi trong `RUNBOOK.md` (D-06). **Không được bán quyền này** (xoá P1 khỏi `10` §3.1) |
 | 8 | **Xoá của bạn ảnh hưởng gì tới sổ** | Nói trước, trước khi user tạo nội dung: _"Xoá tài khoản sẽ xoá ảnh và thông tin của bạn. Số ngày và số tấm của sổ giữ nguyên dưới dạng con số không gắn tên."_ Đây là cách giải mâu thuẫn quyền-xoá vs toàn-vẹn-sổ |
-| 9 | **Sự cố lộ lọt** | Cam kết thông báo trong **72 giờ** kể từ khi phát hiện |
+| 9 | **Sự cố lộ lọt** | Cam kết thông báo trong **72 giờ** kể từ khi phát hiện. 🔴 **[04/09/2026] Lời hứa này TRƯỚC HÔM NAY KHÔNG CÓ QUY TRÌNH ĐỨNG SAU.** Quy trình 6 mốc (T+0 đóng băng → T+8 xác định phạm vi → T+24 xoay khoá → T+72 thông báo cơ quan + từng chủ thể) nay ở **`11` §5.1**, dán vào `RUNBOOK.md`, **0 pw**. Ba điều kiện tiên quyết ở `11` §5.2 — trong đó **`audit_log` (A49) là bắt buộc**: không có nó thì không xác định được phạm vi ⇒ **phải giả định phạm vi là TOÀN BỘ**. Đây là lập luận mạnh nhất để không cắt `audit_log` ở D-01 |
 
 ### 8.2. Điều khoản sử dụng / EULA — 7 điều
 
@@ -334,7 +341,7 @@ Cả 4 tài liệu dưới đây nằm gọn trong **màn 7 (Chính sách & an t
 3. **Quyền với ảnh của bạn:** bạn giữ toàn bộ quyền. Chốt Sổ chỉ có **license phi độc quyền, có thể huỷ, giới hạn đúng mục đích vận hành dịch vụ**. **Không** xin license vĩnh viễn/toàn cầu/chuyển nhượng được — vừa gây phản ứng user, vừa khó biện minh dưới nguyên tắc mục đích của Luật 91/2025
 4. **Bạn chịu trách nhiệm về ảnh bạn nộp**, gồm cả quyền hình ảnh của người khác xuất hiện trong ảnh (Điều 32 BLDS 2015)
 5. **Chốt Sổ được khoá/xoá nội dung và tài khoản** khi vi phạm, không cần báo trước với trường hợp nghiêm trọng
-6. **Không bảo đảm dịch vụ liên tục.** Đây là beta, có thể dừng — nêu rõ, kèm cam kết báo trước ≥14 ngày và cho tải ảnh về
+6. **Không bảo đảm dịch vụ liên tục.** Đây là beta, có thể dừng — nêu rõ, kèm cam kết **báo trước ≥14 ngày** và **cho tải ảnh về**. ⚠️ Đường tải về đó là **phiên bản tay, 0 pw** (SQL + zip thủ công, SLA 10 ngày, quy trình trong `RUNBOOK.md` — D-06). **Không được hứa một nút export tự động** khi nó không nằm trong bảng pw nào
 7. **Luật áp dụng: pháp luật Việt Nam**
 
 ### 8.3. Quy tắc cộng đồng — ngắn, cụ thể, dùng được
@@ -342,7 +349,8 @@ Cả 4 tài liệu dưới đây nằm gọn trong **màn 7 (Chính sách & an t
 - **Cà khịa được:** trạng thái (`toang`, `vắng`, `chuỗi đứt`), tấm ảnh, chính mình
 - **Cấm:** nội dung khiêu dâm · ảnh người khác không đồng ý · ảnh trẻ em không phải con/em mình · đe doạ · hạ nhục ngoại hình · nội dung tự hại và rối loạn ăn uống · nội dung vi phạm pháp luật VN
 - **Cấm tuyệt đối:** ảnh khoả thân của bất kỳ ai, và **bất kỳ nội dung nào liên quan đến trẻ em** ⇒ khoá vĩnh viễn + báo cơ quan chức năng
-- **Xử lý:** báo cáo → **tự động ẩn ngay khi có 1 report** → founder xử lý ≤48h → gỡ + khoá nếu vi phạm
+- **Xử lý:** báo cáo → **tự động ẩn TOÀN CỤC ngay khi có 1 report** (ẩn với mọi thành viên, không phải chỉ với người báo cáo — A60) → founder xử lý → gỡ + khoá nếu vi phạm, **khôi phục nếu report sai**
+- **HAI SLA, in cả hai trên trang chính sách** (A59/C24): **48 giờ** với khiếu nại của người dùng · **24 giờ, khẩn cấp 06 giờ** với yêu cầu của cơ quan nhà nước (luật định, không thương lượng)
 - **Đây cũng là tài liệu trình Apple/Google khi bị hỏi.** Viết cho người dùng đọc, nhưng viết như thể một reviewer sẽ đọc
 
 ### 8.4. Cơ chế report / block / xoá — 6 thành phần
@@ -356,13 +364,15 @@ Cả 4 tài liệu dưới đây nằm gọn trong **màn 7 (Chính sách & an t
 | **Xoá ảnh của chính mình** + **xoá toàn bộ dữ liệu của tôi** | Màn 5 + màn 6 | Luật 91/2025 · Apple 5.1.1(v) |
 | **Lọc chủ động** — không chỉ report | ⚠️ v2 mới có chặn từ khoá ở ô kèo. **Còn thiếu lọc ảnh** | Apple 1.2 đòi "method for **filtering**" |
 
-🟠 **Lỗ hổng đã phát hiện:** v2 không có bất kỳ cơ chế lọc ảnh nào. Ở giai đoạn không lên store, Apple không bắn — nhưng **Luật ANM 116/2025 Điều 16 khoản 3 vẫn đòi "biện pháp kỹ thuật để phát hiện, ngăn chặn"**. Phương án rẻ nhất: **auto-hide khi có ≥1 report** (đã tính ở trên, ~0 pw thêm) + **giới hạn quy mô** (≤8 người/sổ, không người lạ) như biện pháp cấu trúc. Ghi lập luận này thành văn bản trong ADR — nếu bị hỏi, lập luận "quy mô nhóm kín 8 người là biện pháp ngăn chặn cấu trúc" cần đã tồn tại trước, không phải sáng tác sau.
+> 🔴 **CẢNH BÁO VỊ TRÍ MÀN — sáu thành phần này KHÔNG được cắt theo scope.** Danh sách cắt MVP-0 (A86) hạ **màn 6 "Của tôi" xuống 0,00 pw**, và khuyến nghị D-01 đề xuất **gộp màn 5 "Ảnh chi tiết" thành overlay**. Bảng trên đặt cả 6 thành phần luật định lên đúng hai màn đó. Ràng buộc của `05` (file chủ quyền pháp lý): **D-01 chỉ được gộp màn 5 nếu overlay vẫn chứa đủ Báo cáo nội dung · Báo cáo người dùng · Chặn · Xoá ảnh của mình**; và nếu màn 6 không tồn tại thì **Rời sổ một chạm** + **Xoá toàn bộ dữ liệu của tôi** phải nằm ở một màn khác trong sản phẩm. **Không có phương án "làm qua email"** — Play UGC và Apple 5.1.1(v) đòi trong app, Luật 91/2025 đòi thực hiện được quyền xoá.
+
+🟠 **Lỗ hổng đã phát hiện:** v2 không có bất kỳ cơ chế lọc ảnh nào. Ở giai đoạn không lên store, Apple không bắn — nhưng **Luật ANM 116/2025 Điều 16 khoản 3 vẫn đòi "biện pháp kỹ thuật để phát hiện, ngăn chặn"**. Phương án rẻ nhất: **auto-hide khi có ≥1 report** (đã tính ở trên, ~0 pw thêm) + **giới hạn quy mô** (≤8 người/sổ, không người lạ) như biện pháp cấu trúc. Ghi lập luận này thành văn bản trong **mục pháp lý của `docs/adr/ADR-000-bat-bien.md`** — nếu bị hỏi, lập luận "quy mô nhóm kín 8 người là biện pháp ngăn chặn cấu trúc" cần đã tồn tại trước, không phải sáng tác sau.
 
 ---
 
 ## 9. CHECKLIST APP STORE & PLAY — CHƯA KÍCH HOẠT, ĐỌC TRƯỚC KHI QUYẾT
 
-v2 **không lên store ở MVP**. Nấc app native khoá sau `group-D28 ≥ 35%` trên ≥30 sổ. Bảng này là để đọc **trước** khi mở khoá đó, vì nó thay đổi phép tính.
+v2 **không lên store ở MVP**. Nấc app native + widget khoá sau **`sổ-D28` ≥ 35%** đo trên cohort tuần 1–4 của beta (02/12→29/12/2026), **n ≥ 24 sổ** (đã hạ từ ≥30 — A25), **in kèm KTC 95% = ±17 điểm** mỗi lần trích dẫn, đọc tại cổng **G2 ngày 26/01/2027** (A24/A118). Bảng này là để đọc **trước** khi mở khoá đó, vì nó thay đổi phép tính.
 
 | Guideline | Rủi ro với Chốt Sổ | Phòng thế nào |
 |---|---|---|
@@ -401,15 +411,15 @@ v2 **không lên store ở MVP**. Nấc app native khoá sau `group-D28 ≥ 35%`
 | Bước | Nội dung | Chi phí pháp lý |
 |---|---|---|
 | **1. Bước 0 (08/09 → 21/09)** | 8 sổ, Canva + Zalo + Google Sheet **đã pseudonymise**. Không máy chủ, không dịch vụ, không pháp nhân | **0đ** |
-| **2. Beta đóng ≤30 sổ (trần cứng hành chính: 60 sổ)** | Mời riêng qua mã 6 ký tự · `noindex` + `robots.txt` · không quảng cáo công khai · không PR · không TikTok · ToS + Privacy đầy đủ từ ngày đầu · **doanh thu 0đ tuyệt đối** (bao gồm: T4 của `10` §4 phải là fake pre-order thu cam kết, KHÔNG thu tiền — QĐ-01) | **~750.000đ** (domain) |
+| **2. Beta đóng ≤30 sổ** (trần **vận hành** 35 sổ — A92; trần **hành chính** 60 sổ — A93; hai trần khác nhau, không trộn) | Mời riêng qua mã 6 ký tự · `noindex` + `robots.txt` · không quảng cáo công khai · không PR · không TikTok · ToS + Privacy đầy đủ từ ngày đầu · **doanh thu 0đ tuyệt đối** (bao gồm: T4 của `10` §4 phải là fake pre-order thu cam kết, KHÔNG thu tiền — QĐ-01) | **~750.000đ** (domain) |
 | **3. Ở 30 sổ** | Nếu quyết định đi tiếp: lập **TNHH MTV**, nộp **Giấy xác nhận thông báo** (Mẫu 20, 5 ngày làm việc, 0đ lệ phí) | **~10–22 triệu/năm** |
-| **4. Ở 60 sổ (đèn vàng)** | Bắt đầu **soạn hồ sơ giấy phép MXH** — vì thực tế 3–6 tháng, phải khởi động sớm hơn ngưỡng ~25 sổ. **Quy đổi sổ↔người ở bảng này dùng A = 4,0 (QĐ-10); con số điều khiển thật là hai counter đo trực tiếp, không phải số sổ** | **30–80 triệu** [ước lượng] |
-| **5. Ở 85 sổ (đèn đỏ)** | **Dừng nhận sổ mới.** Không phải dừng sản phẩm — chỉ khoá cửa vào cho tới khi có giấy phép | 0đ |
+| **4. Ở 60 sổ (đèn vàng)** | Bắt đầu **soạn hồ sơ giấy phép MXH** (cần pháp nhân VN + người chịu trách nhiệm nội dung quốc tịch VN — A57). Vì thực tế mất 3–6 tháng, **khởi động từ ~40 sổ** và **chậm nhất ở 60 sổ** — tức sớm hơn ngưỡng luật (100 sổ) chừng **40–60 sổ**. **Quy đổi sổ↔người ở bảng này dùng A = 4,0 (QĐ-10); con số điều khiển thật là hai counter đo trực tiếp, không phải số sổ** | **30–80 triệu** [ước lượng] |
+| **5. Ở 85 sổ (đèn đỏ)** | **Dừng nhận sổ mới ngay trong ngày**, không chờ hết tháng + **cân nhắc bật phone OTP** (A58). Không phải dừng sản phẩm — chỉ khoá cửa vào cho tới khi có giấy phép | 0đ |
 | **6. Thu tiền** | Chỉ sau khi cầm **Giấy phép MXH** trong tay | — |
 
 ### Ba điều làm cho chiến lược này hợp pháp chứ không phải "lách"
 
-1. **Nộp thông báo sớm, chủ động.** Nó miễn phí và mất 5 ngày. Một hồ sơ tự khai báo từ lúc 150 người dùng khác hoàn toàn về bản chất với việc bị phát hiện ở 5.000 người dùng.
+1. **Nộp thông báo sớm, chủ động.** Nó miễn phí và mất 5 ngày. Một hồ sơ tự khai báo từ lúc **120 người dùng** (30 sổ × 4,0 — A70) khác hoàn toàn về bản chất với việc bị phát hiện ở 5.000 người dùng.
 2. **Doanh thu bằng 0 tuyệt đối trong 6 tháng đầu.** Không donate, không "mời cà phê", không tài trợ, không quảng cáo. Đây vừa là ràng buộc pháp lý (§0 kết luận 3) vừa trùng với thực tế: v2 không có kênh doanh thu nào ở MVP.
 3. **Ghi chép quyết định.** Mỗi giới hạn thiết kế (L1–L8), mỗi lý do kỹ thuật có động cơ pháp lý (rollover batch, strip EXIF, `goal_text` free-text, `preset_id` không lưu per-user) phải nằm trong một **ADR có ngày tháng**. Khi cơ quan quản lý hỏi "tại sao anh làm thế này", câu trả lời "tôi đã cân nhắc và đây là ghi chép ngày 03/09/2026" mạnh hơn "tôi may mắn làm đúng".
 
@@ -423,13 +433,15 @@ v2 **không lên store ở MVP**. Nấc app native khoá sau `group-D28 ≥ 35%`
 
 ## 11. VIỆC PHẢI LÀM NGAY TUẦN NÀY (03/09 → 07/09/2026)
 
-Không mục nào cần code, không mục nào phá trần 6,5 pw, không mục nào nằm trong danh sách cấm của v2 §12.
+Không mục nào cần code, không mục nào phá trần 6,5 pw (A83), không mục nào nằm trong danh sách cấm của v2 §12.
+
+> **Cập nhật 04/09/2026:** hai việc của **03/09** (mua `chotso.vn` · gửi email 7 câu cho luật sư) nếu chưa xong thì **đã trễ 1 ngày** — làm ngay hôm nay, vì cả hai đều là đầu vào của mốc **07/09** (ToS + Privacy nháp) và **22/09** (cổng quyết định).
 
 | Ngày | Việc | Output kiểm chứng được | Chi phí |
 |---|---|---|---|
 | **03/09** | Mua `chotso.vn` — **đứng tên đúng người sẽ là chủ TNHH sau này** | Hoá đơn + ảnh chụp thông tin chủ thể đăng ký | ~750.000đ |
 | **03/09** | 🔴 **Gửi luật sư — 7 câu, một email, một lần trả phí** [CHỐT 2026-08-28, QĐ-14]. v2 §12 chỉ gửi 1 câu; `07` §7 ngân sách 1 câu 3–5 triệu. Bảy câu là danh sách HỢP NHẤT của cả hồ sơ — hỏi 7 câu trong một thư ý kiến rẻ hơn hỏi 1 câu bốn lần | Email đã gửi + lịch hẹn + **3 báo giá thật** từ 3 văn phòng | **5–15 triệu** (dải rộng vì là 7 câu, không phải 1; thay bằng số thật sau khi có báo giá, hạn 10/09) |
-| **04/09** | **ADR-002 "Ranh giới pháp lý"** — chép nguyên L1–L8 (§3) + 7 điều kiện G1 (§4) + 4 việc chuẩn bị nội địa hoá (§5) vào một file, commit | File đã commit | 1,5 giờ |
+| **04/09** | **Mục PHÁP LÝ của `docs/adr/ADR-000-bat-bien.md`** (A103/S21 — **MỘT file ADR duy nhất**, không tạo ADR-001/ADR-002 riêng) — chép nguyên L1–L8 (§3) + 7 điều kiện G1 (§4) + 4 việc chuẩn bị nội địa hoá (§5) vào mục 3 của file đó, commit | File đã commit | 1,5 giờ |
 | **04/09** | **Sửa Google Sheet Bước 0 thành pseudonymised** — cột định danh là `S03-M2`, không phải tên thật. Không có cột ảnh | Ảnh chụp header của sheet | 20 phút |
 | **05/09** | Thêm **2 counter pháp lý** vào spec analytics (§10): `monthly_visits`, `monthly_active_persons`, kèm 2 ngưỡng đèn | Một dòng trong spec | 15 phút |
 | **05/09** | Sửa **§6 mục 1 của v2** — thêm điều kiện pháp lý vào điều kiện mở lại boss (§4 mục 7) | Diff trên `01-dinh-nghia-san-pham-v2.md` | 10 phút |
@@ -458,15 +470,30 @@ Không mục nào cần code, không mục nào phá trần 6,5 pw, không mục
 
 ## 12. NHỮNG ĐIỀU CHƯA XÁC MINH ĐƯỢC — NÓI THẲNG
 
+> ### ✅ CẬP NHẬT 04/09/2026 — bốn dòng trong danh sách này đã ĐÓNG, một dòng MỚI mở ra
+>
+> | Trạng thái | Nội dung |
+> |---|---|
+> | ✅ **ĐÓNG** | **Ngưỡng >10.000 lượt/tháng HOẶC >1.000 người thường xuyên** — 4 nguồn độc lập nhất quán. Trần 60/85/100 sổ đứng vững |
+> | ✅ **ĐÓNG** | **"Chỉ MXH có Giấy phép mới được phát sinh doanh thu"** — **NĐ 147/2024 Điều 24 khoản 6 điểm d** |
+> | ✅ **ĐÓNG** | **Ngưỡng miễn thuế hộ KD/cá nhân 2026 = 500 triệu đ/năm** (không phải 100, không phải 200) |
+> | ✅ **ĐÓNG** | **Lệ phí môn bài bị xoá bỏ với hộ KD/cá nhân KD từ 01/01/2026** (Điều 10 NQ 198/2025/QH15) |
+> | 🔧 **SỬA** | **Chi phí SMS OTP sai 8–23 lần**: ZNS OTP **330đ/tin (đã VAT)** hoặc SMS Brandname **800–900đ**, không phải $0,2852 ≈ 7.500đ. Xem mục 2 dưới đây — **vế tiền của bất đồng đó đã sụp, vế pháp nhân thì nặng thêm** |
+> | 🟡 **MỚI, chưa đóng** | Ngưỡng 10.000 lượt có tính theo **"số liệu thống kê trung bình trong 06 tháng liên tục"** không? Cụm này được xác minh chắc chắn cho ngưỡng **100.000 lượt xuyên biên giới (Điều 23 khoản 3)**; một nguồn thứ cấp áp nó cho cả ngưỡng 10.000. **Nếu đúng, mọi đèn cảnh báo phải đo trên trung bình trượt 6 tháng chứ không phải trên một tháng đỉnh — tức đệm rộng hơn nhiều so với thiết kế hiện tại.** Câu phụ, 0đ, thêm vào email luật sư |
+> | 🟡 **MỚI, chưa đóng** | Điều kiện cấp **Giấy phép MXH** bao gồm **máy chủ đặt tại Việt Nam** + lưu dữ liệu ≥2 năm + xác thực bằng SĐT VN/số định danh + tên miền `.vn` + pháp nhân VN. §5 của tài liệu này đã có vế "địa chỉ IP tại VN"; nguồn mới nói rõ hơn. **Hệ quả: trần 60 sổ là trần KIẾN TRÚC, không chỉ trần hành chính** — vượt nó là phải di trú Supabase Singapore + R2 về hạ tầng VN |
+>
+> Chi tiết, phép tính và nguồn: **`11` §6 và §7**.
+
+
 | # | Điều chưa chắc | Mức ảnh hưởng | Ai giải được |
 |---|---|---|---|
 | 1 | **Điều/khoản gốc của NĐ 147/2024 quy định ngưỡng 10.000 lượt / 1.000 người.** Con số nhất quán qua VietnamNet, Vạn Luật, Thư viện Pháp luật nhưng **không trích được nguyên văn từ Công báo** | Cao — nó là trục của toàn tài liệu | Luật sư đối chiếu bản gốc |
-| 2 | **Định nghĩa "lượt truy cập thường xuyên"** — session? pageview? unique visitor? Chênh lệch giữa ba cách hiểu là **hơn 10 lần** ở một sản phẩm mở hằng ngày | 🔴 Rất cao — quyết định trần beta là 60 sổ hay 600 sổ | Câu hỏi 1 gửi luật sư |
+| 2 | **Định nghĩa "lượt truy cập thường xuyên"** — session? pageview? unique visitor? Chênh lệch giữa ba cách hiểu là **hơn 10 lần** ở một sản phẩm mở hằng ngày. **Định nghĩa tạm đang dùng (A56/QĐ-24): phiên mới sau 30 phút không hoạt động, đếm trên mọi route kể cả trang public — đếm rộng, báo động sớm** | 🔴 Rất cao — quyết định trần beta là 60 sổ hay 600 sổ | Câu hỏi 1 gửi luật sư |
 | 3 | **Điều 27 khoản 3 có áp cho tier thông báo không** | 🔴 Rất cao — quyết định "có SMS OTP hay không" | Câu hỏi 2 |
-| 4 | **"Chỉ MXH có Giấy phép mới được phát sinh doanh thu"** — nguồn thứ cấp nhất quán, chưa trích nguyên văn | 🔴 Rất cao — quyết định toàn bộ lộ trình monetization | Câu hỏi 3 |
+| ~~4~~ | ✅ **ĐÓNG 04/09/2026 — "Chỉ MXH có Giấy phép mới được phát sinh doanh thu": NĐ 147/2024 Điều 24 khoản 6 điểm d.** Đã trích được số điều (`11` §6 #2). Hệ quả: **A62 ("doanh thu 0đ tuyệt đối 6 tháng đầu") không còn là lựa chọn kinh doanh — nó là nghĩa vụ luật định** | 🔴 Rất cao, nhưng **đã trả lời** | Câu 3 chuyển sang dạng "xin xác nhận cách hiểu", rẻ hơn nhiều |
 | 5 | **`goal_text` free-text có bị coi là "thông tin về đời sống riêng tư, bí mật cá nhân"** (Điều 4 NĐ 356/2025) không | Trung bình — quyết định miễn trừ Đ.38.2 | Luật sư; nhưng đã hạ mức xuống "chi phí đã biết" ở §0 |
-| 6 | **Lệ phí môn bài có thực sự bị bãi bỏ từ 2026 không** | Thấp (2–3 triệu/năm) | Kế toán |
-| 7 | **Ngưỡng doanh thu miễn thuế cho cá nhân/hộ kinh doanh 2026** — r06 ghi 100 triệu/năm; con số này đã thay đổi | Thấp ở giai đoạn doanh thu 0 | Kế toán |
+| ~~6~~ | ~~**Lệ phí môn bài có thực sự bị bãi bỏ từ 2026 không**~~ ✅ **ĐÓNG 04/09/2026** — bị xoá bỏ với hộ KD/cá nhân KD từ 01/01/2026 theo Điều 10 NQ 198/2025/QH15 | — | ✅ đã trả lời |
+| ~~7~~ | ~~**Ngưỡng doanh thu miễn thuế cho cá nhân/hộ kinh doanh 2026**~~ ✅ **ĐÓNG 04/09/2026 — 500 triệu đồng/năm** (không phải 100, không phải 200). Ở mức doanh thu 0đ tuyệt đối của 12 tháng đầu, ngưỡng này xa tới mức không còn là ràng buộc | — | ✅ đã trả lời |
 | 8 | **Lệ phí nhà nước cho Giấy phép MXH** | Trung bình | Cổng DVC / luật sư |
 | 9 | **Thời gian thực tế cấp Giấy phép MXH** (25 ngày quy định vs 3–6 tháng thực tế) | Cao — quyết định phải khởi động sớm bao nhiêu | Luật sư đã làm hồ sơ tương tự |
 | 10 | **NĐ 147/2024 có nghị định sửa đổi nào sau tái cơ cấu bộ ngành 2025 không** — thẩm quyền đã chuyển sang **Bộ VHTTDL**, xác nhận qua thủ tục hành chính, nhưng chưa xác minh có văn bản sửa đổi nội dung | Trung bình | Luật sư |
@@ -476,16 +503,24 @@ Không mục nào cần code, không mục nào phá trần 6,5 pw, không mục
 ## Bất đồng với định nghĩa sản phẩm v2
 
 **1. 🔴 Ngưỡng cảnh báo của v2 §9 đặt sai đơn vị và trễ ~2,5 lần.**
-v2 ghi: _"một dòng trong dashboard cảnh báo ở **700 người dùng thường xuyên/tháng** (đệm 30% dưới ngưỡng)"_. Nhưng ngưỡng luật là **OR**, và nhánh `10.000 lượt truy cập/tháng` bind trước ở một sản phẩm mà core loop là mở app **hằng ngày**. Ở 25 lượt/người/tháng, 10.000 lượt = **400 người ≈ 80 sổ**, trong khi 700 người ≈ 140 sổ. **Đề nghị sửa:** thay đèn cảnh báo bằng **hai** counter với hai ngưỡng (§10), và ghi trần beta là **60 sổ**, không phải "vài trăm".
+v2 ghi: _"một dòng trong dashboard cảnh báo ở **700 người dùng thường xuyên/tháng** (đệm 30% dưới ngưỡng)"_. Nhưng ngưỡng luật là **OR**, và nhánh `10.000 lượt truy cập/tháng` bind trước ở một sản phẩm mà core loop là mở app **hằng ngày**. Ở 25 lượt/người/tháng và **A = 4,0 người/sổ** (A70), 10.000 lượt = **400 người ≈ 100 sổ**, trong khi 700 người ≈ **175 sổ** — tức đèn của v2 chỉ kêu sau khi đã vượt ngưỡng luật 75 sổ. **Đề nghị sửa:** thay đèn cảnh báo bằng **hai** counter với hai ngưỡng (§10), và ghi trần beta là **60 sổ**, không phải "vài trăm".
 
 **2. 🔴 "Không SMS OTP ở MVP" có thể không sống được qua mốc lập pháp nhân.**
-v2 §6 mục 7 ghi điều kiện mở SMS OTP là _"mốc 700 người dùng thường xuyên/tháng"_. Nhưng **Điều 27 khoản 3 điểm a/b NĐ 147/2024** đặt nghĩa vụ lưu họ tên · ngày sinh · SĐT di động VN (hoặc số định danh) lên **"tổ chức, doanh nghiệp cung cấp dịch vụ mạng xã hội trong nước"** — văn bản như đã kiểm chứng **không phân biệt tier giấy phép và tier thông báo**. Nếu luật sư xác nhận điều này, thì nghĩa vụ OTP gắn vào mốc **"có pháp nhân + nộp thông báo"** (≈30 sổ), không phải mốc 700 người. Hệ quả: khoản $0,2852/SMS quay lại mô hình tài chính sớm hơn ~4 lần, và có thể phải cân nhắc **kéo dài giai đoạn tư cách cá nhân** thay vì lập TNHH sớm. Đây là câu hỏi số 2 gửi luật sư, và nó **đáng giá hơn cả câu hỏi số 1**.
+v2 §6 mục 7 ghi điều kiện mở SMS OTP là _"mốc 700 người dùng thường xuyên/tháng"_. Nhưng **Điều 27 khoản 3 điểm a/b NĐ 147/2024** đặt nghĩa vụ lưu họ tên · ngày sinh · SĐT di động VN (hoặc số định danh) lên **"tổ chức, doanh nghiệp cung cấp dịch vụ mạng xã hội trong nước"** — văn bản như đã kiểm chứng **không phân biệt tier giấy phép và tier thông báo**. Nếu luật sư xác nhận điều này, thì nghĩa vụ OTP gắn vào mốc **"có pháp nhân + nộp thông báo"** (≈30 sổ), không phải mốc 700 người. Hệ quả: nghĩa vụ OTP gắn vào mốc **"có pháp nhân + nộp thông báo"** (≈30 sổ), không phải mốc 700 người.
+
+> 🔧 **[SỬA 04/09/2026 — vế TIỀN của bất đồng này đã SỤP, vế PHÁP NHÂN thì nặng thêm]**
+> Giá thật của kênh xác thực trong nước là **ZNS OTP 330đ/tin (đã VAT)** hoặc **SMS Brandname 800–900đ/tin**, không phải $0,2852 ≈ 7.500đ (đó là giá Twilio quốc tế). Toàn bộ chi phí OTP ở mốc 1.000 người là **495.000đ – 1,35 triệu**, không phải 11 triệu — **sai 8–23 lần** [`11` §7.3].
+> ⇒ **Không còn ai đổi ý vì tiền.** Hai vế còn sống, và cả hai đều nặng hơn vế tiền đã mất:
+> 1. **SẢN PHẨM**: +0,4 pw và phá quyết định "không màn đăng nhập" của v2 §5 + `03` §2.4 + `08`.
+> 2. **PHÁP NHÂN**: **ZNS OTP đòi Zalo OA đã xác minh, tức đòi pháp nhân.** Nghĩa là nếu Điều 27 áp cho tier thông báo thì nó **buộc lập TNHH sớm** — đúng thứ lộ trình này đang cố hoãn. Đây mới là chi phí thật, và nó không đo bằng tiền tin nhắn.
+>
+> Đây vẫn là **câu hỏi số 2** gửi luật sư và vẫn **đáng giá hơn câu hỏi số 1** — nhưng lý do đã đổi.
 
 **3. 🔴 v2 §8 tuyên bố "Giữ được" miễn trừ Điều 38.2 — quá tự tin.**
 v2 phòng thủ đúng nhánh "dữ liệu sức khoẻ" (free-text, không taxonomy, không HealthKit) nhưng **bỏ sót nhánh rộng hơn**: Điều 4 NĐ 356/2025 liệt kê **"thông tin về đời sống riêng tư, bí mật cá nhân"** trong danh mục nhạy cảm. Một ô kèo tự viết cộng một tấm ảnh đời thường mỗi ngày rơi vào vùng tranh cãi của mục đó, và không có thiết kế nào né được nó mà vẫn giữ được sản phẩm. **Đề nghị sửa dòng trạng thái từ "Giữ được" thành "Giảm rủi ro; nếu mất thì chi phí là ~2–3 ngày công giấy tờ/năm, không phải một dự án"** — hạ nó khỏi danh sách sống-còn, đúng chỗ của nó.
 
 **4. 🟠 §6 mục 1 (boss opt-in v1.2) có điều kiện mở lại thiếu vế pháp lý.**
-Điều kiện hiện tại thuần số (`group-D28` chênh <10 điểm → gỡ). Nhưng cái đắt của boss không phải retention, mà là **Giấy phép G1 + Quyết định phát hành**. Đề nghị thêm: _"điều kiện đủ là ý kiến luật sư bằng văn bản rằng cơ chế cụ thể đó không cấu thành G1"_.
+Điều kiện hiện tại thuần số (`sổ-D28` chênh <10 điểm → gỡ). Nhưng cái đắt của boss không phải retention, mà là **Giấy phép G1 + Quyết định phát hành**. Đề nghị thêm: _"điều kiện đủ là ý kiến luật sư bằng văn bản rằng cơ chế cụ thể đó không cấu thành G1"_.
 
 **5. 🟠 §5 màn 7 nói "cam kết SLA gỡ nội dung" số ít — phải là HAI SLA.**
 48 giờ là SLA **với khiếu nại người dùng** (v2 chốt đúng: 48h khiêm tốn tốt hơn 24h bị vi phạm). Nhưng **24 giờ / 06 giờ khẩn cấp với yêu cầu của cơ quan nhà nước là luật định, không thương lượng được**. Trang chính sách phải ghi rõ hai con số cho hai đối tượng, và founder phải có script khoá sổ khẩn cấp chuẩn bị sẵn.
@@ -494,7 +529,7 @@ v2 phòng thủ đúng nhánh "dữ liệu sức khoẻ" (free-text, không taxo
 Chỉ có chặn từ khoá ở ô kèo. Luật ANM 116/2025 Điều 16 khoản 3 đòi "biện pháp kỹ thuật để phát hiện, ngăn chặn". Đề nghị bổ sung **auto-hide khi có ≥1 report** (≈0 pw thêm, dùng chung với hạng mục 9) và ghi lập luận "quy mô nhóm kín ≤8 người, không người lạ, là biện pháp ngăn chặn cấu trúc" vào ADR **ngay bây giờ**, không phải khi bị hỏi.
 
 **7. 🟡 v2 §12 cấm lập TNHH trong Bước 0 — tôi đồng ý — nhưng không đặt ngày nào để làm sau đó.**
-Đề nghị neo vào **số sổ**, không vào ngày: lập TNHH khi chạm **30 sổ** (đèn vàng còn cách 18 sổ, đèn đỏ còn cách 38 sổ, đủ đệm 3–6 tháng cho hồ sơ giấy phép).
+Đề nghị neo vào **số sổ**, không vào ngày: lập TNHH khi chạm **30 sổ** (ở A = 4,0: đèn vàng 60 sổ còn cách **30 sổ**, đèn đỏ 85 sổ còn cách **55 sổ**, ngưỡng luật 100 sổ còn cách 70 sổ — đủ đệm 3–6 tháng cho hồ sơ giấy phép).
 
 **Không bất đồng** với: bỏ boss · không lên store · rollover batch 04:00 · strip EXIF · TTL 72h · `preset_id` không lưu per-user · không nhận diện khuôn mặt · không vật phẩm ảo · age gate ≥16 · Supabase SG + R2 với `StorageAdapter` · SLA 48h cho khiếu nại người dùng · Vietnam-only. Toàn bộ đều là quyết định pháp lý đúng, và đa số đúng vì lý do mà v2 đã nêu chính xác.
 
@@ -504,12 +539,38 @@ Chỉ có chặn từ khoá ở ô kèo. Luật ANM 116/2025 Điều 16 khoản 
 
 | # | Câu hỏi | Vì sao phải quyết bây giờ | Hạn |
 |---|---|---|---|
-| 1 | **Chi 5–15 triệu cho ý kiến luật sư bằng văn bản trước khi viết dòng code đầu tiên — có hay không?** Nếu không, founder đang cược 10 tuần lịch + 70–95 triệu chi phí cơ hội vào ba giả định chưa ai xác nhận | Câu hỏi 3 (thu tiền cần giấy phép) có thể xoá toàn bộ đường ray doanh thu. Biết trước ngày 22/09 rẻ hơn biết vào tháng thứ 5 | **03/09** |
-| 2 | **Trần beta là 30 sổ hay 60 sổ?** v2 chọn 30. Tài liệu này nói trần luật là ~60–80. Ở 30 sổ, founder có đệm 2× — nhưng cũng chỉ có 30 điểm dữ liệu để đo `group-D28 ≥35%` | Ảnh hưởng ngân sách giờ vận hành (v2: ~10 phút/sổ/tuần ⇒ 30 sổ = 5 giờ/tuần; 60 sổ = 10 giờ/tuần = **chạm đúng trần cứng vận hành**) | 22/09 |
-| 3 | **Nếu luật sư trả lời "có, Điều 27 áp cho cả tier thông báo" — chọn gì?** (a) Bật SMS OTP, +0,4 pw + 4,5 triệu chi phí, phá quyết định "không màn đăng nhập"; (b) Hoãn lập TNHH, giữ tư cách cá nhân lâu hơn, chấp nhận trách nhiệm cá nhân vô hạn; (c) Dừng ở 30 sổ vĩnh viễn, coi đây là portfolio piece | Đây là ngã ba thật, không có đáp án hiển nhiên. Nên nghĩ **trước** khi có câu trả lời, để không quyết trong lúc hoảng | Trước khi luật sư trả lời |
-| 4 | **Nếu "phải có giấy phép MXH mới được thu tiền" là đúng — dự án này còn là "small profitable business" không, hay chỉ còn là portfolio piece?** v2 §9 mục 5 đã gọi tên hai khả năng đó; câu trả lời pháp lý này chọn hộ một trong hai | Ảnh hưởng thẳng tới kill gate 31/03/2027 (điều kiện "doanh thu vẫn bằng 0" trở nên gần như tất yếu về mặt pháp lý, không phải về mặt sản phẩm — nên **điều kiện đó cần viết lại**) | 22/09 |
-| 5 | **Ai là "người chịu trách nhiệm nội dung" khi lập TNHH?** Điều kiện giấy phép MXH đòi nhân sự VN chịu trách nhiệm quản lý nội dung + "bộ phận quản lý nội dung" và "bộ phận quản lý kỹ thuật". Với team 1 người, hồ sơ này khai thế nào cho đúng sự thật mà vẫn qua được? | Đây là điểm hồ sơ dễ trượt nhất với founder một mình, và nó không sửa được bằng tiền | Trước 30 sổ |
-| 6 | **Có chấp nhận rằng tám giới hạn thiết kế L1–L8 là vĩnh viễn không?** Chúng khoá vĩnh viễn: không feed, không khám phá, không kết bạn, không livestream, trần 8 người/sổ. Đó là khoá luôn một loạt hướng tăng trưởng | Nếu founder không thật lòng chấp nhận, ADR-002 sẽ bị phá vào tháng thứ 4 dưới áp lực tăng trưởng — và lúc đó không ai nhớ nó là hàng rào pháp lý | **04/09**, khi viết ADR-002 |
+| 1 | **Chi 5–15 triệu cho ý kiến luật sư bằng văn bản trước khi viết dòng code đầu tiên — có hay không?** Nếu không, founder đang cược **20 tuần lịch** (6,5 pw × 3,1 tuần/pw ở 13 giờ code/tuần — A80/A82/A83; **không phải 10 tuần**, con số đó chỉ đúng ở 40 giờ/tuần) + 70–95 triệu chi phí cơ hội vào ba giả định chưa ai xác nhận | Câu hỏi 3 (thu tiền cần giấy phép) có thể xoá toàn bộ đường ray doanh thu. Biết trước ngày 22/09 rẻ hơn biết vào tháng thứ 5 | **03/09** |
+| 2 | **Nếu luật sư trả lời "có, Điều 27 áp cho cả tier thông báo" — chọn gì?** (a) Bật SMS OTP, +0,4 pw + 4,5 triệu chi phí, phá quyết định "không màn đăng nhập"; (b) Hoãn lập TNHH, giữ tư cách cá nhân lâu hơn, chấp nhận trách nhiệm cá nhân vô hạn; (c) Dừng ở 30 sổ vĩnh viễn, coi đây là portfolio piece | Đây là ngã ba thật, không có đáp án hiển nhiên. Nên nghĩ **trước** khi có câu trả lời, để không quyết trong lúc hoảng | Trước khi luật sư trả lời |
+| 3 | **Nếu "phải có giấy phép MXH mới được thu tiền" là đúng — dự án này còn là "small profitable business" không, hay chỉ còn là portfolio piece?** v2 §9 mục 5 đã gọi tên hai khả năng đó; câu trả lời pháp lý này chọn hộ một trong hai. Đây chính là **D-04** của bảng phán quyết (định nghĩa thành công A hay B), khuyến nghị **B trong 12 tháng đầu** | Kill gate 31/03/2027 **đã được sửa xong**: vế "doanh thu = 0" **ĐÃ BỊ BỎ** khỏi điều kiện (A64/QĐ-01b — nếu pháp lý cấm phát sinh doanh thu thì doanh thu 0 là **hệ quả pháp lý, không phải tín hiệu thị trường**). Điều kiện dừng còn lại: **`> 15 giờ/tuần` VÀ `sổ-D28 < 25%`**. Việc còn phải quyết chỉ là **A hay B** | 22/09 |
+| 4 | **Ai là "người chịu trách nhiệm nội dung" khi lập TNHH?** Điều kiện giấy phép MXH đòi nhân sự VN chịu trách nhiệm quản lý nội dung + "bộ phận quản lý nội dung" và "bộ phận quản lý kỹ thuật". Với team 1 người, hồ sơ này khai thế nào cho đúng sự thật mà vẫn qua được? | Đây là điểm hồ sơ dễ trượt nhất với founder một mình, và nó không sửa được bằng tiền | Trước 30 sổ |
+| 5 | **Có chấp nhận rằng tám giới hạn thiết kế L1–L8 là vĩnh viễn không?** Chúng khoá vĩnh viễn: không feed, không khám phá, không kết bạn, không livestream, trần 8 người/sổ. Đó là khoá luôn một loạt hướng tăng trưởng | Nếu founder không thật lòng chấp nhận, mục pháp lý của ADR-000 sẽ bị phá vào tháng thứ 4 dưới áp lực tăng trưởng — và lúc đó không ai nhớ nó là hàng rào pháp lý | **04/09**, khi viết mục pháp lý của `ADR-000-bat-bien.md` |
+
+### Hai việc pháp lý CHỜ FOUNDER QUYẾT — máy không được tự quyết
+
+> ⚠️ **D-06 — Chức năng export (tải dữ liệu về): ai trả 0,3 pw?**
+> Ba chỗ trong hồ sơ đã **hứa** đường tải dữ liệu về: §8.1 mục 7 (nghĩa vụ luật định "cung cấp bản sao trong 10 ngày"), §8.2 điều 6 của ToS ("báo trước ≥14 ngày và cho tải ảnh về"), và A38 (dọn sổ `archived` phải kèm đường tải về). **Nó không nằm trong bất kỳ bảng pw nào**, trong khi `10` §3.1 lại định **BÁN** đúng thứ đó (gói P1, 99k/sổ/năm).
+> · **Lựa chọn A — làm phiên bản tay, 0 pw:** một truy vấn SQL + zip thủ công, gửi qua email liên hệ, SLA 10 ngày, quy trình viết trong `RUNBOOK.md`. Được: giữ đúng lời hứa, không tốn pw. Mất: tốn giờ vận hành của founder mỗi lần có yêu cầu (ước tính 20–30 phút/yêu cầu, ăn vào trần 10 giờ/tuần).
+> · **Lựa chọn B — build nút export tự động, +0,3 pw:** phải cắt 0,3 pw ở chỗ khác (trần 3,5 pw của A84 đang đã thiếu 1,08 pw — A85/D-01), và khoản cắt phải ghi vào `docs/adr/pw-ledger.md`.
+> · **Khuyến nghị của bảng phán quyết: A (phiên bản tay).** Kèm một ràng buộc cứng: **xoá gói P1 khỏi `10` §3.1** — không được bán thứ mà luật buộc phải cho.
+> · **Hạn: 07/09/2026** (trước khi viết Chính sách quyền riêng tư — con số và cách thực hiện in thẳng vào đó). Quá hạn ⇒ khuyến nghị A tự động có hiệu lực và phải ghi vào `ADR-000-bat-bien.md` kèm dòng "quyết định mặc định do quá hạn".
+
+> ⚠️ **D-07 — Ai trực SLA 48h trong **10 ngày** Tết (`book_date` 03/02 → 12/02/2027, tức 03/02 04:00 → 13/02 03:59 ICT — A120)?** _(Mục D-07 của `_rulings.md` viết "11 ngày"; A120 là hằng số có hiệu lực và nó ghi **10 ngày** — dùng 10.)_
+> SLA 48h với khiếu nại người dùng **đã công bố trên trang chính sách**, và SLA 24h/6h với cơ quan nhà nước là **luật định**. Bus factor = 1, founder về quê, cửa sổ Tết freeze là `book_date` **03/02 → 12/02/2027** (A120).
+> · **Lựa chọn A — có người thứ hai:** một người bạn có login **chỉ-đọc** + bộ câu trả lời mẫu + số điện thoại founder. Được: dịch vụ chạy bình thường. Mất: phải có một cái tên thật, và người đó chạm vào dữ liệu người dùng ⇒ phải ghi vào Chính sách như **bên xử lý dữ liệu**.
+> · **Lựa chọn B — nghỉ Tết công khai:** bật `remote_config['service_paused']`, **thông báo trước ≥14 ngày** (tức chậm nhất **20/01/2027**). Được: 0 rủi ro SLA khiếu nại. Mất: **không** miễn được SLA 24h/6h với cơ quan nhà nước — founder vẫn phải cầm điện thoại.
+> · **Khuyến nghị: A**; nếu không có tên trước **15/12/2026** thì **B tự động có hiệu lực**.
+
+---
+
+## Đã cắt (giữ lại để không bị đề xuất lại)
+
+> Luật: thứ đã bị cắt mà quay lại thì **mặc định bị cắt lần nữa**, trừ khi có khoản đối trừ đã ghi vào `docs/adr/pw-ledger.md` (nguyên tắc 4 + A87).
+
+| # | Đã cắt gì | Vì sao | Hệ quả trong tài liệu này | Điều kiện mở lại |
+|---|---|---|---|---|
+| 1 | **Nút thả tim ẩn danh** (0,20 pw) — C03 / S01 | Ba tài liệu độc lập (`03`, `04`, `07`) chọn nó làm ứng viên cắt; nó đã bị "bán" 3 lần nên **không còn là tiền**, chỉ còn là một khoản cắt | §3 dấu hiệu 4 ("tương tác") **không còn tựa vào nút tim**: chuyển từ 🟠 CÓ-yếu sang 🟡 TRANH CÃI, kết luận §0 và §3 đổi từ "4/5" sang "3/5 rõ + 1 tranh cãi". L8: trang public **không có nút tương tác nào** | **T13+** (sau 26/01/2027). Nếu mở lại: (a) khoản 0,20 pw phải được cấp lại từ `pw-ledger.md`, (b) **§3 dấu hiệu 4 quay lại 🟠 CÓ** và lập luận pháp lý phải viết lại, (c) không được dùng việc "đã cắt tim" như lập luận không-phải-MXH ở bất kỳ hồ sơ nào |
+| 2 | **Việc NỚI trần vận hành (30 → 35 → 60 sổ) bằng cách hỏi lại** — S22 | Hai trần khác nhau bị trộn làm một. Trần **vận hành** = 35 sổ sống (8,4 phút/sổ/tuần trên trần 10 giờ/tuần, A92); trần **hành chính/pháp lý** = 60 sổ (điểm đèn vàng, A93). Ở 60 sổ giờ vận hành đã là đúng 10 h/tuần ⇒ **không còn đệm nào** | Câu hỏi mở cũ số 2 ("trần beta là 30 hay 60 sổ?") **đã bị xoá khỏi §Câu hỏi mở** — nó đã được chốt, không còn là câu hỏi. Kế hoạch beta duy nhất: 12 sổ đợt 1 → ≤30 sổ đợt 2 (QĐ-25 / A88–A91) | **Không mở lại bằng cách hỏi lại.** Chỉ mở khi có **cả hai**: (a) số đo thật của `book_day.active_count` và của hai counter pháp lý cho thấy 60 sổ vẫn dưới đèn vàng, **và** (b) giờ vận hành thực đo ≤10 giờ/tuần trong 3 tuần liên tiếp. Ghi vào `ADR-000-bat-bien.md` |
+| 3 | **Domain dự phòng thứ hai** — A68 / C45 | Đường thoát hiểm khi Zalo chặn domain là **mã 6 ký tự in trên card** (0đ), không phải mua thêm domain | §2 GIAI ĐOẠN 0 và §11 chỉ còn **MỘT** domain `chotso.vn` (~750.000đ/năm) | Mua ngay trong tuần **nếu** buổi kiểm chứng 04/09 cho thấy Zalo **cảnh báo** domain `.vn` lạ |
 
 ---
 

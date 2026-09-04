@@ -9,6 +9,9 @@ _Mục tiêu: một người ngồi xuống mở editor là gõ được, không
 > Sổ cái pw duy nhất: **`docs/adr/pw-ledger.md`** (A87) — tài liệu này không tự khai khoản đối trừ.
 > File ADR duy nhất: **`docs/adr/ADR-000-bat-bien.md`** (A103) — mọi tham chiếu "ADR-001"/"ADR-002" trong bản cũ đã đổi thành "ADR-000 §2"/"ADR-000 §3".
 > Danh sách nội dung đã bị cắt khỏi MVP-0 và điều kiện mở lại: xem mục **11. ĐÃ CẮT** ở cuối file.
+> Bất đồng của tài liệu này **với chính bảng phán quyết** (đã thi hành đầy đủ, chỉ ghi nhận): mục **12**.
+> Việc còn chờ founder quyết (không tự quyết): **§10.2 — D-01, D-06, D-04b**.
+> _Vòng soát lại 2026-09-04: thi hành nốt A03/A04/A05 (cron), A14 (`roster_size` vào rollover), A21 (H1 hai giai đoạn), A37 (nhãn `[chưa đo]`), A42 (§8.5), A61/S17 (kick), A65 (gói 7 câu), A70 (quy đổi 4,0 người/sổ), A86 (lưới 30 ngày · màn Của tôi), A103 (ADR-001), C08 (sổ cái), S01 (dấu vết `heart` còn sót ở §5.2 và §6.2)._
 
 ---
 
@@ -215,7 +218,7 @@ create unique index goal_current_uq on goal(book_id, person_id, effective_from);
 create index goal_lookup_idx on goal(book_id, person_id, effective_from desc);
 ```
 
-> **`preset_id` không có mặt trong schema này, và đó là cả một quyết định pháp lý.** v2 §4.8: tám `preset_id` gắn với từng người = taxonomy sức khoẻ = đường ngắn nhất mất miễn trừ Điều 38.2 Luật 91/2025. Một cột text tự do thì không. `is_custom` được giữ vì nó là metadata nhập liệu, không phải phân loại nội dung — **cần kiểm chứng lại với luật sư trong cùng buổi §12**.
+> **`preset_id` không có mặt trong schema này, và đó là cả một quyết định pháp lý.** v2 §4.8: tám `preset_id` gắn với từng người = taxonomy sức khoẻ = đường ngắn nhất mất miễn trừ Điều 38.2 Luật 91/2025. Một cột text tự do thì không. `is_custom` được giữ vì nó là metadata nhập liệu, không phải phân loại nội dung — **cần kiểm chứng lại với luật sư: đây là câu số 6 trong gói 7 câu (A65), xem §8.2**.
 
 ### 1.4. Tấm (proof) — bảng nóng nhất
 
@@ -286,7 +289,7 @@ create table book_day (
   present_count  smallint not null,    -- xong + toang
   xong_count     smallint not null,
   toang_count    smallint not null,
-  is_full_table  boolean not null,     -- "đủ mâm": present = A và A >= 2
+  is_full_table  boolean not null,     -- "đủ mâm": present = A_eff VÀ A_eff >= 2 (§9.3)
   is_frozen      boolean not null default false,  -- Tết freeze
   day_counts     boolean not null,
   misses_7d      smallint not null,    -- số ngày hụt trong cửa sổ 7 ngày kết thúc ở đây
@@ -341,7 +344,8 @@ create table card (
   book_date   date not null,
   rendered_by uuid not null references person(id),
   rendered_at timestamptz not null default now(),
-  image_key   text,                 -- R2: card/<book>/<date>.png, TTL 90 ngày [CHỐT 2026-08-28, QĐ-07]
+  image_key   text,                 -- R2: card/<book>/<date>-<asset_nonce>.png, TTL 90 ngày
+                                    -- [CHỐT 2026-08-28 QĐ-07; nonce bổ sung 2026-09-04, `11` §1.2]
                                     -- Hết 90 ngày: THAY bằng một ảnh tĩnh trung tính
                                     -- ("Sổ này đã lưu ở chotso.vn"), KHÔNG trả 404.
                                     -- Lý do: card sống trong lịch sử chat Zalo mãi mãi;
@@ -361,7 +365,30 @@ create table card (
                                     -- 16 tuổi ra ngoài nhóm mãi mãi. 7 ngày là điểm giữa
                                     -- đã chốt. Trang public BẮT BUỘC gắn <meta name="robots"
                                     -- content="noindex,nofollow"> + chặn ở robots.txt.
-  open_count  int not null default 0
+  open_count  int not null default 0,
+
+  -- ── [BỔ SUNG 2026-09-04 — `11` §1.2, BẮT BUỘC TRƯỚC COMMIT ĐẦU] ──────────────
+  asset_nonce text not null default encode(gen_random_bytes(8),'hex'),
+                                    -- 16 ký tự hex = 64 bit (encode() của Postgres chỉ
+                                    -- hỗ trợ hex/base64/escape — base64 có ký tự '/' và
+                                    -- '+' nên không dùng được trong key R2). Key R2 thật là
+                                    --   card/<book_id>/<book_date>-<asset_nonce>.png
+                                    -- KHÔNG phải card/<book_id>/<book_date>.png.
+                                    -- LÝ DO (lỗ hổng thật, không phải lý thuyết):
+                                    -- card ĐƯỢC THIẾT KẾ để dán vào nhóm Zalo ⇒ book_id
+                                    -- rời vòng bí mật ngay lần dùng đầu. Với key cũ, bất
+                                    -- kỳ ai nhận ĐÚNG MỘT card đều đổi <date> trong URL
+                                    -- để tải TOÀN BỘ card của sổ đó, mọi ngày, 90 ngày,
+                                    -- mà không cần vào sổ, không chạm rate limit nào
+                                    -- (CDN tĩnh). book_id là UUID v4 nên KHÔNG đoán được
+                                    -- — nhưng nó ĐI BỘ ĐƯỢC. nonce chặn việc đi bộ.
+                                    -- Vẽ lại card ⇒ sinh nonce MỚI ⇒ bản cũ thành URL
+                                    -- mồ côi, lifecycle dọn, không cần purge từng edge.
+  person_ids  uuid[] not null default '{}',
+                                    -- những person có Ô trong card này. Không có cột này
+                                    -- thì luồng xoá ảnh (§6.2) KHÔNG tìm được card nào
+                                    -- chứa mặt người vừa yêu cầu xoá, phải quét toàn sổ.
+  rerendered_at timestamptz         -- lần vẽ lại gần nhất do yêu cầu xoá (§6.2)
 );
 -- MỘT CARD / SỔ / NGÀY. Hai người bấm "Chốt sổ" cùng lúc ⇒ người ghi trước lên card.
 create unique index card_one_per_day_uq on card(book_id, book_date);
@@ -689,15 +716,16 @@ stateDiagram-v2
     active --> left: bấm Rời sổ
     dormant --> left: bấm Rời sổ
     left --> active: vào lại bằng mã sổ (giữ lịch sử cũ)
-    active --> removed: chủ sổ gỡ (chỉ khi có report đã xử lý)
+    active --> removed: FOUNDER gỡ bằng tay sau một report đã resolved
+    dormant --> removed: FOUNDER gỡ bằng tay sau một report đã resolved
     removed --> [*]
     expired --> [*]
 ```
 
 - `dormant` là **suy ra**, không phải hành động: nó chỉ là "không có tấm nào trong 7 ngày". Vì `A` (Active) cũng định nghĩa bằng đúng điều kiện đó, `dormant` không cần UI và không cần thông báo — thông báo "bạn đã ngủ đông" là một nút tiêu cực trá hình (P9).
-- `paused` tồn tại trong enum, **không có UI ở MVP**. Chi phí: một giá trị enum, 0 pw. Lý do giữ: nếu H2 rơi vùng xám vì "đi du lịch / thi cử", cái cần thêm là một nút, không phải một migration.
-- `removed` **không** cho phép chủ sổ tuỳ ý đá người — chỉ mở sau một `report` đã `resolved`. Đá người tự do là công cụ bắt nạt.
-- **[CHỐT 2026-08-28, QĐ-18] KHÔNG có vai "chủ sổ" và KHÔNG có chức năng kick ở MVP.** `08-ux-flow-va-tone.md` §6.5 đúng: một UI kick tốn ≥0,4 pw cho một tính năng mà tác dụng chính là drama, và v2 không có vai chủ sổ. Vì vậy trong MVP, `removed` chỉ do **founder** đặt bằng tay từ `/admin` sau khi xử lý một `report`, và nó **bắt buộc** kèm: (a) thông báo cho người bị gỡ, (b) đường tải dữ liệu của họ về. Trường event `was_kicked` đổi tên thành `was_removed_by_moderation` và ở MVP nó **luôn hiếm** — nếu nó > 2% thì đó là tín hiệu moderation, không phải tín hiệu sản phẩm. Hệ quả phải ghi rõ: **nghi thức kick 7 ngày grace + export ZIP mà `_issues-digest.md` #20 yêu cầu KHÔNG tồn tại ở MVP, vì thứ nó bảo vệ (bị nhóm đá) cũng không tồn tại ở MVP.**
+- `paused` tồn tại trong enum **và** cột `membership.paused_until` có trong schema từ commit đầu (§1.3), **không có UI ở MVP-0** (A50/S06). Chi phí: một giá trị enum + một cột = 0 pw. Lý do giữ: nếu H2 rơi vùng xám vì "đi du lịch / thi cử", cái cần thêm là một nút, không phải một migration. Hệ quả bắt buộc ghi kèm: không có nút Nghỉ thì "người bận" và "người bị đẩy ra" sinh chuỗi event **giống hệt nhau** ⇒ HM-4 ở `06` §4.2 phải mang nhãn **"MƠ HỒ CÓ CHỦ Ý"**.
+- `removed` **[A61/S17/C39] KHÔNG có "chủ sổ" nào đặt được trạng thái này.** Không tồn tại vai chủ sổ, không tồn tại UI gỡ thành viên ở MVP-0. `removed` **chỉ** do founder đặt bằng tay từ `/admin` sau một `report` đã `resolved` (ca moderation). Đá người tự do là công cụ bắt nạt.
+- **[CHỐT 2026-08-28, QĐ-18] KHÔNG có vai "chủ sổ" và KHÔNG có chức năng kick ở MVP.** `08-ux-flow-va-tone.md` §6.5 đúng: một UI kick tốn ≥0,4 pw cho một tính năng mà tác dụng chính là drama, và v2 không có vai chủ sổ. Vì vậy trong MVP, `removed` chỉ do **founder** đặt bằng tay từ `/admin` sau khi xử lý một `report`, và nó **bắt buộc** kèm: (a) thông báo cho người bị gỡ, (b) đường tải dữ liệu của họ về ⚠️ **đường tải về đó chưa có chủ — xem khối D-06 ở §10.2**. Trường event `was_kicked` đổi tên thành `was_removed_by_moderation` và ở MVP nó **luôn hiếm** — nếu nó > 2% thì đó là tín hiệu moderation, không phải tín hiệu sản phẩm. Hệ quả phải ghi rõ: **nghi thức kick 7 ngày grace + export ZIP mà `_issues-digest.md` #20 yêu cầu KHÔNG tồn tại ở MVP, vì thứ nó bảo vệ (bị nhóm đá) cũng không tồn tại ở MVP.**
 
 ### 2.3. Sổ (book)
 
@@ -711,9 +739,12 @@ stateDiagram-v2
     dormant --> dead: 21 ngày liên tiếp không có tấm nào
     dead --> active: có người nộp lại (sổ không bị khoá)
     active --> archived: mọi thành viên đã rời
-    dead --> archived: 180 ngày, chỉ giữ thumbnail + số đếm
+    dormant --> archived: mọi thành viên đã rời
+    dead --> archived: mọi thành viên đã rời
     archived --> [*]
 ```
+
+**[A12/A38] `archived` CHỈ có một lối vào: mọi thành viên đã rời.** Bản trước vẽ thêm cạnh `dead --> archived: 180 ngày` — cạnh đó **đã bị xoá**, vì nó biến "sổ ngủ lâu" thành "sổ bị dọn", đúng thứ A38 cấm. Sổ `dead` 180 ngày chỉ **chuyển thumbnail sang lớp lưu trữ lạnh (R2 IA), KHÔNG xoá** (§6.1). Chỉ sổ `archived` mới được dọn, và chỉ sau **báo trước 30 ngày + có đường tải về** (⚠️ đường tải về đó chưa có chủ — xem khối D-06 ở §10).
 
 `group_alive = A ≥ 3` là định nghĩa đã chốt ở v2 §8 (dòng retention). Ở đây nó thành `book.status ∈ {active}`; `dormant` là "chưa chết nhưng không được đếm là sống". **Cột `status` là thứ dashboard đọc; không có định nghĩa thứ hai trong repo.** (r04 §13 nói ≥3, §64 nói ≥2 — bản này chốt ≥3, hết.)
 
@@ -725,7 +756,7 @@ stateDiagram-v2
 > | `active`, `A ≥ 3` | — | **Sống** — layout mặc định |
 > | `active`, `A = 2` | — | **Còn hai** — bỏ chữ "cả nhóm", nút Chốt sổ vẫn còn |
 > | `active`, `A = 1` | — | **Còn một** — chỉ còn lưới ảnh của mình, không có card |
-> | `dormant` | 7 ngày liên tiếp `A < 3` | **Ngủ đông** — lưới 30 ngày lên đầu, nút chính đổi thành "Chốt sổ lại" |
+> | `dormant` | 7 ngày liên tiếp `A < 3` | **Ngủ đông** — lưới ảnh lên đầu, nút chính đổi thành "Chốt sổ lại" _(ở MVP-0 là lưới ngày gần nhất; lưới 30 ngày mở ở T13+, A86)_ |
 > | `dead` | 21 ngày liên tiếp không tấm nào | **Ngủ đông** (cùng layout), thêm dòng "Sổ này ngủ từ &lt;ngày&gt;. &lt;N&gt; tấm vẫn còn đây" |
 > | `archived` | mọi thành viên đã rời | Chỉ còn trang tải dữ liệu về |
 
@@ -733,7 +764,7 @@ stateDiagram-v2
 
 ```mermaid
 stateDiagram-v2
-    [*] --> pending: 21:00, sổ "sẵn sàng chốt"
+    [*] --> pending: now() >= 21:00 ICT (SUY RA lúc đọc, không có cron — A04)
     pending --> rendering: ai đó bấm Chốt sổ (INSERT ON CONFLICT DO NOTHING)
     rendering --> rendered: satori render xong, có image_key
     rendered --> shared: người đó bấm Chia sẻ/Lưu ảnh
@@ -810,12 +841,19 @@ CHỈ khi:  submitted_at − intent_at ≤ 120 giây
 ### 3.5. Rollover
 
 ```
-04:00:00  ngày đóng (logic)
-04:05:00  cron chạy: với mỗi book có status != 'archived'
-          → tính và INSERT book_day cho ngày vừa đóng
-04:10:00  job dọn: xoá object R2 có orig_expires_at < now()
-21:00:00  cron: đặt cờ "sẵn sàng chốt" (chỉ là cờ đọc, không gửi gì)
+04:00:00 ICT  ngày đóng (logic)
+04:05:00 ICT  cron `rollover`  — biểu thức UTC: `5 21 * * *`   [A03]
+              với mỗi book có status != 'archived'
+              → tính và INSERT book_day cho ngày vừa đóng
+04:10:00 ICT  job đối soát TTL ảnh gốc — biểu thức UTC: `10 21 * * *`  [A05]
+              xoá object R2 có orig_expires_at < now()
+21:00:00 ICT  KHÔNG CÓ CRON NÀO CHẠY. Cờ "sẵn sàng chốt" được SUY RA
+              từ giờ server mỗi lần đọc màn Sổ hôm nay.
 ```
+
+> **[A03/A04/C15] Hai điều phải đọc cùng nhau ở đây.**
+> (a) Lịch cron của `rollover` là **`5 21 * * *` UTC = 04:05 ICT**, không phải `0 21 * * *`. `0 21 * * *` chạy đúng 04:00:00 ICT — **trước cả biên 120 giây của §3.4** ⇒ một tấm bấm Gửi lúc 03:59:40 và commit lúc 04:00:20 sẽ rơi vào một `book_day` **đã finalized** ⇒ vỡ bất biến "`book_day` bất biến" mà toàn bộ §1.5 dựa vào. 5 phút đệm = 120 giây biên + 180 giây dự phòng.
+> (b) Job cron 21:00 (`mo_chot_so`) **ĐÃ BỊ CẮT** (−0,10 pw, ghi ở `docs/adr/pw-ledger.md`). v2 §4.7 nói rõ hệ thống **không gửi gì** lúc 21:00; "sẵn sàng chốt" là một phép so sánh `now() >= 21:00 ICT` chạy lúc đọc, không phải một job. Xem mục **11. ĐÃ CẮT**.
 
 Rollover **batch**, không realtime — vừa là quyết định kỹ thuật vừa là **lá chắn pháp lý**: nó phá vế "nhiều người chơi tương tác **đồng thời** qua máy chủ" trong định nghĩa G1 của NĐ 147/2024 (v2 §4.1). Nếu một ngày nào đó có người đề xuất "cập nhật realtime cho đã", đây là dòng phải đọc lại trước.
 
@@ -839,6 +877,19 @@ def rollover(book, D):                      # D = ngày vừa đóng
     prev   = book_day(book.id, D - 1)       # có thể None (ngày đầu)
     W      = CFG['threshold.active_window'] # 7
     frozen = D in CFG['freeze.dates']
+
+    # --- roster_size: MẪU SỐ ĐÓNG BĂNG của q_c (A14/QĐ-03). NOT NULL ở §1.5,
+    #     nên rollover BẮT BUỘC ghi nó, nếu không INSERT sẽ lỗi ngay ngày 1.
+    #     Luật: đếm ở cuối ngày 3 của sổ, rồi GIỮ NGUYÊN 14 ngày tiếp theo.
+    day_in_book = (prev.day_number + 1) if prev else 1
+    if day_in_book <= 3:
+        roster = count(distinct p.person_id                       # tạm, chưa đóng băng
+                       for p in proofs(book, book.started_on .. D)
+                       if not p.deleted_at)
+    elif day_in_book <= 17:                                       # 3 + 14
+        roster = book_day(book.id, book.started_on + 2).roster_size   # đóng băng ngày 3
+    else:
+        roster = book_day(book.id, D - 1).roster_size             # cohort mới, xem ghi chú §1.5
 
     # --- A: Active. Chỉ đếm membership đang active/paused? KHÔNG: paused bị loại.
     A_today = count(distinct p.person_id
@@ -883,7 +934,7 @@ def rollover(book, D):                      # D = ngày vừa đóng
     write book_day(
         book_id=book.id, book_date=D,
         day_number      = (prev.day_number + 1) if prev else 1,   # tăng vô điều kiện
-        active_count    = A_today, k_required = k,
+        active_count    = A_today, roster_size = roster, k_required = k,
         present_count   = present, xong_count = xong, toang_count = toang,
         is_full_table   = (A_eff >= 2 and present == A_eff),
         is_frozen       = frozen, day_counts = day_counts,
@@ -899,9 +950,14 @@ Ba dòng đáng chú ý, vì chúng là toàn bộ chỗ có thể sai:
 2. `streak = prev_streak` khi van đỡ — chuỗi **đóng băng**, không tăng. Chuỗi là "số ngày sổ có mặt liên tiếp", ngày nghỉ không phải ngày có mặt. Tăng cũng được, nhưng đóng băng khớp với chữ "ngày nghỉ" hơn và khó cãi hơn.
 3. `A_eff = min(A_today, A_prev)` — xem ngay dưới.
 
-### 4.2. Bảng ví dụ 1 — một sổ 5 người, 14 ngày, `q_c ≈ 0,53`
+### 4.2. Bảng ví dụ 1 — một sổ 5 người, 14 ngày, `q_c_roster = 0,486`
 
-`A = 5` suốt, `k = 2`, van = 2/7 ngày.
+`A = 5` suốt, `roster_size = 5` (cả 5 người nộp trong 3 ngày đầu), `k = 2`, van = 2/7 ngày.
+
+> **[TÍNH LẠI 2026-09-04 — A15/A17] Tiêu đề cũ ghi `q_c ≈ 0,53`. Con số đó KHÔNG khớp với chính bảng dưới.**
+> Tổng `present` của 14 dòng = 3+2+1+4+5+2+0+3+1+3+2+1+3+4 = **34 tấm**. Mẫu số đóng băng = `roster_size × 14 ngày` = 5 × 14 = **70**.
+> ⇒ `q_c_roster = 34 / 70 = **0,486**` — **không phải 0,53**.
+> Giá trị chuẩn `q_c = 0,53` (A17) là **giả định thiết kế** `[suy luận, chưa đo — giả thuyết H2]`, không phải kết quả của bảng này. Bảng này là một quỹ đạo **hợp lệ nhưng thấp hơn giả định**: `0,486 ≥ 0,45` ⇒ vẫn **vượt ngưỡng ĐI** của A16 (DỪNG `< 0,35` · vùng xám 0,35–0,45 · ĐI `≥ 0,45`), nhưng chỉ dư **3,6 điểm** thay vì 8 điểm như con số 0,53 gợi ý. Giữ bảng nguyên trạng và sửa nhãn, vì bảng dùng để kiểm chứng bất biến P1, không dùng để chứng minh giả định `q_c`.
 
 | Ngày | present | day_counts | misses_7d | streak | proof_total | day_number | Ghi chú |
 |---|---|---|---|---|---|---|---|
@@ -926,9 +982,11 @@ Kiểm chứng P1 trên bảng: `day_number` và `proof_total` **đơn điệu t
 
 Sổ có An, Bình, Chi. **Ơn vào ngày D4. Bình rời ngày D6.**
 
+> **[SỬA 2026-09-04] Hàng D1 của bảng cũ ghi `A_prev = 0, A_eff = 0, k = 1` — mâu thuẫn với pseudocode §4.1.** Ở ngày đầu `prev is None` ⇒ `A_eff = A_today = 3` (không phải 0), và `day_counts = (A_eff > 0) and (present >= k)` với `A_eff = 0` sẽ trả **False**, tức bảng cũ đánh ✓ cho một ngày mà code tính là ✗. Kết quả cuối không đổi (present = 3 ≥ k = 2 ⇒ vẫn ✓), nhưng hai con số ở giữa đã được sửa cho khớp code.
+
 | Ngày | Ai nộp | A_today | A_prev | A_eff | k | present | day_counts | `k` KHÔNG trễ thì sao? |
 |---|---|---|---|---|---|---|---|---|
-| D1 | An, Bình, Chi | 3 | 0 | 0 | **1** | 3 | ✓ | ✓ |
+| D1 | An, Bình, Chi | 3 | — (chưa có `prev`) | **3** | 2 | 3 | ✓ | ✓ |
 | D2 | An, Chi | 3 | 3 | 3 | 2 | 2 | ✓ | ✓ |
 | D3 | An | 3 | 3 | 3 | 2 | 1 | ✗ (hụt 1) | ✗ |
 | D4 | Ơn (mới), An | 4 | 3 | 3 | 2 | 2 | ✓ | ✓ |
@@ -967,7 +1025,9 @@ POST /api/*  với header Idempotency-Key: <uuid>
  4. GC: xoá key > 24h
 ```
 
-### 5.2. Bốn ca cụ thể
+### 5.2. Sáu ca cụ thể
+
+> _[CẮT 2026-09-03 — S01/C03] Hàng thứ bảy "Thả tim spam" đã bị xoá cùng bảng `heart`. Xem mục **11. ĐÃ CẮT**._
 
 | Ca | Xảy ra gì | Cơ chế bảo vệ | Kết quả người dùng thấy |
 |---|---|---|---|
@@ -976,7 +1036,6 @@ POST /api/*  với header Idempotency-Key: <uuid>
 | **Double-submit** (bấm Gửi 2 lần) | 2 lần `POST /proof/commit` cùng `client_proof_id` | `unique(client_proof_id)` + `request_idem` | Lần 2 trả lại kết quả lần 1. **Không** tạo tấm thứ hai |
 | **Nộp đè trong ngày** (đổi ảnh) | `client_proof_id` MỚI, cùng `(book,person,date)` | `INSERT ... ON CONFLICT (book_id,person_id,book_date) DO UPDATE SET orig_key=…, status=…, replaced_count=replaced_count+1` | Ảnh cũ bị thay. Key R2 cũ đưa vào hàng đợi xoá |
 | **Hai người bấm Chốt sổ cùng lúc** | 2 INSERT vào `card` | `unique(book_id, book_date)` + `ON CONFLICT DO NOTHING RETURNING`. Trả 0 hàng ⇒ đọc card đã có | Cả hai thấy **cùng một card**, tên người bấm trước. Không có 2 card khác nhau trong nhóm Zalo |
-| **Thả tim spam** | Nhiều lần POST | PK `(proof_id, viewer_hash)` + `ON CONFLICT DO NOTHING` | Một người một tim |
 | **Cron chạy hai lần** (deploy trùng, retry) | 2 lần `rollover(book, D)` | `pg_advisory_xact_lock(hashtext(book_id))` + `if exists book_day → return` | `book_day` chỉ được ghi một lần, vĩnh viễn |
 
 ### 5.3. Luồng nộp tấm — 3 bước, chịu được mất mạng
@@ -1001,10 +1060,10 @@ Bước 2 không có server ở giữa **cũng là một quyết định pháp l
 
 | Object | Kích thước | Nơi | TTL | Cơ chế |
 |---|---|---|---|---|
-| Ảnh gốc 1080px q=0,72 | ~110 KB | R2 `orig/` | **72 giờ** | R2 Lifecycle rule trên prefix + job đối soát 04:10 |
-| Thumbnail 320px | ~18 KB | R2 `thumb/` | **vĩnh viễn** (đến khi chủ ảnh xoá) | — |
+| Ảnh gốc 1080px q=0,72 | **~110 KB** `[chưa đo — A37: phải đo trên 20 ảnh Android thật trước khi tin]` | R2 `orig/` | **72 giờ** (A36) | R2 Lifecycle rule trên prefix + job đối soát 04:10 |
+| Thumbnail 320px | **~18 KB** (A39) | R2 `thumb/` | **vĩnh viễn** (A38 — đến khi chủ ảnh xoá). ⚠️ Vế *"sổ ngủ 180 ngày ⇒ R2 Infrequent Access"* **KHÔNG thi hành ở MVP-0** [`11` §7.4, 04/09/2026]: ở trần 60 sổ toàn bộ `thumb/` là **0,83 GB**, nằm trong free tier 10 GB ⇒ IA tiết kiệm **0đ** trong khi làm Class B đắt **2,5×** và thêm phí lấy dữ liệu **$0,01/GB**, đúng vào lúc một sổ ngủ được đánh thức. Lớp Standard, **KHÔNG xoá** | lifecycle chuyển lớp lưu trữ, không có rule xoá |
 | Card PNG 4:5 | **~150 KB** [CHỐT 2026-08-28, QĐ-07 — một con số duy nhất, thay cho 150 KB ở `03` §2.5 và 180 KB ở bản trước của bảng này] | R2 `card/` | **90 ngày**, sau đó **thay bằng ảnh tĩnh trung tính cùng key** (không 404) | Lifecycle + job thay ảnh. Card cũ vẫn render lại được từ `book_day` |
-| Bằng chứng moderation | ~110 KB | R2 `evidence/` (bucket riêng, không public) | **90 ngày** | `moderation_evidence.retain_until` |
+| Bằng chứng moderation | ~110 KB `[chưa đo — cùng nguồn với ảnh gốc, A37]` | R2 `evidence/` (bucket riêng, không public) | **90 ngày** | `moderation_evidence.retain_until` |
 | Hàng `proof` đã xoá mềm | — | Postgres | **30 ngày** rồi purge | job hằng ngày |
 | `event` | — | Postgres | **13 tháng** | đủ để so cohort năm trước; partition theo tháng, drop partition |
 | `request_idem` | — | Postgres | **24 giờ** | |
@@ -1016,20 +1075,47 @@ Kiểm chứng kinh tế: 10.000 sổ × 20 MB/năm ≈ 200 GB × $0,015/GB/thá
 
 ### 6.2. Xoá tài khoản — xoá gì, và KHÔNG xoá được gì
 
-Một hành động ở màn Của tôi, hai lựa chọn rõ ràng, **không có nút thứ ba**:
+Hai lựa chọn rõ ràng, **không có nút thứ ba**:
+
+> **[A86 — 2026-09-04] Chỗ đặt nút này KHÔNG còn là "màn Của tôi".** Màn Của tôi đã bị cắt khỏi MVP-0 (xuống 0,00 pw, A86). Ở MVP-0 hai nút xoá nằm trong **overlay Cài đặt của màn 1**, cùng chỗ với liên kết Chính sách. Cơ chế dưới đây không đổi — chỉ đổi nơi bấm.
 
 | Lựa chọn | Xoá | Giữ | Vì sao giữ |
 |---|---|---|---|
-| **"Xoá dữ liệu của tôi"** | `device` (mọi token), `is_16_plus` + `age_gate_at`, `display_name` → `"Thành viên cũ"`, `avatar_seed` reset, `goal.goal_text` → `NULL`, mọi `heart` của mình | hàng `person` (id, `anonymized_at`), `proof` (thumbnail + nhãn + ngày) | Xem dưới |
+| **"Xoá dữ liệu của tôi"** | `device` (mọi token), `is_16_plus` + `age_gate_at`, `display_name` → `"Thành viên cũ"`, `avatar_seed` reset, `goal.goal_text` → `NULL` | hàng `person` (id, `anonymized_at`), `proof` (thumbnail + nhãn + ngày) | Xem dưới |
 | **"Xoá dữ liệu VÀ mọi tấm của tôi"** | tất cả ở trên **+** mọi `proof.thumb_key`, `orig_key` (object bị xoá thật), `proof.deleted_at` được set | hàng `proof` rỗng (không object, không nội dung) + `book_day.proof_total_after` | Xem §6.3 |
 
 **Thứ KHÔNG xoá được, nói thẳng ở màn Chính sách:**
 
-1. **Số đếm lịch sử của sổ** (`day_number`, `proof_total_after`, `streak`). Đây là **thống kê tổng hợp đã ẩn danh** của một nhóm, không phải dữ liệu cá nhân của một người. Nếu xoá được, một người rời sổ sẽ làm con số công khai của 4 người còn lại tụt — đúng thứ P1 tồn tại để cấm. _[cần kiểm chứng: đây là lập luận của tôi, không phải ý kiến luật sư. Đưa vào cùng email §12.]_
+1. **Số đếm lịch sử của sổ** (`day_number`, `proof_total_after`, `streak`). Đây là **thống kê tổng hợp đã ẩn danh** của một nhóm, không phải dữ liệu cá nhân của một người. Nếu xoá được, một người rời sổ sẽ làm con số công khai của 4 người còn lại tụt — đúng thứ P1 tồn tại để cấm. _[cần kiểm chứng: đây là lập luận của tôi, không phải ý kiến luật sư. Đây là **câu số 7 trong gói 7 câu** của A65 — xem §8.3.]_
 2. **Bằng chứng moderation** đang trong 90 ngày, nếu tấm đó là đối tượng của một `report`. Nghĩa vụ lưu vết theo NĐ 147/2024 đứng trên yêu cầu xoá của chính người bị báo cáo. Phải ghi vào ToS bằng một câu người thường đọc hiểu.
 3. **`event`** đã bắn — nhưng chúng chỉ chứa `person_id` (uuid vô nghĩa sau khi `person` đã ẩn danh hoá), không chứa tên, không chứa `goal_text`. Xem §7.
 
-**SLA:** thao tác xoá có hiệu lực **tức thì trên UI**, object R2 bị xoá **trong 24 giờ**, backup Postgres cuốn hết trong **30 ngày**. Ba con số này phải nằm trong trang Chính sách, vì hứa "xoá ngay lập tức" là hứa sai.
+> ### 🔴 [BỔ SUNG 2026-09-04 — `11` §1.3] Xoá ảnh phải xoá cả CARD đã in mặt người đó
+>
+> Bảng trên xoá `proof.thumb_key` và `proof.orig_key`. Nó **không chạm** `card/…png` — trong khi mỗi card là **một bản sao đã nướng chín** thumbnail của người đó, **công khai trên `cdn.chotso.vn`, cache 1 năm, sống tới 90 ngày**. Nghĩa là ở bản trước, người dùng bấm *"xoá mọi tấm của tôi"*, nhận màn xác nhận, và ảnh của họ **vẫn công khai tối đa 90 ngày**. Với Luật 91/2025 + NĐ 356/2025 + **NĐ 330/2026** (phạt tới **1,5 tỷ đ với cá nhân**, hiệu lực 19/08/2026) đây không phải rủi ro lý thuyết.
+>
+> **Bắt buộc, +0,08 pw, là nghĩa vụ luật định chứ không phải tuỳ chọn:**
+>
+> ```
+> khi proof của person P bị xoá cứng:
+>   1. xoá object thumb/ và orig/                          (đã có ở bảng trên)
+>   2. select * from card where book_id = :book and person_ids @> array[:P]
+>   3. với mỗi card đó:
+>        a. vẽ lại card KHÔNG có ô của P  →  asset_nonce MỚI
+>        b. update card set image_key = <key mới>, rerendered_at = now()
+>        c. xoá object R2 theo key CŨ
+>        d. purge cache CDN theo đúng key cũ (1 lệnh API Cloudflare)
+>        e. audit_log('card_rerendered_after_erasure', book_id, book_date)
+>   4. SLA: xong trong 24 GIỜ, cùng SLA object R2
+> ```
+>
+> Vì sao **vẽ lại** chứ không **xoá trần**: xoá trần làm lịch sử chat Zalo vỡ (ảnh gãy) — đúng thứ QĐ-07 dựng cả cơ chế "ảnh tĩnh trung tính, KHÔNG 404" để tránh.
+
+**SLA:** thao tác xoá có hiệu lực **tức thì trên UI**, object R2 bị xoá **trong 24 giờ**, **card có mặt người đó được vẽ lại trong 24 giờ** (`11` §1.3), backup cuốn hết trong **90 ngày**. Bốn con số này phải nằm trong trang Chính sách, vì hứa "xoá ngay lập tức" là hứa sai.
+
+> **[SỬA 2026-09-04] "30 ngày" → "90 ngày".** Con số 30 ngày chỉ đúng khi bản sao duy nhất là backup của Supabase (giữ 7 ngày). Từ khi có **bản sao ngoại tuyến hằng tuần** (`11` §4.2 — bắt buộc, vì R2 **không có backup nào**), thời hạn công bố phải là **90 ngày**, hoặc phải cam kết xoá tay trong bản sao. Chọn 90 ngày: thận trọng hơn **và** trung thực hơn. Con số này in vào Chính sách ⇒ **không sửa lại được sau 07/09/2026**.
+>
+> **Thứ KHÔNG xoá được, phải nói thẳng ở màn Chính sách (mục 4 mới):** card **đã được gửi vào một cuộc trò chuyện Zalo** nằm ngoài tầm với của mọi biện pháp kỹ thuật — Zalo giữ bản sao của chính nó, mỗi người nhận giữ một bản. Câu phải in: *"Chúng tôi xoá được bản trên máy chủ của mình. Chúng tôi không xoá được bản đã gửi đi."*
 
 ### 6.3. Vì sao xoá ảnh không làm con số của sổ tụt
 
@@ -1040,13 +1126,13 @@ proof_total_after(D) = proof_total_after(D-1) + present(D)     ✓ đúng
 proof_total_after(D) = SELECT count(*) FROM proof WHERE ...    ✗ SAI — P1 vỡ
 ```
 
-`proof_total` là **sổ cái các sự kiện đã xảy ra**, không phải phép đếm số hàng còn sống. Một người xoá ảnh của họ = ảnh biến mất khỏi lưới 30 ngày (ô trở thành ô mờ không tên), nhưng "sổ này đã có 71 tấm" vẫn là một sự thật lịch sử. Cùng logic áp cho `day_counts` của ngày đã `finalized`: xoá ảnh **không** làm một ngày đã tính thành không tính.
+`proof_total` là **sổ cái các sự kiện đã xảy ra**, không phải phép đếm số hàng còn sống. Một người xoá ảnh của họ = ảnh biến mất khỏi lưới ảnh của sổ (ô trở thành ô mờ không tên; ở MVP-0 lưới đó là lưới **của ngày hôm nay** trên màn 1 — **lưới 30 ngày đã bị cắt khỏi MVP-0, A86**, mở lại ở T13+), nhưng "sổ này đã có 71 tấm" vẫn là một sự thật lịch sử. Cùng logic áp cho `day_counts` của ngày đã `finalized`: xoá ảnh **không** làm một ngày đã tính thành không tính.
 
 ### 6.4. Người rời sổ
 
 | Dữ liệu | Xử lý mặc định | Người rời có đổi được không |
 |---|---|---|
-| Tấm cũ (thumbnail) | **giữ nguyên, vẫn hiện trong lưới 30 ngày**, vẫn hiện tên | Có — checkbox `keep_proofs_on_leave` ở màn Rời sổ, mặc định **giữ** |
+| Tấm cũ (thumbnail) | **giữ nguyên, vẫn hiện trong lưới ảnh của sổ**, vẫn hiện tên _(lưới 30 ngày: T13+, A86)_ | Có — checkbox `keep_proofs_on_leave` ở màn Rời sổ, mặc định **giữ** |
 | Tên hiển thị | giữ | Nếu bỏ chọn: → `"Thành viên cũ"` |
 | `goal_text` | **xoá ngay** | không hỏi — kèo là dữ liệu nhạy cảm nhất trong hệ thống |
 | Tấm mới | không thể nộp | — |
@@ -1072,7 +1158,7 @@ event('minor_account_removed', {book_id, detected_via:'report'})
 
 ## 7. EVENT SCHEMA CHO ANALYTICS
 
-Nguyên tắc: **`group_id` (ở đây `book_id`) là cột đầu tiên của mọi event** (P10). Event nào không gắn được vào một sổ thì phải giải thích được tại sao. **Không event nào chứa `goal_text`, tên người, hay URL ảnh** (P3).
+Nguyên tắc P10 (đã viết lại theo A30/C52): **cột đầu tiên của mọi bảng và mọi event là KHOÁ SỔ — `book_id`.** Chữ `group_id` không còn tồn tại ở bất kỳ đâu trong repo. Event nào không gắn được vào một sổ thì phải giải thích được tại sao. **Không event nào chứa `goal_text`, tên người, hay URL ảnh** (P3).
 
 ### 7.1. Danh sách event
 
@@ -1094,8 +1180,8 @@ Nguyên tắc: **`group_id` (ở đây `book_id`) là cột đầu tiên của m
 | 11 | `proof_deleted_by_self` | tự xoá tấm | `book_id, person_id, age_hours` | **event an toàn #4** |
 | 12 | `card_rendered` | bấm Chốt sổ | `book_id, person_id, book_date, seconds_after_2100` | ai chốt, có xoay vòng không |
 | 13 | `card_shared` | bấm Chia sẻ/Lưu | `book_id, method:'share'\|'save'` | tỉ lệ card thật sự ra khỏi web |
-| 14 | `card_opened` | mở link card | `book_id, card_id, is_member, hours_since_render` | **H1 — mở trong 24h ≥60%** |
-| 15 | `book_day_finalized` | cron 04:05 | `book_id, book_date, A, k, present, xong, toang, day_counts, streak, is_full_table, misses_7d` | **mọi thứ ở §4, group-D14/D28, group_alive** |
+| 14 | `card_opened` | mở link card | `book_id, card_id, is_member, hours_since_render` | **H1.** ⚠️ [A21/C21] Ngưỡng "mở trong 24h ≥ 60%" **chỉ dùng từ tuần 2 của beta** (02/12/2026 trở đi), khi event này là số thật. Ở Bước 0 (08–21/09) event này **không tồn tại** — thiết bị đo là `click-shortlink` (112 link, A22) và H1 ở Bước 0 **chỉ có quyền DỪNG khi < 40%, KHÔNG có quyền ĐI** |
+| 15 | `book_day_finalized` | cron 04:05 | `book_id, book_date, A, roster_size, k, present, xong, toang, day_counts, streak, is_full_table, misses_7d` | **mọi thứ ở §4, `group-D14` / `sổ-D28` (A23 — tên chuẩn của OMTM là `sổ-D28`), `group_alive`** |
 | 16 | `full_table_hit` | đủ mâm | `book_id, A` | tần suất jackpot vs bảng 3 |
 | 17 | `streak_broken` | streak → 0 | `book_id, streak_was, misses_7d` | van 2 ngày có đủ không |
 | 18 | `milestone_hit` | 25/50/100/250/500 tấm | `book_id, milestone` | |
@@ -1135,7 +1221,9 @@ select d.book_id,
   from book_day d join sw on sw.book_id=d.book_id and sw.book_date=d.book_date
  group by 1;
 
--- H1: tỉ lệ Active mở card trong 24h
+-- H1: tỉ lệ mở card trong 24h. [A21/C21] Truy vấn này CHỈ chạy được TỪ BETA
+-- (02/12/2026) — ở Bước 0 không có bảng card_open, H1 đo bằng click-shortlink (A22).
+-- Ngưỡng >= 60% chỉ có hiệu lực TỪ TUẦN 2 CỦA BETA. Trước đó H1 chỉ có quyền DỪNG (<40%).
 select c.book_id,
        count(distinct o.person_id)::numeric / nullif(max(d.active_count),0) as open_rate_24h
   from card c
@@ -1159,13 +1247,13 @@ select count(*) filter (where d.active_count >= 3)::numeric / count(*) as book_d
 | # | Vấn đề | Vì sao chưa quyết được hôm nay | Hạn chót |
 |---|---|---|---|
 | 8.1 | **Danh tính chỉ bằng `localStorage`**: xoá cache trong webview Zalo = mất sổ. Zalo webview có xoá storage khi dọn app không? | Phải đo trên máy thật — chính là câu hỏi §10(h) của v2 | Buổi kiểm chứng 04/09 |
-| 8.2 | **`is_custom` trên `goal`** có phải là taxonomy tối thiểu không | Cần luật sư, cùng email §12 | 22/09 |
-| 8.3 | **`proof_total` không giảm khi xoá ảnh** — lập luận "thống kê tổng hợp" có đứng được trước Luật 91/2025 không | Như trên. Nếu không đứng được, cần một cột `proof_total_display` tách khỏi `proof_total_legal` (+0,1 pw) | 22/09 |
+| 8.2 | **`is_custom` trên `goal`** có phải là taxonomy tối thiểu không | **[A65/C40] Đây là CÂU HỎI SỐ 6 trong gói 7 câu gửi luật sư — MỘT email, MỘT lần trả phí, ngân sách 5.000.000–15.000.000đ (A66).** Không mua thư ý kiến 1 câu 3–5 triệu nữa. Danh sách 7 câu hợp nhất nằm ở `05` §11 và thay mọi danh sách rời trước đó (v2 §12, `03` §10, §8 này) | **Gửi 03/09/2026** (A104); trả lời dự kiến trước 22/09 |
+| 8.3 | **`proof_total` không giảm khi xoá ảnh** — lập luận "thống kê tổng hợp" có đứng được trước Luật 91/2025 không | **[A65/C40] CÂU HỎI SỐ 7 trong cùng gói 7 câu**, cùng email, cùng lần trả phí. Nếu không đứng được, cần tách `proof_total_display` khỏi `proof_total_legal` (**+0,1 pw, CHƯA ghi vào `docs/adr/pw-ledger.md`** vì nó là khoản có điều kiện) | **Gửi 03/09/2026** (A104); trả lời dự kiến trước 22/09 |
 | 8.4 | **Test CI cấm bảng/cột** (`boss`, `hp`, `damage`, `rank`, `score`) — chưa viết | Chỉ là một grep trên thư mục migration, ~20 dòng | trước commit đầu |
-| 8.5 | **Chống lạm dụng trang public**: `share_token` lộ ra ngoài nhóm Zalo = ai cũng xem được lưới ảnh | Chưa quyết: token xoay theo ngày, hay hết hạn 7 ngày, hay cả hai. Xoay theo ngày làm card cũ chết link | trước beta |
-| 8.6 | **Partition `event` theo tháng** — chưa cần ở 30 sổ, cần ở 10.000 sổ | Ước lượng: 30 sổ × 5 người × ~8 event/ngày ≈ 1.200 hàng/ngày. Không phải vấn đề trong 12 tháng | khi >50k hàng/ngày |
-| 8.7 | **`viewer_hash` cho heart/card_open** dùng gì khi không có device token (người ngoài sổ) | `sha256(ip + ua + salt_ngày)` là ước lượng thô, đếm trùng ở nhà mạng NAT. Chấp nhận sai số cho H1 hay cần chính xác hơn? | trước Bước 0 kết thúc |
-| 8.8 | **Backfill khi luật sư bắt chuyển data về VN** | `StorageAdapter` interface đã có trong ADR-001; nhưng Postgres thì chưa có kế hoạch di chuyển cụ thể | khi có trả lời luật sư |
+| 8.5 | ~~**Chống lạm dụng trang public**: `share_token` hết hạn sau bao lâu~~ | **[ĐÃ CHỐT 2026-09-03 — A42/QĐ-36] TTL = 7 NGÀY. Hết là câu hỏi mở.** `share_token` sinh **độc lập hoàn toàn** với `book.code` (hai bảng chữ, hai nguồn ngẫu nhiên, không suy ra được từ nhau), slug công khai **không được chứa `code6` như substring** (A44, có test CI), trang public bắt buộc `<meta name="robots" content="noindex,nofollow">` + chặn ở `robots.txt`. Lý do loại hai phương án kia: **24 giờ giết phép đo M2** (card dán tối nay, bạn mở trưa hôm sau đã chết link); **vĩnh viễn** để lộ lưới ảnh của người 16 tuổi ra ngoài nhóm mãi mãi. Đã ghi vào §1.6 (`card.share_expires_at`). Còn lại **một** việc kỹ thuật: hết hạn ⇒ trả trang "Link này đã hết hạn", **KHÔNG 404 trần** | ĐÃ ĐÓNG 03/09 |
+| 8.6 | **Partition `event` theo tháng** — chưa cần ở 30 sổ, cần ở 10.000 sổ | **[TÍNH LẠI — A70]** Hệ số quy đổi duy nhất của hồ sơ là **4,0 người/sổ**, không phải 5. Ước lượng đúng: 30 sổ × **4,0** người × ~8 event/ngày ≈ **960 hàng/ngày** (≈ 350k hàng/năm). Không phải vấn đề trong 12 tháng | khi >50k hàng/ngày |
+| 8.7 | **`opener_hash` cho `card_open`** dùng gì khi không có device token (người ngoài sổ) _(vế "heart" đã bị xoá cùng bảng `heart` — S01/C03)_ | `sha256(ip + ua + salt_ngày)` là ước lượng thô, đếm trùng ở nhà mạng NAT. Chấp nhận sai số cho H1 hay cần chính xác hơn? | trước Bước 0 kết thúc |
+| 8.8 | **Backfill khi luật sư bắt chuyển data về VN** | `StorageAdapter` interface đã có trong **`docs/adr/ADR-000-bat-bien.md` §2** (A103 — không còn file ADR-001); nhưng Postgres thì chưa có kế hoạch di chuyển cụ thể | khi có trả lời luật sư |
 | 8.9 | **Nhánh B (không kèo) dùng chung schema** — `goal` rỗng, `proof.status` mặc định `'xong'`. Có làm lệch `q_c` so sánh không? | `q_c` = có mặt, không phụ thuộc nhãn ⇒ so sánh vẫn hợp lệ. Nhưng `q_x` **không định nghĩa được** cho nhánh B — H3 chỉ được so `q_c` | đã quyết, ghi lại ở đây để không quên |
 
 ---
@@ -1174,13 +1262,19 @@ select count(*) filter (where d.active_count >= 3)::numeric / count(*) as book_d
 
 **9.1. `k` tính từ `A` của cùng ngày là một lỗi cùng họ với lỗi `ceil(0,6×A)` mà v2 đã bắt.** v2 §4.4 viết `A = số người đã nộp ≥1 tấm trong 7 ngày gần nhất`, `k = 2 nếu A ≥ 3`. Nếu `A` tính bao gồm ngày đang xét, thì **ngày một người bạn mới nộp tấm đầu tiên có thể là ngày sổ mất chuỗi**: sổ 2 người (k=1) → người thứ 3 nộp một mình → A=3 → k=2 → present=1 < 2 → hụt. Sổ bị phạt vì có thêm bạn. **Đề nghị sửa: `k` tính trên `A_eff = min(A(D), A(D−1))`.** Một hàm `min()`, 0 pw, phải vào trước commit đầu vì sau đó là dữ liệu lịch sử.
 
+> **[ĐÃ XỬ 2026-09-03 — A06/A07/C19/C36] `04` THẮNG, bất đồng này ĐÓNG.** Trọng tài áp nguyên tắc 3 (tài liệu bắt được lỗi toán học của nguồn thì thắng nguồn). Giá trị chuẩn nay là: **`A_eff = min(A(D), A(D−1))`** · **`k = 1` nếu `A_eff ≤ 2`; `k = 2` nếu `A_eff ≥ 3`**. Công thức `ceil(0,6×A)` **đã chết** (gãy đơn điệu ở A=4). `02` US-11, `07` T5 mục 4 và `08` §7.2 luật 2 phải sửa theo file này.
+
 **9.2. v2 không nói `streak` tăng hay đóng băng trong ngày được van đỡ.** §4.5 chỉ nói "hai ngày hụt đầu tiên không làm đứt chuỗi". Tôi chọn **đóng băng** (không tăng). Nếu founder muốn "tăng" thì phải sửa cả câu chữ trên card, vì "chuỗi 6" mà có 2 ngày không ai nộp là một con số nói dối, và nói dối về con số là cách nhanh nhất mất niềm tin của đúng tệp người dùng này. Cần chốt bằng một dòng trong ADR-000.
 
-**9.3. "Đủ mâm" của v2 (`q_c^A`) không nói `A` nào.** Nếu `A=1` (sổ một người) thì `present == A` luôn đúng → ngày nào cũng "đủ mâm" → jackpot mất nghĩa ngay ở nhóm dễ tổn thương nhất. Tôi thêm điều kiện `A_eff ≥ 2`. Ghi lại vì nó thay đổi tần suất một phần thưởng.
+> **[ĐÃ XỬ 2026-09-03 — A11] ĐÓNG BĂNG là giá trị chuẩn, bất đồng này ĐÓNG.** Hành vi của van đã chốt đủ ba vế: ngày được van đỡ ⇒ chuỗi **đóng băng** (không tăng, không đứt) · **không** tính vào mẫu số `q_c` · **tiêu 1 slot van**. `06` và `08` phải sửa theo.
+
+**9.3. "Đủ mâm" của v2 (`q_c^A`) không nói `A` nào.** Nếu `A=1` (sổ một người) thì `present == A` luôn đúng → ngày nào cũng "đủ mâm" → jackpot mất nghĩa ngay ở nhóm dễ tổn thương nhất. Tôi thêm điều kiện `A_eff ≥ 2` (đã vào pseudocode §4.1: `is_full_table = (A_eff >= 2 and present == A_eff)`). Ghi lại vì nó thay đổi tần suất một phần thưởng. **Lưu ý phái sinh:** cột `is_full_table` ở §1.5 mô tả "present = A và A >= 2" — chữ `A` ở đó phải đọc là `A_eff`, không phải `A_today`; đã sửa chú thích cột.
 
 **9.4. v2 §4.10 hạng mục 9 gộp "soft delete" vào 0,5 pw cùng ToS, báo cáo/chặn, age gate, chặn từ khoá.** Riêng phần vòng đời dữ liệu ở §6 tài liệu này — hai lựa chọn xoá, purge job, evidence 90 ngày, `keep_proofs_on_leave`, xử lý minor — theo ước lượng của tôi là **0,4–0,5 pw một mình nó**, tức hạng mục 9 nhiều khả năng là **0,8–0,9 pw** chứ không phải 0,5. Đây là một khoản vượt ~0,35 pw trên trần 6,5. Theo luật đánh đổi 1-1 (P7), phải cắt một thứ khác — ứng viên rẻ nhất: **nút thả tim ẩn danh (0,2 pw)**, thứ chưa có giả thuyết nào gắn với nó. Đây là bất đồng về **ngân sách**, không phải về thiết kế, và tôi không tự cắt.
 
-> **[CHỐT 2026-08-28] Khoản này ĐÃ ĐƯỢC XỬ LÝ ở sổ cái, và cách xử lý không phải cách đề nghị ở trên.** Ba tài liệu (`03` §10 câu 7, `04` §9.4 này, `07` MVP-0) cùng đề nghị tiêu **một** khoản cắt "nút thả tim 0,2 pw" — tức khoản đó bị bán ba lần. Từ 2026-08-28, mọi khoản thêm/cắt phải đi qua **`docs/adr/pw-ledger.md`**, và luật là: **một khoản cắt chỉ được chi một lần**. Nút thả tim đã bị chi cho MVP-0 của `07` (QĐ-05b). Phần vượt của hạng mục 9 được trả bằng cách hoãn "lưới 30 ngày" sang T13+ — xem sổ cái, dòng L-09.
+> **[CHỐT 2026-08-28] Khoản này ĐÃ ĐƯỢC XỬ LÝ ở sổ cái, và cách xử lý không phải cách đề nghị ở trên.** Ba tài liệu (`03` §10 câu 7, `04` §9.4 này, `07` MVP-0) cùng đề nghị tiêu **một** khoản cắt "nút thả tim 0,2 pw" — tức khoản đó bị bán ba lần. Từ 2026-08-28, mọi khoản thêm/cắt phải đi qua **`docs/adr/pw-ledger.md`**, và luật là: **một khoản cắt chỉ được chi một lần**. Nút thả tim đã bị chi cho MVP-0 của `07` (QĐ-05b), nên nó **không còn là tiền**.
+>
+> **[C08/A87 — 2026-09-04] Tài liệu này KHÔNG tự khai khoản đối trừ nữa.** Câu "đổi lấy khoản lưới 30 ngày, dòng L-09" đã bị xoá theo lệnh C08. Phát biểu đúng duy nhất được phép ở đây là: **khoản vượt ~0,35 pw của hạng mục 9 CHƯA được ghi vào `docs/adr/pw-ledger.md`**, và cho tới khi nó được ghi (kèm một khoản cắt chưa từng chi lần nào), nó vẫn nằm trong tổng backlog. Tính tại 03/09/2026 tổng backlog = **7,25 pw** trên trần cứng **6,5 pw** (A83) ⇒ kill gate 05/10 **đã kích hoạt trên giấy** ⇒ phải cắt tiếp trước 22/09 (xem khối **D-01** ở §10).
 
 **9.5. v2 nói "không có màn Đăng nhập" nhưng RLS thì cần một chủ thể.** Không mâu thuẫn về sản phẩm, nhưng về kỹ thuật nó có nghĩa là server phải tự ký JWT (§1.1). Đây là ~0,15 pw không xuất hiện trong hạng mục 1 (0,9 pw "danh tính nhẹ"). Nhỏ, nhưng nếu bỏ qua thì cách duy nhất còn lại là chạy mọi truy vấn bằng service role và tự viết kiểm tra quyền trong code — **cách đó rẻ hơn 0,15 pw hôm nay và đắt hơn nhiều lần vào lần rò rỉ đầu tiên.** Khuyến nghị: giữ RLS.
 
@@ -1188,12 +1282,93 @@ select count(*) filter (where d.active_count >= 3)::numeric / count(*) as book_d
 
 ## 10. CÂU HỎI MỞ CẦN FOUNDER QUYẾT
 
-1. **`k` trễ một ngày (`min(A_today, A_prev)`) — đồng ý hay không?** Nếu không, hãy viết ra lý do vì sao một sổ nên bị mất chuỗi vào ngày có thêm bạn mới. (Đề nghị: đồng ý. 0 pw.)
-2. **`streak` khi được van đỡ: đóng băng hay vẫn tăng?** Ảnh hưởng trực tiếp chữ trên card. (Đề nghị: đóng băng.)
-3. **Mặc định khi rời sổ: giữ hay xoá tấm cũ?** (Đề nghị: giữ, kèm checkbox. Nhưng đây là quyết định về ký ức của người khác, founder phải tự chọn.)
-4. **`proof_total` có được phép giảm khi một người xoá hết ảnh không?** Nếu luật sư nói phải giảm, cần tách hai con số (+0,1 pw). Nếu không, phải viết một câu trong ToS mà người 17 tuổi đọc hiểu.
-5. **`share_token` của trang public: hết hạn sau bao lâu?** 24 giờ (an toàn nhất, card cũ chết link) hay 7 ngày (chia sẻ lại được) hay vĩnh viễn (rủi ro rò rỉ lưới ảnh ra ngoài nhóm)?
-6. **Đổi tên `group_id` → `book_id` — chốt bây giờ hay giữ nguyên chữ của v2?** Chỉ tốn một lệnh sed hôm nay; tốn một buổi và một lớp bug nếu đổi sau.
-7. **Vượt trần 6,5 pw ở §9.4 (~0,35 pw): cắt cái gì?** Theo P7 bắt buộc phải có câu trả lời trước khi gõ dòng code đầu tiên, không phải sau.
-8. **`paused` có UI ở MVP không?** Enum đã có sẵn, 0 pw để giữ, ~0,15 pw để làm nút. (Đề nghị: không làm, chờ H2.)
+> **[SOÁT LẠI 2026-09-04]** Bản trước liệt kê 8 câu hỏi mở. Sau bảng phán quyết trọng tài ngày 03/09, **năm trong tám câu đã có câu trả lời bắt buộc** — chúng không còn là câu hỏi và được chuyển xuống bảng "đã đóng". Chỉ những gì **trọng tài tuyên bố là quyết định giá trị của founder** (mục D) mới còn ở đây, và với mỗi cái là một khối cảnh báo nêu **hai lựa chọn + khuyến nghị**, không tự quyết.
 
+### 10.1. Năm câu đã ĐÓNG bởi phán quyết — không hỏi lại
+
+| Câu hỏi cũ | Phán quyết | Nguồn |
+|---|---|---|
+| 1. `k` trễ một ngày (`A_eff = min(A_today, A_prev)`)? | **CÓ.** `A_eff = min(A(D), A(D−1))`; `k=1` nếu `A_eff ≤ 2`, `k=2` nếu `A_eff ≥ 3`. `ceil(0,6×A)` đã chết. 0 pw | A06, A07, C19 |
+| 2. `streak` khi được van đỡ: đóng băng hay tăng? | **ĐÓNG BĂNG.** Không tăng, không đứt, không vào mẫu số `q_c`, tiêu 1 slot van | A11 |
+| 5. `share_token` hết hạn sau bao lâu? | **7 NGÀY.** Sinh độc lập hoàn toàn với `book.code`; slug không chứa `code6`; `noindex` + `robots.txt` | A42, A44, QĐ-36 |
+| 6. Đổi `group_id` → `book_id`? | **ĐỔI, ngay hôm nay.** Tên bảng `book`/`book_id`, `book_day`; ngôn ngữ schema là **tiếng Anh** | A29, A30, A31, C52 |
+| 8. `paused` có UI ở MVP không? | **KHÔNG có UI ở MVP-0**, nhưng **cột `membership.paused_until` vào schema từ commit đầu** (chi phí cột = 0). Đổi lại: HM-4 ở `06` §4.2 phải mang nhãn "MƠ HỒ CÓ CHỦ Ý" | A50, S06, C34 |
+
+### 10.2. Ba câu CÒN LẠI — cần founder quyết
+
+> ⚠️ **KHỐI CẢNH BÁO — KHÔNG TỰ QUYẾT.** Ba mục dưới đây là **đánh đổi giá trị** hoặc **thiếu dữ liệu ngoài hồ sơ**, không phải mâu thuẫn logic. Mỗi mục nêu **đúng hai lựa chọn** và một **khuyến nghị**. Nếu founder không trả lời trước hạn, khuyến nghị **tự động có hiệu lực** và phải được ghi vào `docs/adr/ADR-000-bat-bien.md` kèm dòng "quyết định mặc định do quá hạn".
+
+---
+
+**🔶 D-01 — Cắt thêm 1,08 pw ở đâu? (hạn: 22/09/2026)**
+
+Bảng US chi tiết ra **4,58 pw** cho đúng cái scope mà QĐ-25 gọi là **3,5 pw** (A85) ⇒ **thiếu 1,08 pw**. Đây là chỗ khoản vượt ~0,35 pw của §9.4 tài liệu này đổ vào.
+
+- **Lựa chọn (a) — cắt theo thứ tự khuyến nghị của trọng tài:** (1) trang public xuống **chỉ-đọc**, không thả tim, không lưới (−0,4) · (2) preset kèo **8 → 4** (−0,15) · (3) màn 5 Ảnh chi tiết gộp thành **overlay** (−0,3) · (4) biến thể card mốc sổ (−0,25). Tổng −1,10 pw.
+  ⚠️ Ràng buộc cứng lên (3): overlay **phải** vẫn chứa đủ **Báo cáo / Chặn / Xoá ảnh** — `05` §8.4 bắt buộc report + block, và màn 5 hiện là nơi **duy nhất** chứa chúng. Cắt mà làm mất report/block là vi phạm pháp lý, không phải tiết kiệm.
+- **Lựa chọn (b) — không cắt, dời beta:** giữ nguyên 4,58 pw và chấp nhận beta trượt khỏi 02/12/2026. Hệ quả dây chuyền: cohort quyết định `sổ-D28` (A23) neo vào 02/12 sẽ phải neo lại, và cổng G2 26/01/2027 (A118) trượt theo.
+- **KHUYẾN NGHỊ: (a).** Trần 6,5 pw (A83) là kill gate, không phải mục tiêu; dời beta làm trượt **hai** cổng thay vì cắt **bốn** thứ. Ảnh hưởng lên tài liệu này: nếu chọn (a)(1), `card_open` vẫn phải giữ nguyên (H1 sống bằng nó) — chỉ cắt phần **hiển thị**, không cắt phần **đo**.
+
+---
+
+**🔶 D-06 — Chức năng export (tải dữ liệu về): ai trả 0,3 pw? (hạn: 07/09/2026, trước khi viết Privacy Policy)**
+
+Tài liệu này **hứa đường tải dữ liệu về ở ba chỗ**: §2.2 (người bị `removed` phải có đường tải dữ liệu), §2.3 (sổ `archived` → "chỉ còn trang tải dữ liệu về"), §6.1 (sổ `archived` được dọn sau báo trước 30 ngày **+ có đường tải về**). `05` §8.1 mục 7 còn công bố nghĩa vụ luật định "cung cấp bản sao trong 10 ngày". **Chức năng đó không nằm trong bất kỳ bảng pw nào của hồ sơ.**
+
+- **Lựa chọn (a) — bản làm tay, 0 pw:** một truy vấn SQL + zip thủ công của founder, SLA 10 ngày, quy trình ghi vào `RUNBOOK.md`. Ăn vào trần vận hành 10 giờ/tuần (A92) mỗi lần có yêu cầu.
+- **Lựa chọn (b) — build thật, +0,3 pw:** một endpoint sinh ZIP. Phải tìm 0,3 pw ở đâu đó, tức chồng thêm lên khoản thiếu 1,08 pw của D-01.
+- **KHUYẾN NGHỊ: (a).** Ở quy mô ≤60 sổ (A93), số yêu cầu export thực tế gần 0; nhưng ba lời hứa ở trên **phải có người thực hiện được** trước khi Privacy Policy in ra. Việc bắt buộc kèm theo: **xoá P1 (bán "sổ PDF" 99k/sổ/năm) khỏi `10` §3.1** — không bán thứ luật buộc phải cho miễn phí. _(Việc đó thuộc `10`, không thuộc file này.)_
+
+---
+
+**🔶 D-04b (phái sinh của D-04) — mặc định khi rời sổ: giữ hay xoá tấm cũ? (hạn: 22/09/2026)**
+
+Không nằm trong bảng D của trọng tài, nhưng cùng loại: đây là quyết định về **ký ức của người khác**, không suy ra được từ dữ liệu.
+
+- **Lựa chọn (a) — mặc định GIỮ, kèm checkbox `keep_proofs_on_leave` (schema hiện tại):** một tấm đã gửi vào nhóm là một hành động xã hội đã hoàn tất; xoá hồi tố toàn bộ dấu vết của một người khỏi ký ức chung của 4 người khác là thao tác **có hại cho bên thứ ba**.
+- **Lựa chọn (b) — mặc định XOÁ:** an toàn hơn về quyền riêng tư, nhưng làm lưới ảnh của sổ thủng lỗ chỗ mỗi lần có người rời, và mâu thuẫn với P1.
+- **KHUYẾN NGHỊ: (a)**, đúng như `membership.keep_proofs_on_leave default true` đang có. `goal_text` thì **luôn xoá ngay, không hỏi** (A69) — vế đó **không phải** lựa chọn.
+
+---
+
+## 11. ĐÃ CẮT — nội dung đã gỡ khỏi tài liệu này và điều kiện mở lại
+
+> Mục này là **bản kê bắt buộc** theo luật của bảng phán quyết: thứ bị cắt phải được ghi ra, không được xoá im lặng. Mỗi dòng có **điều kiện mở lại**; thứ nào không có điều kiện mở lại thì ghi rõ là vĩnh viễn. Nhắc lại luật sổ cái (A87): **một khoản cắt chỉ được chi MỘT LẦN**, và `docs/adr/pw-ledger.md` là nơi duy nhất ghi khoản chi.
+
+| # | Đã cắt khỏi tài liệu này | Ở đâu (bản cũ) | Căn cứ | pw | Điều kiện mở lại |
+|---|---|---|---|---|---|
+| **11.1** | **Bảng `heart`** + nút thả tim ẩn danh trên trang public | §1.6 (mục từng tên "Card, mở card, thả tim") | A27, S01, C03 | −0,20 (đã chi cho MVP-0 của `07`, QĐ-05b — **không còn là tiền**) | **T13+**, và chỉ khi: (a) `sổ-D28 ≥ 35%` ở cổng G2 26/01/2027 (A24) **và** (b) có một giả thuyết đo được gắn với nút này — hiện chưa có cái nào |
+| **11.2** | Hàng **"Thả tim spam"** trong bảng ca đồng thời | §5.2 | S01, C03 | 0 | Cùng điều kiện 11.1 |
+| **11.3** | **`heart_sent`** (event số 25) + trường **`hearts_recv_14d`** trong payload `member_left` | §7.1 | A51, A52, C10 | 0 | Cùng 11.1. ⚠️ **Số 25 để trống VĨNH VIỄN, KHÔNG tái sử dụng** kể cả khi nút tim mở lại dưới tên khác — tái dùng số hiệu làm hỏng mọi truy vấn lịch sử |
+| **11.4** | **Job cron 21:00 (`mo_chot_so`)** | §3.5 | A04, C15 | −0,10 (ghi ở `pw-ledger.md`) | **Không có điều kiện mở lại** ở MVP-0. v2 §4.7: hệ thống **không gửi gì** lúc 21:00. Nếu sau này có web push (S09), đây là chỗ phải đọc lại đầu tiên |
+| **11.5** | **Vai "chủ sổ" + chức năng kick** (UI gỡ thành viên) | §2.2 | A61, S17, C39 | −0,40 (chưa từng được ghi là khoản thu — **không được chi**) | Chỉ mở nếu có bằng chứng từ beta rằng một sổ bị người lạ phá và moderation của founder không kịp. Mở lại thì **phải trả đủ**: 0,4 pw UI + thông báo cho người bị gỡ + đường tải dữ liệu của họ |
+| **11.6** | **Nghi thức kick 7 ngày grace + export ZIP** (`_issues-digest.md` #20) | §2.2 | C39 | 0 | Tự động sống lại **cùng lúc** với 11.5 và không sớm hơn — thứ nó bảo vệ (bị nhóm đá) không tồn tại khi không có kick |
+| **11.7** | **UI nút "Nghỉ 7 ngày"** | §2.2 (cột `paused_until` **GIỮ**) | A50, S06, C34 | UI: −0,10 · cột: 0 | Mở nếu **H2 rơi vùng xám** và `pulse_survey` (event 30) chỉ ra lý do vắng là "bận/thi cử" chứ không phải "chán". ⚠️ Đổi lại cho việc cắt: **HM-4 phải mang nhãn "MƠ HỒ CÓ CHỦ Ý"** bằng văn bản ở `06` §4.2 |
+| **11.8** | **Sáu thành phần của "Tết Mode"** (tần suất card 1/3 ngày, 2 dòng copy riêng, 3 preset Tết) — **GIỮ đúng một hằng số** `remote_config['freeze.dates']` + hàm thuần đọc nó | §1.7, §2.5, §4.1 | A86, A121, S07, C06 | −0,10 (đã bị `07` tiêu — **không còn là tiền**) | Build ở **T13–T18, hạn hoàn thành 25/01/2027**, trước cửa sổ Tết 03/02/2027 04:00 → 13/02/2027 03:59 ICT (A120) |
+| **11.9** | **Lưới 30 ngày** (mọi tham chiếu trong §6.3, §6.4 đã đổi thành "lưới ảnh của sổ") | §6.3, §6.4 | A86, S14 | −0,25 | **T13+, ưu tiên 1.** v2 §6 mục 11: "lưới 30 ngày CHÍNH LÀ memory layer". Index `proof_book_day_idx` ở §1.4 **vẫn giữ** vì nó phục vụ màn Sổ hôm nay, chi phí = 0 |
+| **11.10** | **Màn "Của tôi"** — hai nút xoá chuyển vào overlay Cài đặt của màn 1 | §6.2 | A86 | −0,25 | Mở lại khi số màn vượt 7 được `docs/adr/ADR-000-bat-bien.md` cho phép (A79: 7 màn + **1 slot dự phòng ĐỂ TRỐNG**) |
+| **11.11** | **Đa sổ / nút "Mở sổ mới"** — trần 1 sổ/thiết bị, thực thi ở **tầng ứng dụng**, không ở tầng CSDL | §1.4 | A101, S02, C25 | −0,15 | **v1.1.** Hằng số đặt trước là 3 sổ/thiết bị, **CHƯA có hiệu lực**. Khoá CSDL vẫn là `UNIQUE(book_id, person_id, book_date)` (A33) — cố ý **không** khoá đa sổ ở tầng dữ liệu |
+| **11.12** | **Cột `birth_year`** + hai CHECK gọi `now()` (`person_birth_year_sane`, `person_age_gate`) | §1.2 | A47, A48, C18 | 0 | **VĨNH VIỄN.** Hai lý do độc lập: (a) tối thiểu hoá dữ liệu theo Luật 91/2025 (A47) · (b) Postgres **cấm** hàm không-IMMUTABLE trong CHECK ⇒ `CREATE TABLE` **sẽ lỗi** (A48). Kiểm tra tuổi làm ở **tầng ứng dụng**, lúc nhập |
+| **11.13** | **Event `mau_alert`** (đèn báo "700 người") — tách thành **`visits_alert` (28)** + **`persons_alert` (29)** | §7.1 | A54, A55, C04 | +0,05 (hai counter, đã ghi sổ cái) | **Không mở lại.** Con số 700 bị **BÁC hoàn toàn**: ngưỡng NĐ 147/2024 là **OR**, nhánh 10.000 lượt/tháng bind trước ~2,5 lần ⇒ 700 báo động **muộn 2,5 lần**. `monthly_visits` phải đếm session **từ dòng code đầu**, không backfill được |
+| **11.14** | **File ADR-001 và ADR-002** | §8.8 và mọi tham chiếu | A103, S21 | 0 | **VĨNH VIỄN.** Gộp vào **một** file `docs/adr/ADR-000-bat-bien.md` (3 mục: đơn vị đo · schema & đặt tên · pháp lý) + `docs/adr/pw-ledger.md` |
+
+**Ba thứ được GIỮ và phải nói rõ vì sao (kẻo bị cắt nhầm ở vòng sau):**
+
+| Giữ | pw | Lý do |
+|---|---|---|
+| Bảng **`audit_log`** (§1.7) — có từ **migration đầu tiên**, lưu **≥ 2 năm** | **+0,15** (đã ghi sổ cái) | A49, S24 — "rẻ nhất khi làm sớm, **không thể làm bù**": không có bảng này từ ngày đầu thì 2 năm lịch sử không tái dựng được |
+| Event **30 `pulse_survey`** (§7.1) — **BẮT BUỘC**, bắn ngày 7 và ngày 21 | **+0,05** (đã ghi sổ cái) | A28, S25, C43 — sau khi HM-1/HM-3 chết cùng nút tim, đây là kênh **duy nhất** còn nghe được người **đang ở lại** mà mệt. Exit survey chỉ nghe được người **đã bỏ đi** |
+| Tách **`book.code`** ≠ **`card.share_token`** (§1.3, §1.6) | **+0,10** (đã ghi sổ cái) | A42, A44, A45, C32 — hai chuỗi sinh riêng, không suy ra được từ nhau; slug công khai không chứa `code6` (có test CI) |
+| **Trang public** (RPC `public_book_view`, §1.8) + bảng `card_open` (§1.6) | 0 (đã trong scope) | S23 — cắt trang public thì **M2 không đo được**, và M2 là 1 trong 4 tiêu chí thành công MVP. Chỉ nút thả tim bị cắt, không phải cả trang |
+
+---
+
+## 12. BẤT ĐỒNG VỚI PHÁN QUYẾT TRỌNG TÀI
+
+> Theo luật hiệu lực của `_rulings.md`: agent thấy phán quyết sai thì **ghi vào đây và VẪN SỬA THEO PHÁN QUYẾT**. Ba mục dưới đây đã được thi hành đầy đủ trong file; đây chỉ là ghi nhận để founder xem lại, không phải yêu cầu hoãn.
+
+**12.1. A17 (`q_c = 0,53`) không tương thích với bảng ví dụ §4.2, và bảng ví dụ mới là thứ được kiểm chứng.** Bảng §4.2 tổng ra `34 / 70 = 0,486`. Tôi đã sửa **nhãn** của bảng chứ không sửa bảng, vì bảng tồn tại để kiểm chứng bất biến P1 (đơn điệu của `day_number`, `proof_total`, `streak`), không phải để minh hoạ giả định `q_c`. Hệ quả cần founder biết: **giả định thiết kế 0,53 chưa có một quỹ đạo ví dụ nào trong hồ sơ chứng minh nó đạt được**; mọi bảng dẫn xuất từ 0,53 (DAU/sổ 2,12 ở A71, quy đổi ngưỡng pháp lý ở A73) đang đứng trên một số `[chưa đo]`. Không đề nghị đổi A17 — đề nghị **giữ nhãn `[chưa đo]` ở mọi nơi** và đọc lại nó ngày 22/09 khi Bước 0 có số thật.
+
+**12.2. A65 nói "7 câu" nhưng liệt kê ra 8.** Nguyên văn C40: *3 câu của `05` + 2 câu Điều 32 BLDS + 2 câu của `04` + 1 câu máy chủ VN của `03`* = **8**. Tôi vẫn ghi "gói 7 câu" ở §8.2/§8.3 theo đúng chữ của A65, và đánh số hai câu của tài liệu này là **số 6 và số 7**. Nếu con số đúng là 8 thì đánh số ở §8.2/§8.3 phải dịch một bậc. Việc hợp nhất danh sách thuộc `05` §11, không thuộc file này — **cần `05` chốt lại tổng số trước khi bấm gửi email 03/09**.
+
+**12.3. A14 chốt `roster_size` "đóng băng, giữ nguyên 14 ngày" nhưng không nói xử lý ngày thứ 18 trở đi.** `06` §9 BĐ-1 chỉ định nghĩa cho cửa sổ đo 14 ngày của Bước 0. Với một sổ sống 60 ngày, mẫu số phải làm gì từ ngày 18? Tôi đã chọn con số **thận trọng hơn** theo luật của đề bài: **đóng băng lại theo cohort mới** (nhánh `else` trong pseudocode §4.1), tức mẫu số không bao giờ co lại theo số người bỏ cuộc — vì mẫu số co lại chính là lỗi mà QĐ-03 tồn tại để chặn. Ghi ra vì đây là **suy luận của tôi, không phải phán quyết**, và nó cần một dòng trong ADR-000 trước commit đầu.
