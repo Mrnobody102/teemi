@@ -8,7 +8,7 @@ import { book, bookStats, nameOf, todayProofs } from "../src/mock/book";
  * webview. Hai tính chất của nó rất dễ mất im lặng khi ai đó "dọn dẹp" bằng
  * cách biến Route Handler thành một React page:
  *
- *   1. 0 KB JavaScript  (đo được: 1,6 KB gzip, so với 181 KB của bản React)
+ *   1. 0 KB JavaScript  (đo được: 2,4 KB tổng tải, so với ~205 KB của React page)
  *   2. dữ liệu người dùng được escape
  *
  * Những test dưới đây canh đúng hai tính chất đó.

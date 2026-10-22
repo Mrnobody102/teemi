@@ -10,10 +10,11 @@ DOC 2 §18.1 chốt tỉ lệ:
 > Doodle nguệch ngoạc, vui nhộn, bựa nhẹ, hơi ngốc, dễ meme. **Nhưng UX vẫn phải sạch.**
 > **70% UX sạch, rõ, nhanh · 30% doodle/meme/personality**
 
-Bản dựng 22/10 là **100% sạch, 0% personality** — tức là trượt luật này, và rơi
-đúng vào "habit tracker khô" mà DOC 1 §5 dặn tránh. Tài liệu này sửa bằng cách
-nói rõ **30% đó nằm ở đâu và không được nằm ở đâu**, chứ không bằng cách rắc
-doodle đều khắp.
+Bản dựng đầu tiên (22/10) là **100% sạch, 0% personality** — trượt luật này,
+rơi đúng vào "habit tracker khô" mà DOC 1 §5 dặn tránh. Bản hiện tại sửa bằng
+cách nói rõ **30% đó nằm ở đâu và không được nằm ở đâu**, chứ không rắc doodle
+đều khắp. Mọi quyết định dưới đây đã được **kiểm bằng ảnh chụp màn hình thật**
+(Playwright, 360×780, cả sáng lẫn tối), không chỉ đọc code.
 
 ## 1. Chia bề mặt: cái gì sạch, cái gì có cá tính
 
@@ -48,24 +49,30 @@ doodle đều khắp.
 
 ## 3. Bảng màu
 
-Sổ tay viết tay: giấy ấm, mực bút bi, hai màu bút lông cho hai nhãn, một màu
-highlight. **Không màu nào mang nghĩa nguy hiểm** — TOANG dùng màu đất, không đỏ.
+Sổ tay viết tay: giấy ấm chấm bi, mực bút bi, bút highlight vàng, hai màu bút
+lông cho hai nhãn. **Không màu nào mang nghĩa nguy hiểm** — TOANG màu đất, không đỏ.
 
 | Token | Sáng | Tối | Dùng cho |
 |---|---|---|---|
-| `paper` | `#FBF9F4` | `#14130F` | nền trang |
-| `surface` | `#F2EDE2` | `#1E1C16` | ô ảnh, thẻ, input |
-| `ink` | `#16140F` | `#F2EFE6` | chữ chính |
-| `muted` | `#6B6255` | `#9A9183` | ba con số, chú thích |
-| `line` | `#E0D9C9` | `#2E2A22` | viền, đường kẻ |
+| `paper` | `#FBF9F4` | `#14130F` | nền trang, chấm bi `dot` 18px |
+| `surface` · `frame` | `#F2EDE2` · `#FFFDF8` | `#1E1C16` · `#23201A` | ô nhập · khung polaroid, nút phụ |
+| `ink` | `#16140F` | `#F2EFE6` | chữ, **mọi viền vẽ tay** |
+| `muted` · `line` | `#6B6255` · `#E0D9C9` | `#9A9183` · `#2E2A22` | ba con số, chú thích · đường kẻ |
 | `done` | `#2F6B45` | `#7FB08C` | **chỉ** nhãn XONG |
 | `toang` | `#A4542A` | `#D08A5C` | **chỉ** nhãn TOANG |
-| `accent` | `#20324A` | `#8FB4D8` | nút chính (mực bút bi) |
-| `marker` | `#F5D547` | `#C9A838` | gạch highlight tay, **chỉ sau một từ**, tối thì giảm độ chói |
+| `marker` | `#F5D547` | `#D9BB3F` | nút chính, thân linh vật, gạch highlight sau **một** cụm từ |
+| `shadow` | `#16140F` | `#4A4438` | bóng cứng của nút sticker. Ở theme tối **không được** là đen — đen trên nền gần đen thì không thấy, nút trông phẳng (thấy khi chụp màn hình) |
 
 **Chế độ tối là hạng nhất, không phải phần thêm.** Ngày của sổ cắt lúc 04:00 và
-người ta nộp tấm cuối lúc nằm trên giường — màn hình sáng trắng lúc 23:50 là lỗi
-thiết kế, không phải lựa chọn.
+người ta nộp tấm cuối lúc nằm trên giường.
+
+**Ba tiện ích vẽ tay, 0 JS, 0 ảnh** (`src/app/globals.css`):
+
+| | |
+|---|---|
+| `.hand` · `.hand-2` | viền mực 2px, `border-radius` bất đối xứng → bốn góc lệch nhau như nét bút. Hai biến thể để hai ô cạnh nhau không giống hệt |
+| `.sticker` | bóng cứng lệch 3px; ấn xuống thì bóng mất. Tắt nhún khi `prefers-reduced-motion` |
+| `.polaroid` + `.tape` | ảnh nằm TRONG khung; băng dính trên **mép khung**, chừa 5px trước ảnh. Bản đầu đè lên ảnh 1px — sửa sau khi chụp màn hình |
 
 ## 4. Chữ
 
@@ -81,28 +88,48 @@ Thang: **11 · 13 · 15 · 17 · 22 · 28**. Không có cỡ nào khác.
 | **Nhãn XONG / TOANG** | **17 semibold** |
 | Mã sổ | 13 mono, letter-spacing rộng |
 
-## 5. Font — và một mẹo kiếm được cá tính miễn phí
+## 5. Font — Patrick Hand, tự cắt còn 23 KB
 
-App shell dùng **font hệ thống**, không tải font web. Ngân sách first paint là
-**≤120 KB gzip** trên máy ≤3 GB RAM trong webview; một file font là 20–40 KB đổi
-lấy một chút duyên — không đáng.
+So 6 font viết tay có subset tiếng Việt **bằng chính chữ của sản phẩm** (chi
+tiết: `src/ui/fonts/README.md`):
 
-Nhưng **card được render ở server bằng satori**. Font của card nằm trên server và
-xuất ra PNG, **client trả 0 KB**. Nên:
+- **Caveat** — font tay phổ biến nhất — **không có dấu tiếng Việt**. Loại ngay.
+- Sriracha nghiêng khó đọc; Mali, Shantell Sans quá rộng (tên sổ xuống dòng ở
+  380px); Itim sạch quá, mất chất doodle.
+- **Pangolin** đẹp nhất nhưng **58 KB** sau khi cắt — rìa răng cưa là nhiều điểm vẽ.
+- **Patrick Hand — chọn.** Cắt còn 241 ký tự (đủ bảng chữ tiếng Việt hoa/thường,
+  ASCII, dấu câu) → **23 KB**, nhẹ hơn Pangolin 2,5 lần. OFL, không khai báo
+  Reserved Font Name nên được cắt và giữ tên.
 
-> **Một font viết tay duy nhất, chỉ dùng trên card**, cho tên sổ và dòng recap.
-> App shell: font hệ thống. Chi phí phía người dùng: bằng không.
+Subset sẵn của Google Fonts không dùng được: tiếng Việt cần **cả** subset `latin`
+**lẫn** `vietnamese`, vì chữ cái gốc nằm ở `latin` (riêng `latin` của Pangolin
+là 72,9 KB).
 
-Đây là chỗ đổi được nhiều cá tính nhất với giá thấp nhất trong cả sản phẩm, và
-nó đặt cá tính đúng vào bề mặt mà người ngoài nhóm sẽ thấy.
+**Chỉ dùng cho chữ trang trí:** tên sổ, tiêu đề, nhãn XONG/TOANG, nút, trạng thái
+trống. Form, chữ thân, ba con số, màn chính sách dùng font hệ thống — luật 70/30.
+`display: swap` nên chữ hiện ngay bằng font hệ thống, không bao giờ chờ font.
+
+Trang công khai **không** dùng font tay: đó là một request + 23 KB, đúng thứ
+trang đó không được trả. Chất vẽ tay ở đó đến từ viền, khung polaroid, nút
+sticker và linh vật SVG nội tuyến.
 
 ## 6. Doodle
 
-- **Inline SVG, nét vẽ (`stroke`), dùng `currentColor`** — tự đúng ở cả hai theme.
-- **≤1,5 KB mỗi hình**, tối đa **2 hình một màn**.
-- Không bao giờ animate trên đường nộp proof.
-- Nhân vật: **doodle gốc, lấy cảm hứng anime, không copy IP** (DOC 2 §18.4 —
-  không Naruto/Luffy/Goku/Gojo, không tên và không trang phục có bản quyền).
+`src/ui/doodle.tsx`. Inline SVG, nét `currentColor` hoặc biến theme → đúng ở cả
+hai theme mà không cần bản riêng.
+
+**Linh vật:** một cục tròn vàng màu bút highlight, viền mực, má hồng. Ba dáng:
+`ngu` (cả sổ chưa ai nộp) · `vui` · `ngo` (ngó ra). Không tên, không lời thoại —
+nó là nhân vật phụ, không được thành "giọng" của app nói với người dùng. Doodle
+gốc, không copy IP (DOC 2 §18.4).
+
+**Icon nhãn được VẼ, không dùng emoji.** Emoji 💀 hiện thành **ô vuông rỗng** trên
+máy không có font emoji — thấy tận mắt ở ảnh chụp đầu tiên — và mỗi hãng điện
+thoại vẽ emoji một kiểu. Nhãn TOANG không được phụ thuộc vào điều đó.
+
+- Tối đa **2 linh vật một màn**; icon nhãn không tính.
+- Linh vật ở: trạng thái trống · dòng van nghỉ màn 1 · ngó từ **mép** card.
+- **Không bao giờ** đè lên ảnh của người thật; không animate trên đường nộp.
 
 ## 7. Bố cục & ngón tay
 
@@ -115,72 +142,64 @@ nó đặt cá tính đúng vào bề mặt mà người ngoài nhóm sẽ thấ
   Trần sổ là 8 người nên nhánh 2×4 là **bắt buộc** — lưới 6 ô cố định sẽ im lặng
   loại 2 người đã nộp khỏi card, tức vi phạm P2. Snapshot test phải có fixture 8 người.
 
-## 8. Ngân sách hiệu năng — đã đo, và đã phải chia hai tầng
+## 8. Ngân sách hiệu năng — hai chỉ số, không phải một
 
-Ngân sách gốc ở hồ sơ là **≤120 KB gzip cho first paint**. Đo thật ngày 22/10
-trên bản dựng Next 16 + React 19:
+**Đính chính:** bản trước gọi con số 181 KB là "first paint" và kết luận ngân
+sách 120 KB không khả thi. **Sai tên chỉ số.** Next xuất toàn bộ JS dạng `async`
+— không chặn lần vẽ đầu. Thứ chặn render chỉ là HTML + một file CSS. Đo lại
+(22/10, gzip, sau khi thêm font):
 
-| Trang | JS/CSS tải về | Tổng gzip |
+| Trang | **First paint** (HTML + CSS chặn render) | **Tổng tải** (thêm JS async + font) |
 |---|---|---|
-| React page (`/so`) | 9 asset | **180,7 KB** — vượt 51% |
-| trong đó riêng runtime React | 3 chunk | 153,7 KB |
-| code sản phẩm (HTML của trang) | — | 3,3 KB |
+| `/s/<slug>` công khai | **2,4 KB** | **2,4 KB** — 0 JS, 0 font |
+| `/so`, `/card`, `/nop` | **~9 KB** | **~205 KB** — 178 KB JS + 22 KB font |
 
-**Kết luận: 120 KB không khả thi với Next.js App Router + React.** Khoảng 150 KB
-là sàn của stack này, và nó bị tiêu hết trước khi có dòng code sản phẩm nào. Giữ
-nguyên con số 120 KB cho mọi trang sẽ thành một ngân sách bị vi phạm từ ngày đầu
-rồi bị bỏ qua — tệ hơn là không có ngân sách.
+| Chỉ số | Ngân sách | Hiện tại |
+|---|---|---|
+| First paint, mọi trang | **≤120 KB** (hồ sơ) | ✅ ≤9,3 KB |
+| Tổng tải, trang công khai | **≤20 KB, 0 JS** | ✅ 2,4 KB |
+| Tổng tải, trang thành viên | **≤200 KB**, trả một lần rồi cache | ⚠️ **205 KB — vượt 5 KB vì font** |
 
-⇒ **Chia hai tầng, theo ai là người mở trang:**
+**Vì sao trang công khai vẫn phải 0 JS** dù first paint của React page đã nhỏ:
+người lạ mở từ card trên máy ≤3 GB RAM không được phải tải và **chạy** 178 KB
+JavaScript chỉ để xem một trang chỉ-đọc mà có thể họ không bao giờ vào. Nó là
+Route Handler trả HTML thuần (`src/app/s/[slug]/route.ts`), vì page nào cũng bị
+Next hydrate; Next chặn `react-dom/server` trong App Router nên HTML dựng bằng
+template, mọi dữ liệu người dùng qua `esc()`. `tests/trang-cong-khai.test.ts` canh
+7 tính chất.
 
-| Tầng | Trang | Ngân sách | Lý do |
-|---|---|---|---|
-| **Công khai** | `/s/<slug>` — người LẠ mở từ card trong nhóm chat | **≤20 KB gzip, 0 KB JS** | Đây là cửa phễu cold start, bề mặt quyết định ~45% tỉ lệ chạm, trên máy tầm thấp trong webview. Nó chỉ-đọc nên không cần hydrate |
-| **Thành viên** | 6 màn còn lại | **≤200 KB gzip**, trả một lần rồi cache | Người đã vào sổ sẽ mở lại hằng ngày; runtime được cache sau lần đầu |
-
-Trang công khai đã được làm đúng tầng đó: **1,6 KB gzip, 0 asset** — nhẹ hơn bản
-React **113 lần**. Cách làm: nó là **Route Handler trả HTML thuần**
-(`src/app/s/[slug]/route.ts` + `src/ui/screens/so-cong-khai.ts`), không phải React
-page, vì page nào cũng bị Next hydrate. Next chặn `react-dom/server` trong App
-Router nên HTML được dựng bằng template, và **mọi dữ liệu người dùng đi qua
-`esc()`**.
-
-`tests/trang-cong-khai.test.ts` canh bảy tính chất của trang này — không
-`<script>`, không `/_next/static`, không `<link>`, không font web, có `noindex`,
-chỉ đúng một thẻ `<a>`, ảnh mờ 12px — để không ai vô tình biến nó về React page.
+**5 KB vượt ở trang thành viên — chưa cắt, có lý do.** Đòn bẩy rẻ nhất là bỏ ~67
+chữ hoa có dấu khỏi font (≈6 KB). Không làm vì tên người Việt mở đầu bằng chữ
+hoa có dấu rất thường (*Ánh, Ân, Ước, Ổi*) — cắt đi thì tên đó vẽ nửa bằng font
+tay, nửa bằng font hệ thống. Xem lại khi có số liệu thật về mạng của người dùng.
 
 Các ràng buộc còn lại giữ nguyên:
 
 | | |
 |---|---|
-| Font web trong shell | **0** |
 | Thư viện animation / state ở MVP-0 | **0** — Server Components mặc định |
-| Ảnh trong lưới | **chỉ** thumbnail 320px ~18 KB. Không bao giờ nạp ảnh gốc vào lưới |
+| Ảnh trong lưới | **chỉ** thumbnail 320px ~18 KB, không bao giờ ảnh gốc |
 | Card PNG | ≤150 KB |
 | Nộp proof | 11–15 giây trên máy tầm trung, **đo trên máy thật** |
 
-Lý do để những con số này là ràng buộc cứng: Lapse gọi được 30 triệu đô và vẫn
-phải gỡ toàn bộ tính năng social vào 11/2025 vì chi phí hạ tầng media.
-
 ## 9. Bộ component
 
-| Component | Ghi chú |
-|---|---|
-| `StatLine` | ba con số. Không icon, không màu |
-| `ProofTile` | ảnh 4:5 + tên + nhãn. Chỉ render người **đã** nộp |
-| `MyTile` | ô `+ Của tao`. **Chỉ hiện khi mình chưa nộp hôm nay** |
-| `LabelButton` | XONG / TOANG. Chạm = gửi (UX-1). Không có nút Gửi thứ ba |
-| `UndoBar` | 10 giây, phản hồi duy nhất sau khi nộp |
-| `PrimaryAction` | nút dính đáy, trong safe-area |
-| `Card` | 4:5 render server. Cộng một bản 1200×630 cho OG (mọi nền tảng crop về 1,91:1) |
-| `RecapLine` | một dòng tường thuật trên card, từ phrase bank viết tay |
-| `ReactionRow` | nhãn cố định, một chạm, **không** đếm số công khai |
-| `Doodle` | inline SVG, `currentColor` |
-| `EmptyState` | chữ + đúng một doodle |
-| `PolicyBlock` | màn 7. Không doodle. In **cả hai** mốc SLA: 48h và 24h/6h |
+| Component | File | Ghi chú |
+|---|---|---|
+| `Shell` | `src/ui/shell.tsx` | tiêu đề · nội dung · thanh hành động **dính đáy, trong safe-area** |
+| `PrimaryButton` · `SecondaryButton` | `shell.tsx` | sticker vàng / sticker giấy, cao ≥48px |
+| `ProofTile` · `LabelMark` | `src/ui/proof-tile.tsx` | polaroid nghiêng xen kẽ; chỉ render người **đã** nộp |
+| `Mascot` · `Icon*` | `src/ui/doodle.tsx` | §6 |
+| `cardGrid` | `src/ui/card-layout.ts` | bố cục card bằng **flexbox + px tính sẵn** — satori chỉ hỗ trợ flex, nên PNG thật dùng lại đúng thuật toán này |
+| `renderSoCongKhai` | `src/ui/screens/so-cong-khai.ts` | trang công khai, HTML thuần |
 
-`RecapLine` và `ReactionRow` phục vụ hai lớp đang thiếu (L4, L2 ở `00` §3) và
-**chờ founder chốt** trước khi build.
+**`cardGrid` sửa hai lỗi thấy khi chụp màn hình:** (1) card khoá 4:5 với
+`overflow:hidden`, ảnh to đẩy **mã sổ** ra khỏi khung — mất đường thoát hiểm
+UX-2; (2) 3 ảnh trong lưới 2×2 để lại ô trống trông như "thiếu một người" — vi
+phạm P2. Giờ kích thước ô tính từ chiều cao còn lại và hàng cuối căn giữa.
+`tests/card-layout.test.ts` kiểm 1…8 người, gồm fixture 8 người bắt buộc.
+
+Chưa có, chờ founder chốt (`00` §3): `RecapLine` (L4) · `ReactionRow` (L2) · `UndoBar`.
 
 ## 10. Thang dự phòng chia sẻ — không phải chi tiết nhỏ
 

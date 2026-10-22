@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Shell } from "../shell";
 
 /**
  * Màn 7 — Chính sách & an toàn.
@@ -10,15 +10,9 @@ import Link from "next/link";
  */
 export function ScreenChinhSach() {
   return (
-    <div className="flex min-h-full flex-col">
-      <header className="flex items-center gap-3 border-b border-line px-4 py-3">
-        <Link href="/cua-toi" className="text-[15px] text-muted" aria-label="Quay lại">
-          ←
-        </Link>
-        <h1 className="text-[15px] font-medium">Chính sách &amp; an toàn</h1>
-      </header>
+    <Shell back="/cua-toi" title="Chính sách & an toàn" plainTitle>
 
-      <div className="space-y-5 px-4 py-4 text-[14px] leading-relaxed">
+      <div className="mx-4 mt-2 mb-6 space-y-5 rounded-lg border border-line bg-frame p-4 text-[14px] leading-relaxed">
         <section>
           <h2 className="mb-1.5 text-[11px] font-semibold tracking-widest text-muted">
             BÁO CÁO NỘI DUNG
@@ -75,6 +69,6 @@ export function ScreenChinhSach() {
           <p className="font-mono text-[13px]">hello@teemi.vn</p>
         </section>
       </div>
-    </div>
+    </Shell>
   );
 }

@@ -3,7 +3,7 @@ import { renderSoCongKhai } from "../../../ui/screens/so-cong-khai";
 /**
  * Trang công khai của link mời — Route Handler, không phải page.
  *
- * Page nào cũng bị Next hydrate, tức kéo theo ~153 KB gzip runtime React.
+ * Page nào cũng bị Next hydrate, tức kéo theo ~178 KB JS phải tải và chạy.
  * Trang này chỉ-đọc nên không cần hydrate, và nó là cửa phễu cold start trên
  * máy yếu. Xem `docs/design/01` §8 và `src/ui/screens/so-cong-khai.ts`.
  */

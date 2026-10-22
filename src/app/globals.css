@@ -1,62 +1,64 @@
 @import "tailwindcss";
 
 /*
- * Sổ tay viết tay — giấy ấm, mực bút bi, hai màu bút lông cho hai nhãn.
+ * Sổ tay viết tay — doodle, nhưng UX vẫn sạch.
  *
- * Luật 70/30 của DOC 2 §18.1: UX sạch là phần lớn, cá tính là phần nhỏ và nằm
- * ĐÚNG CHỖ. Chi tiết ở docs/design/01-ngon-ngu-thiet-ke.md.
+ * Luật 70/30 của DOC 2 §18.1. Cá tính nằm ở: chữ trang trí (font tay), viền vẽ
+ * tay, nút kiểu sticker, khung polaroid, linh vật. Sạch tuyệt đối ở: ẢNH của
+ * người thật, ba con số, form, màn chính sách. Chi tiết: docs/design/01.
  *
- * Không màu nào mang nghĩa nguy hiểm: TOANG dùng màu đất, không đỏ. Tone doc
- * cấm đếm ngược, cấm đỏ báo động, cấm rung.
+ * Không màu nào mang nghĩa nguy hiểm: TOANG dùng màu đất, không đỏ.
  */
 
 :root {
   --paper: #fbf9f4;
   --surface: #f2ede2;
+  --frame: #fffdf8;
   --ink: #16140f;
   --muted: #6b6255;
   --line: #e0d9c9;
+  --dot: #e6dfcf;
   --done: #2f6b45;
   --toang: #a4542a;
-  --accent: #20324a;
-  --accent-ink: #fbf9f4;
   --marker: #f5d547;
+  --tape: rgba(245, 213, 71, 0.55);
+  --shadow: #16140f;
 }
 
-/* Chế độ tối là hạng nhất: ngày của sổ cắt lúc 04:00 và tấm cuối được nộp lúc
-   nằm trên giường. Màn hình trắng lúc 23:50 là lỗi thiết kế. */
+/* Chế độ tối là hạng nhất: ngày của sổ cắt lúc 04:00, tấm cuối được nộp lúc
+   nằm trên giường. */
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #14130f;
     --surface: #1e1c16;
+    --frame: #23201a;
     --ink: #f2efe6;
     --muted: #9a9183;
     --line: #2e2a22;
+    --dot: #221f19;
     --done: #7fb08c;
     --toang: #d08a5c;
-    --accent: #8fb4d8;
-    --accent-ink: #14130f;
-    --marker: #c9a838;
+    --marker: #d9bb3f;
+    --tape: rgba(217, 187, 63, 0.4);
+    --shadow: #4a4438;
   }
 }
 
 @theme inline {
   --color-paper: var(--paper);
   --color-surface: var(--surface);
+  --color-frame: var(--frame);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-done: var(--done);
   --color-toang: var(--toang);
-  --color-accent: var(--accent);
-  --color-accent-ink: var(--accent-ink);
   --color-marker: var(--marker);
 
-  /* Font hệ thống, không tải font web: ngân sách first paint ≤120 KB gzip.
-     Cá tính chữ viết tay nằm trên CARD, nơi satori render ở server — client
-     trả 0 KB. Xem docs/design/01 §5. */
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  /* Font tay chỉ cho chữ trang trí. Ký tự ngoài bảng 241 chữ tự rơi về sans. */
+  --font-hand: var(--font-patrick), ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -64,10 +66,72 @@ html {
 }
 
 body {
-  background: var(--paper);
+  /* Giấy chấm bi — 1 gradient, 0 ảnh. Đủ nhạt để không tranh với ảnh. */
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 18px 18px;
   color: var(--ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- tiện ích vẽ tay ---------- */
+
+/* Viền "vẽ tay": bán kính bất đối xứng làm 4 góc lệch nhau như nét bút thật.
+   Hai biến thể để hai ô cạnh nhau không giống hệt nhau. */
+.hand {
+  border: 2px solid var(--ink);
+  border-radius: 255px 14px 225px 14px / 14px 225px 14px 255px;
+}
+.hand-2 {
+  border: 2px solid var(--ink);
+  border-radius: 14px 225px 14px 255px / 255px 14px 225px 14px;
+}
+.hand-dash {
+  border: 2px dashed var(--muted);
+  border-radius: 255px 14px 225px 14px / 14px 225px 14px 255px;
+}
+
+/* Nút sticker: bóng cứng lệch, ấn xuống thì bóng biến mất. */
+.sticker {
+  box-shadow: 3px 3px 0 var(--shadow);
+  transition: transform 80ms ease-out, box-shadow 80ms ease-out;
+}
+.sticker:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--shadow);
+}
+
+/* Khung polaroid: ảnh nằm TRONG khung, không trang trí gì đè lên ảnh. */
+.polaroid {
+  background: var(--frame);
+  padding: 5px 5px 0;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* Băng dính — đặt trên MÉP KHUNG, không bao giờ đè lên ảnh. Khung có lề trên
+   5px; băng cao 12px đặt ở -12px nên mép dưới dừng đúng ở mép khung, chừa 5px
+   trước ảnh. Bản -8px/14px đè lên ảnh 1px — thấy khi chụp màn hình 22/10. */
+.tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 44px;
+  height: 12px;
+  margin-left: -22px;
+  background: var(--tape);
+  transform: rotate(-3deg);
+}
+
+.tilt-l { transform: rotate(-1.6deg); }
+.tilt-r { transform: rotate(1.4deg); }
+.tilt-0 { transform: rotate(-0.4deg); }
+
+/* Gạch highlight bút lông — chỉ sau MỘT cụm từ, không bao giờ cả câu. */
+.marker {
+  background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%);
+  padding-inline: 0.12em;
 }
 
 /* Ảnh người chưa vào sổ mờ ĐỦ để hiểu "ảnh đời thường của bạn tao", không đủ
@@ -76,8 +140,7 @@ body {
   filter: blur(12px);
 }
 
-/* Gạch highlight bằng bút lông — chỉ dùng sau MỘT từ, không bao giờ cả câu. */
-.marker {
-  background: linear-gradient(transparent 62%, var(--marker) 62%, var(--marker) 94%, transparent 94%);
-  padding-inline: 0.1em;
+/* Người chọn giảm chuyển động thì nút sticker không nhún. */
+@media (prefers-reduced-motion: reduce) {
+  .sticker { transition: none; }
 }

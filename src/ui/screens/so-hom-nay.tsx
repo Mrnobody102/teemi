@@ -1,124 +1,93 @@
 import Link from "next/link";
+import { Mascot, IconPlus } from "../doodle";
 import { ProofTile } from "../proof-tile";
-import { DoodleWaiting } from "../doodle";
+import { PrimaryButton, SecondaryButton, Shell } from "../shell";
 import { book, bookStats, iSubmittedToday, me, nameOf, todayProofs } from "../../mock/book";
 
 /**
- * Màn 1 — Sổ hôm nay. Vừa là home của thành viên, vừa là trang public của link mời.
+ * Màn 1 — Sổ hôm nay (thành viên).
  *
- * Hai thứ KHÔNG có ở đây, và đều là cố ý:
- * - **Lưới 30 ngày** — bị cắt khỏi MVP-0 (A86), quay lại T13+. Wireframe ở `08` §4
- *   còn vẽ nó vì được soạn trước phán quyết.
- * - **Nút thả tim** — bị cắt (A27/S01). Trang public ở MVP-0 là chỉ-đọc.
+ * Trang công khai cho người CHƯA vào sổ là một trang riêng không JavaScript:
+ * `src/ui/screens/so-cong-khai.ts`.
+ *
+ * Hai thứ KHÔNG có ở đây, đều có chủ đích:
+ * - **Lưới 30 ngày** — cắt khỏi MVP-0 (A86), quay lại T13+.
+ * - **Nút thả tim** — cắt (A27/S01).
  */
-export function ScreenSoHomNay({ mode }: { mode: "member" | "public" }) {
-  const isPublic = mode === "public";
-
+export function ScreenSoHomNay() {
   return (
-    <div className="flex min-h-full flex-col">
-      <header className="border-b border-line px-4 pt-4 pb-3">
-        <div className="flex items-start justify-between gap-2">
-          <h1 className="text-[17px] font-semibold tracking-tight">{book.name}</h1>
-          {isPublic || iSubmittedToday ? null : (
-            <Link href="/cua-toi" className="shrink-0 text-[15px] text-muted" aria-label="Của tôi">
-              ⚙
-            </Link>
-          )}
+    <Shell
+      title={
+        <div>
+          <h1 className="font-hand text-[30px] leading-none">{book.name}</h1>
+          {/* Ba dữ kiện, không tính từ, không cảm xúc — font hệ thống, cố ý nhạt. */}
+          <p className="mt-1.5 text-[13px] text-muted">
+            Ngày thứ {bookStats.dayIndex} · {bookStats.totalProofs} tấm · chuỗi {bookStats.streak}
+          </p>
         </div>
-        {/* Ba dữ kiện, không tính từ, không cảm xúc. */}
-        <p className="mt-1 text-[13px] text-muted">
-          Ngày thứ {bookStats.dayIndex} · {bookStats.totalProofs} tấm · chuỗi {bookStats.streak}
-        </p>
-      </header>
-
-      <section className="px-4 py-4">
-        <h2 className="mb-2.5 text-[11px] font-semibold tracking-widest text-muted">HÔM NAY</h2>
+      }
+      right={
+        <Link href="/cua-toi" className="hand-dash px-2.5 py-1 font-hand text-[16px] text-muted">
+          của tôi
+        </Link>
+      }
+      footer={
+        <div className="flex gap-3">
+          <div className="flex-1">
+            <PrimaryButton href="/nop">Nộp</PrimaryButton>
+          </div>
+          <div className="flex-1">
+            <SecondaryButton href="/card">Chốt sổ</SecondaryButton>
+          </div>
+        </div>
+      }
+    >
+      <section className="px-4 pt-4 pb-2">
+        <h2 className="mb-4 font-hand text-[22px]">
+          <span className="marker">Hôm nay</span>
+        </h2>
 
         {todayProofs.length === 0 ? (
-          <div className="flex flex-col items-center py-6 text-muted">
-            <DoodleWaiting className="h-16 w-16" />
-            <p className="mt-2 text-[14px]">Chưa có tấm nào hôm nay.</p>
+          <div className="flex flex-col items-center py-8 text-center">
+            <Mascot pose="ngu" className="h-24 w-24" />
+            <p className="mt-3 font-hand text-[20px]">Chưa có tấm nào hôm nay.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-2.5">
-            {todayProofs.map((proof) => (
-              <Link
-                key={proof.personId}
-                href={isPublic ? "/s/w9td4mz2hb" : `/anh/${proof.personId}`}
-                className={isPublic ? "pointer-events-none" : ""}
-              >
+          <div className="grid grid-cols-3 gap-x-3 gap-y-5">
+            {todayProofs.map((proof, i) => (
+              <Link key={proof.personId} href={`/anh/${proof.personId}`}>
                 <ProofTile
+                  index={i}
                   name={nameOf(proof.personId)}
                   label={proof.label}
                   seed={`${proof.personId}-${bookStats.dayIndex}`}
-                  blurred={isPublic}
                 />
               </Link>
             ))}
-          </div>
-        )}
 
-        {/* Ô của MÌNH nằm SAU ảnh người khác (nguyên tắc P5): mở app là thấy
-            bạn mình trước, thấy nghĩa vụ của mình sau. */}
-        {isPublic ? null : (
-          <div className="mt-3 grid grid-cols-3 gap-2.5">
-            <Link href="/nop" className="w-full">
-              <div className="flex aspect-[4/5] flex-col items-center justify-center rounded-lg border border-dashed border-line bg-surface">
-                <span className="text-[22px] leading-none text-muted">+</span>
-              </div>
-              <div className="mt-1.5 px-0.5 text-[13px] text-muted">Của tao</div>
-            </Link>
+            {/* Ô của MÌNH nằm SAU ảnh người khác (P5): mở app là thấy bạn mình
+                trước, thấy phần của mình sau. Chỉ hiện khi mình chưa nộp. */}
+            {iSubmittedToday ? null : (
+              <Link href="/nop" className="hand-dash flex aspect-[4/5] flex-col items-center justify-center gap-1 text-muted">
+                <IconPlus className="h-8 w-8" />
+                <span className="font-hand text-[18px]">Của tao</span>
+              </Link>
+            )}
           </div>
         )}
       </section>
 
-      {isPublic ? (
-        <section className="border-t border-line px-4 py-4">
-          <p className="text-[15px] leading-relaxed">
-            Tối nào nhóm cũng chốt sổ: mỗi đứa một tấm,{" "}
-            <span className="marker">không ai cài app</span>.
-          </p>
-        </section>
-      ) : (
-        <section className="border-t border-line px-4 py-3">
-          <p className="text-[13px] text-muted">
-            {bookStats.restDaysLeft === 0
-              ? "Sổ này đã dùng hết ngày nghỉ trong tuần."
-              : `Sổ này còn ${bookStats.restDaysLeft} ngày nghỉ trong tuần.`}
-          </p>
-        </section>
-      )}
+      <section className="mx-4 mt-4 flex items-center gap-3 border-t-2 border-dashed border-line pt-4">
+        <Mascot pose="ngo" className="h-12 w-12 shrink-0" />
+        {/* Câu về SỔ, không về một người — đúng với mọi thành viên như nhau. */}
+        <p className="font-hand text-[18px] leading-snug">
+          {bookStats.restDaysLeft === 0
+            ? "Tuần này sổ hết lượt được lười rồi."
+            : `Tuần này sổ còn ${bookStats.restDaysLeft} lần được lười.`}
+        </p>
+      </section>
 
-      <div className="mt-auto border-t border-line px-4 py-3">
-        {isPublic ? (
-          <Link
-            href="/mo-so"
-            className="block rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-accent-ink"
-          >
-            Vào sổ này
-          </Link>
-        ) : (
-          <div className="flex gap-2.5">
-            <Link
-              href="/nop"
-              className="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-accent-ink"
-            >
-              Nộp
-            </Link>
-            <Link
-              href="/card"
-              className="flex-1 rounded-lg border border-line px-4 py-3 text-center text-[15px] font-medium"
-            >
-              Chốt sổ
-            </Link>
-          </div>
-        )}
-        {isPublic ? null : (
-          <p className="mt-2 text-center text-[12px] text-muted">
-            Đang xem với tư cách {me.name}
-          </p>
-        )}
-      </div>
-    </div>
+      <p className="px-4 pt-3 pb-2 text-center text-[12px] text-muted">Đang xem với tư cách {me.name}</p>
+    </Shell>
   );
 }
