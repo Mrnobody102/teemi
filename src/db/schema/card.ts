@@ -5,9 +5,9 @@
 import { sql } from "drizzle-orm";
 import { date, index, integer, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 
-import { bytea } from "./_shared.js";
-import { book } from "./book.js";
-import { person } from "./person.js";
+import { bytea } from "./_shared";
+import { book } from "./book";
+import { person } from "./person";
 
 export const card = pgTable(
   "card",

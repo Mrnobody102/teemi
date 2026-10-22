@@ -1,4 +1,4 @@
-import type { BookDate } from "./day.js";
+import type { BookDate } from "./day";
 
 export interface ProofPresence {
   readonly personId: string;

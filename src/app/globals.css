@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/*
+ * Sổ giấy, không phải dashboard.
+ *
+ * Tone doc cấm đếm ngược, cấm đỏ báo động, cấm rung. Nên bảng màu ở đây là
+ * giấy ấm + mực, một màu xanh trầm cho XONG và một màu đất cho TOANG. Không có
+ * màu nào mang nghĩa "nguy hiểm".
+ */
+@theme {
+  --color-paper: #faf8f3;
+  --color-surface: #f2eee5;
+  --color-ink: #1b1813;
+  --color-muted: #6f6659;
+  --color-line: #e3ddd1;
+  --color-done: #3d6b4c;
+  --color-toang: #9c5f3c;
+  --color-accent: #2f5d4a;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-paper: #141310;
+    --color-surface: #1e1b16;
+    --color-ink: #f3f0e9;
+    --color-muted: #9b9286;
+    --color-line: #2f2b24;
+    --color-done: #7fae8b;
+    --color-toang: #cf8e63;
+    --color-accent: #8fc2a8;
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ảnh người chưa vào sổ chỉ được mờ ĐỦ để hiểu "ảnh đời thường của bạn tao",
+   không đủ để nhận ra nội dung. Doc chốt 12px. */
+.blur-public {
+  filter: blur(12px);
+}

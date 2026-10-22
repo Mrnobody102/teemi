@@ -12,7 +12,7 @@ import {
   isValidBookCode,
   quorumThreshold,
   slugContainsCode,
-} from "../src/core/index.js";
+} from "../src/core/index";
 
 const canonicalScoringConfig = {
   kSmall: 1,

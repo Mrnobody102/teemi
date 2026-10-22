@@ -5,9 +5,9 @@
 import { sql } from "drizzle-orm";
 import { boolean, check, date, index, integer, pgTable, primaryKey, smallint, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 
-import { book } from "./book.js";
-import { proofStatus } from "./enums.js";
-import { person } from "./person.js";
+import { book } from "./book";
+import { proofStatus } from "./enums";
+import { person } from "./person";
 
 export const proof = pgTable(
   "proof",

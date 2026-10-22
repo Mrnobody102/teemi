@@ -5,7 +5,7 @@
 import { sql } from "drizzle-orm";
 import { boolean, check, index, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 
-import { bytea } from "./_shared.js";
+import { bytea } from "./_shared";
 
 /**
  * `person` — một con người trong sản phẩm. CỐ Ý không gọi là "user":

@@ -5,9 +5,9 @@
 import { sql } from "drizzle-orm";
 import { bigserial, date, index, integer, jsonb, pgTable, primaryKey, smallint, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-import type { JsonObject, JsonValue } from "./_shared.js";
-import { book } from "./book.js";
-import { person } from "./person.js";
+import type { JsonObject, JsonValue } from "./_shared";
+import { book } from "./book";
+import { person } from "./person";
 
 export const remoteConfig = pgTable("remote_config", {
   key: text("key").primaryKey(),

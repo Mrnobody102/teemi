@@ -9,14 +9,14 @@
  */
 
 // Schema Drizzle: bảng, enum, kiểu suy ra từ bảng.
-export * from "./db/schema.js";
+export * from "./db/schema";
 
 // Logic nghiệp vụ thuần: ngày của sổ (04:00 ICT), A_eff, ngưỡng k, van nghỉ,
 // chuỗi, trạng thái sổ, sinh mã sổ, danh mục event.
-export * from "./core/index.js";
+export * from "./core/index";
 
 // Interface storage không gắn provider. Implementation R2 nằm ở app/server sau.
-export * from "./storage/adapter.js";
+export * from "./storage/adapter";
 
 // Interface danh tính để không khóa sản phẩm vào localStorage đơn thuần.
-export * from "./identity/adapter.js";
+export * from "./identity/adapter";

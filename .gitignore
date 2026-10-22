@@ -8,6 +8,10 @@ build/
 *.log
 .DS_Store
 
+# Next.js
+.next/
+next-env.d.ts
+
 # Build & test
 coverage/
 *.tsbuildinfo

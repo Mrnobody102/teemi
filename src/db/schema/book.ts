@@ -5,8 +5,8 @@
 import { sql } from "drizzle-orm";
 import { boolean, char, check, date, index, integer, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 
-import { bookStatus, memberStatus } from "./enums.js";
-import { person } from "./person.js";
+import { bookStatus, memberStatus } from "./enums";
+import { person } from "./person";
 
 export const book = pgTable(
   "book",

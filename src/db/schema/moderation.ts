@@ -5,11 +5,11 @@
 import { sql } from "drizzle-orm";
 import { bigserial, check, date, index, inet, jsonb, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-import type { JsonObject } from "./_shared.js";
-import { book } from "./book.js";
-import { reportAction, reportReason } from "./enums.js";
-import { person } from "./person.js";
-import { proof } from "./proof.js";
+import type { JsonObject } from "./_shared";
+import { book } from "./book";
+import { reportAction, reportReason } from "./enums";
+import { person } from "./person";
+import { proof } from "./proof";
 
 export const report = pgTable(
   "report",
