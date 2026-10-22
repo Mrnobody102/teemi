@@ -1,8 +1,10 @@
 # Teemi
 
-> Mỗi người một kèo. Cả nhóm một boss.
+> Mỗi người một tấm. Cả nhóm một sổ.
 
-Social challenge app private-first cho nhóm bạn thân. Repo này hiện đang ở **giai đoạn 0: nghiên cứu & lập kế hoạch** — chưa có code sản phẩm.
+Social challenge app private-first cho nhóm bạn thân Việt Nam. Repo này đã qua vòng nghiên cứu/phản biện và đang ở **giai đoạn 1: schema CSDL + logic nghiệp vụ thuần**, chưa build UI.
+
+Tên sản phẩm là **Teemi**. Tên bảng CSDL `book` / `book_id` / `book_day` giữ nguyên vì đó là thuật ngữ kỹ thuật. Cơ chế boss chưa quyết sau Bước 0, nên repo hiện không build boss/HP/damage.
 
 ## Cấu trúc tài liệu
 
@@ -17,14 +19,15 @@ Social challenge app private-first cho nhóm bạn thân. Repo này hiện đang
 
 ## Bắt đầu từ đâu
 
-1. Đọc [docs/00-source/doc-01-product-strategy.md](docs/00-source/doc-01-product-strategy.md) — ý tưởng gốc
-2. Đọc [docs/critique/00-danh-gia-chien-luoc.md](docs/critique/00-danh-gia-chien-luoc.md) — điều gì đúng, điều gì sai
-3. Đọc [docs/plan/00-ke-hoach-tong.md](docs/plan/00-ke-hoach-tong.md) — làm gì tiếp theo
+1. Đọc [HANDOFF.md](HANDOFF.md) — trạng thái làm tiếp và ràng buộc mới nhất
+2. Đọc [docs/plan/00-ke-hoach-tong.md](docs/plan/00-ke-hoach-tong.md) — bức tranh tổng
+3. Đọc [docs/plan/_rulings.md](docs/plan/_rulings.md) mục A — nguồn chân lý cho mọi hằng số
+4. Đọc [docs/adr/ADR-004-quyet-dinh-founder-04-09.md](docs/adr/ADR-004-quyet-dinh-founder-04-09.md) — founder giữ tên Teemi và để ngỏ boss
 
 ## Trạng thái
 
 - [x] Ghi lại chiến lược gốc
 - [x] Nghiên cứu thị trường & phản biện
-- [ ] Chốt MVP scope
-- [ ] Chốt kiến trúc kỹ thuật
+- [x] Chốt nền kỹ thuật dùng chung: TypeScript strict, Drizzle, Vitest
+- [x] Bắt đầu schema CSDL và core pure functions
 - [ ] Prototype / kiểm chứng giả thuyết lõi

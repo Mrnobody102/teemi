@@ -12,5 +12,11 @@
 export * from "./db/schema.js";
 
 // Logic nghiệp vụ thuần: ngày của sổ (04:00 ICT), A_eff, ngưỡng k, van nghỉ,
-// chuỗi, trạng thái sổ, sinh mã sổ.
+// chuỗi, trạng thái sổ, sinh mã sổ, danh mục event.
 export * from "./core/index.js";
+
+// Interface storage không gắn provider. Implementation R2 nằm ở app/server sau.
+export * from "./storage/adapter.js";
+
+// Interface danh tính để không khóa sản phẩm vào localStorage đơn thuần.
+export * from "./identity/adapter.js";
