@@ -1,37 +1,62 @@
 @import "tailwindcss";
 
 /*
- * Sổ giấy, không phải dashboard.
+ * Sổ tay viết tay — giấy ấm, mực bút bi, hai màu bút lông cho hai nhãn.
  *
- * Tone doc cấm đếm ngược, cấm đỏ báo động, cấm rung. Nên bảng màu ở đây là
- * giấy ấm + mực, một màu xanh trầm cho XONG và một màu đất cho TOANG. Không có
- * màu nào mang nghĩa "nguy hiểm".
+ * Luật 70/30 của DOC 2 §18.1: UX sạch là phần lớn, cá tính là phần nhỏ và nằm
+ * ĐÚNG CHỖ. Chi tiết ở docs/design/01-ngon-ngu-thiet-ke.md.
+ *
+ * Không màu nào mang nghĩa nguy hiểm: TOANG dùng màu đất, không đỏ. Tone doc
+ * cấm đếm ngược, cấm đỏ báo động, cấm rung.
  */
-@theme {
-  --color-paper: #faf8f3;
-  --color-surface: #f2eee5;
-  --color-ink: #1b1813;
-  --color-muted: #6f6659;
-  --color-line: #e3ddd1;
-  --color-done: #3d6b4c;
-  --color-toang: #9c5f3c;
-  --color-accent: #2f5d4a;
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+:root {
+  --paper: #fbf9f4;
+  --surface: #f2ede2;
+  --ink: #16140f;
+  --muted: #6b6255;
+  --line: #e0d9c9;
+  --done: #2f6b45;
+  --toang: #a4542a;
+  --accent: #20324a;
+  --accent-ink: #fbf9f4;
+  --marker: #f5d547;
 }
 
+/* Chế độ tối là hạng nhất: ngày của sổ cắt lúc 04:00 và tấm cuối được nộp lúc
+   nằm trên giường. Màn hình trắng lúc 23:50 là lỗi thiết kế. */
 @media (prefers-color-scheme: dark) {
-  @theme {
-    --color-paper: #141310;
-    --color-surface: #1e1b16;
-    --color-ink: #f3f0e9;
-    --color-muted: #9b9286;
-    --color-line: #2f2b24;
-    --color-done: #7fae8b;
-    --color-toang: #cf8e63;
-    --color-accent: #8fc2a8;
+  :root {
+    --paper: #14130f;
+    --surface: #1e1c16;
+    --ink: #f2efe6;
+    --muted: #9a9183;
+    --line: #2e2a22;
+    --done: #7fb08c;
+    --toang: #d08a5c;
+    --accent: #8fb4d8;
+    --accent-ink: #14130f;
+    --marker: #c9a838;
   }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-done: var(--done);
+  --color-toang: var(--toang);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-marker: var(--marker);
+
+  /* Font hệ thống, không tải font web: ngân sách first paint ≤120 KB gzip.
+     Cá tính chữ viết tay nằm trên CARD, nơi satori render ở server — client
+     trả 0 KB. Xem docs/design/01 §5. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 html {
@@ -39,14 +64,20 @@ html {
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Ảnh người chưa vào sổ chỉ được mờ ĐỦ để hiểu "ảnh đời thường của bạn tao",
-   không đủ để nhận ra nội dung. Doc chốt 12px. */
+/* Ảnh người chưa vào sổ mờ ĐỦ để hiểu "ảnh đời thường của bạn tao", không đủ
+   để nhận ra nội dung. Doc chốt 12px. */
 .blur-public {
   filter: blur(12px);
+}
+
+/* Gạch highlight bằng bút lông — chỉ dùng sau MỘT từ, không bao giờ cả câu. */
+.marker {
+  background: linear-gradient(transparent 62%, var(--marker) 62%, var(--marker) 94%, transparent 94%);
+  padding-inline: 0.1em;
 }

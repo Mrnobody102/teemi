@@ -26,6 +26,8 @@ Chưa có: CSDL thật, magic link, upload R2, card PNG, cron.
 | [CODE.md](CODE.md) | Phần code |
 | [docs/plan/00-ke-hoach-tong.md](docs/plan/00-ke-hoach-tong.md) | Bức tranh tổng |
 | [docs/plan/_rulings.md](docs/plan/_rulings.md) | **Mục A = nguồn chân lý cho mọi hằng số.** Tài liệu khác nói khác thì mục A thắng |
+| [docs/design/](docs/design/) | Tầm nhìn hệ thống + ngôn ngữ thiết kế UI |
+| [docs/00-source/](docs/00-source/) | Bản thảo gốc của founder, đủ 3 DOC |
 | [docs/adr/](docs/adr/) | Quyết định lớn, mỗi cái một file |
 
 `docs/research/`, `docs/critique/`, `docs/re-examination/` là bằng chứng nền —

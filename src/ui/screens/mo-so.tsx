@@ -101,7 +101,7 @@ export function ScreenMoSo({ step }: { step: "name" | "goal" }) {
       <div className="mt-auto border-t border-line px-4 py-3">
         <Link
           href="/mo-so?b=goal"
-          className="block rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-paper"
+          className="block rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-accent-ink"
         >
           Tiếp
         </Link>

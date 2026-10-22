@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Photo } from "../photo";
+import { DoodleCheck } from "../doodle";
 import { book, bookStats, nameOf, todayProofs } from "../../mock/book";
 
 /**
@@ -61,7 +62,8 @@ export function ScreenCard() {
 
             <div className="mt-auto flex items-end justify-between gap-2 pt-3">
               {/* Không có tên người VẮNG, không có mẫu số "3/5" (P2). */}
-              <span className="text-[11px] leading-snug">
+              <span className="flex items-center gap-1 text-[11px] leading-snug">
+                <DoodleCheck className="h-3.5 w-3.5 shrink-0 text-done" />
                 {closer ? `${nameOf(closer.personId)} chốt sổ` : "Chưa có tấm nào"}
               </span>
               {/* Mã nằm trong PIXEL của ảnh — đường thoát hiểm duy nhất sống sót
@@ -75,7 +77,7 @@ export function ScreenCard() {
       <div className="mt-auto border-t border-line px-4 py-4">
         <button
           type="button"
-          className="block w-full rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-paper"
+          className="block w-full rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-accent-ink"
         >
           Chia sẻ vào Zalo
         </button>

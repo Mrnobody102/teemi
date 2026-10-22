@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ProofTile } from "../proof-tile";
+import { DoodleWaiting } from "../doodle";
 import { book, bookStats, iSubmittedToday, me, nameOf, todayProofs } from "../../mock/book";
 
 /**
@@ -34,7 +35,10 @@ export function ScreenSoHomNay({ mode }: { mode: "member" | "public" }) {
         <h2 className="mb-2.5 text-[11px] font-semibold tracking-widest text-muted">HÔM NAY</h2>
 
         {todayProofs.length === 0 ? (
-          <p className="text-[14px] text-muted">Chưa có tấm nào hôm nay.</p>
+          <div className="flex flex-col items-center py-6 text-muted">
+            <DoodleWaiting className="h-16 w-16" />
+            <p className="mt-2 text-[14px]">Chưa có tấm nào hôm nay.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-3 gap-2.5">
             {todayProofs.map((proof) => (
@@ -71,7 +75,8 @@ export function ScreenSoHomNay({ mode }: { mode: "member" | "public" }) {
       {isPublic ? (
         <section className="border-t border-line px-4 py-4">
           <p className="text-[15px] leading-relaxed">
-            Tối nào nhóm cũng chốt sổ: mỗi đứa một tấm, không ai cài app.
+            Tối nào nhóm cũng chốt sổ: mỗi đứa một tấm,{" "}
+            <span className="marker">không ai cài app</span>.
           </p>
         </section>
       ) : (
@@ -88,7 +93,7 @@ export function ScreenSoHomNay({ mode }: { mode: "member" | "public" }) {
         {isPublic ? (
           <Link
             href="/mo-so"
-            className="block rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-paper"
+            className="block rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-accent-ink"
           >
             Vào sổ này
           </Link>
@@ -96,7 +101,7 @@ export function ScreenSoHomNay({ mode }: { mode: "member" | "public" }) {
           <div className="flex gap-2.5">
             <Link
               href="/nop"
-              className="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-paper"
+              className="flex-1 rounded-lg bg-accent px-4 py-3 text-center text-[15px] font-medium text-accent-ink"
             >
               Nộp
             </Link>
